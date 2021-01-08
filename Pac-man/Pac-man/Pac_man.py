@@ -26,6 +26,7 @@ def ingresar_nuevodir():
                                     m[i][j] = '#'
                     if i == 11:
                         m[i][j] = '_'
+
         
     cadena = ''
     for i in range(23):
