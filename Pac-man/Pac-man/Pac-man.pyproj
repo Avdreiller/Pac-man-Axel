@@ -21,7 +21,32 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MenuInicio.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Pac_man.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="recursos\" />
+    <Folder Include="recursos\muros\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="recursos\muros\EsquinaInferiorDerecha.png" />
+    <Content Include="recursos\muros\EsquinaInferiorIzquierda.png" />
+    <Content Include="recursos\muros\EsquinaSuperiorDerecha.png" />
+    <Content Include="recursos\muros\EsquinaSuperiorIzquierda.png" />
+    <Content Include="recursos\muros\FinalDerecho.png" />
+    <Content Include="recursos\muros\FinalInferior.png" />
+    <Content Include="recursos\muros\FinalIzquierdo.png" />
+    <Content Include="recursos\muros\FinalSuperior.png" />
+    <Content Include="recursos\muros\Intersección.png" />
+    <Content Include="recursos\muros\IntersecciónDerecha.png" />
+    <Content Include="recursos\muros\IntersecciónInferior.png" />
+    <Content Include="recursos\muros\IntersecciónIzquierda.png" />
+    <Content Include="recursos\muros\IntersecciónSuperior.png" />
+    <Content Include="recursos\muros\MuroIntermedioHorizontal.png" />
+    <Content Include="recursos\muros\MuroIntermedioVertical.png" />
+    <Content Include="recursos\muros\MuroSolo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
