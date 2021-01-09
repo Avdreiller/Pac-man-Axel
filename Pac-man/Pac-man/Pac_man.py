@@ -1,4 +1,4 @@
-import MenuInicio
+import Juego
 from random import randrange
 def validar(x, y, cord1, cord2, cord3, cord4, cord5, cord6, cord7, cord8, cord9, cord10, m):
     if m[x+cord1][y+cord2] != '_' and (m[x+cord3][y+cord4] == '_' or m[x+cord5][y+cord6] == '_') and m[x+cord7][y+cord8] == '_' and m[x+cord9][y+cord10] == '_':
