@@ -67,8 +67,8 @@ class Juego(object):
         self.llenar_lista_nodos(self)
         m = Mapa.Mapa
         m.generar_Mapa(m)
-        for x in range(len(self.nodos)):
-            print(self.nodos[x].id,self.nodos[x].tipo)
+        #for x in range(len(self.nodos)):
+        #    print(self.nodos[x].id,self.nodos[x].tipo)
         pygame.init()
         
         AZUL = (0, 0, 255)
@@ -102,7 +102,7 @@ class Juego(object):
                             if self.mapaJ[j1][i1]=='@':
                                 imagen = Imagen.Imagen("otros/PacMan", i+160, j+110, tamCuadro+8, tamCuadro+8)
                                 screen.blit(imagen.imagen, (i+156, j+106))
-                            if self.mapaJ[j1][i1]=='_':
+                            if self.mapaJ[j1][i1]=='_' or self.mapaJ[j1][i1]=='-':
                                 imagen = Imagen.Imagen("otros/bolas", i+160, j+110, tamCuadro, tamCuadro)
                                 screen.blit(imagen.imagen, (i+160, j+110))
                             j1 += 1
