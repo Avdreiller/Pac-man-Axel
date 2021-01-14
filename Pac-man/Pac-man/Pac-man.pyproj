@@ -21,19 +21,35 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Imagen.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Juego.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapa.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MenuInicio.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Nodo.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Pac_man.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="botones\" />
+    <Folder Include="otros\" />
     <Folder Include="recursos\" />
     <Folder Include="recursos\muros\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="botones\CargarPartida.png" />
+    <Content Include="botones\NuevaPartida.png" />
+    <Content Include="botones\Salir.png" />
+    <Content Include="otros\bolas.png" />
+    <Content Include="otros\PacMan.png" />
     <Content Include="recursos\muros\EsquinaInferiorDerecha.png" />
     <Content Include="recursos\muros\EsquinaInferiorIzquierda.png" />
     <Content Include="recursos\muros\EsquinaSuperiorDerecha.png" />
