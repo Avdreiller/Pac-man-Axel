@@ -21,7 +21,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Floyd.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Imagen.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Imagenes.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Juego.py">
@@ -37,6 +43,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Pac_man.py" />
+    <Compile Include="Relacion.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="botones\" />
@@ -49,6 +58,8 @@
     <Content Include="botones\NuevaPartida.png" />
     <Content Include="botones\Salir.png" />
     <Content Include="otros\bolas.png" />
+    <Content Include="otros\FantasmaA.png" />
+    <Content Include="otros\Nada.png" />
     <Content Include="otros\PacMan.png" />
     <Content Include="recursos\muros\EsquinaInferiorDerecha.png" />
     <Content Include="recursos\muros\EsquinaInferiorIzquierda.png" />
