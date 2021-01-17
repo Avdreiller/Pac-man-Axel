@@ -26,7 +26,7 @@ class MenuInicio(object):
         pacmanicono = pygame.transform.scale(pacmanicono,(300,199))
         pacmanicono_pos_x = 260
         pacmanicono_pos_y = 450
-        imagenes = Imagenes.Imagenes(200,50)
+        imagenes = Imagenes.Imagenes()
         btn_Nueva_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("NuevaPartida",200,50), 260, 200, 200, 50)
         lista_botones.append(btn_Nueva_Partida)
         btn_Cargar_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("CargarPartida",200,50), 20, 20, 200, 50)
