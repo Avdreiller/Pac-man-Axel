@@ -1,40 +1,54 @@
 import threading
 import time
-
+import Imagenes
 TOTAL = 0
 
 MY_LOCK = threading.Lock()
 class HiloFantasma(threading.Thread):
-    delay = 0
-    mapa_imagenes = None
-    d = None
-    nodos = None
-    ruta = None
+    def __init__(self, delay, mapa_imagenes, algoritmo, nodos, ruta, fantasma, jugador, respaldo):
+        threading.Thread.__init__(self)
+        self.delay = delay
+        self.mapa_imagenes = mapa_imagenes
+        self.algoritmo = algoritmo
+        self.nodos = nodos
+        self.ruta = ruta
+        self.fantasma = fantasma
+        self.jugador = jugador
+        self.respaldo = respaldo
 
     def run(self):
-
+        imagenes = Imagenes.Imagenes(21,21)
         global TOTAL
-        x1 = 0
+        x1 = 1
         while True:
             time.sleep(self.delay)
-
             MY_LOCK.acquire()
-            
-            camino = self.d.getCamino(self.d, self.nodos[100], self.nodos[0], self.ruta, self.nodos)
+            idJ = 0
+            idF = 0
+            for i in range(len(self.mapa_imagenes)):
+                for j in range(len(self.mapa_imagenes)):
+                    if self.mapa_imagenes[i][j].tipo == '@':
+                        idJ = self.mapa_imagenes[i][j].id
+                    if self.mapa_imagenes[i][j].tipo == '4':
+                        idF = self.mapa_imagenes[i][j].id
+            camino = self.algoritmo.getCamino(self.algoritmo, self.nodos[idJ], self.nodos[idF], self.ruta, self.nodos)
             if x1 < len(camino):
-                self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.setImagen("otros/FantasmaA")
-                self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo = ''
-                if x1-1 > 0:
+                self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.imagen = imagenes.obtener_imagen("clyde", 29, 29)
+                self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo = '4'
+                self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.x -= 4
+                self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.y -= 4
+                if x1 > 0:
                     #self.mapaJ[camino[x1-1].x][camino[x1-1].y] = '_'
-                    if self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo == '_':
-                        self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/bolas")
+                    if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
+                        self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.imagen = imagenes.obtener_imagen("bola", 21, 21)
                         self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '_'
+                        
                     else:
-                        self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/Nada")
+                        self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.imagen = imagenes.obtener_imagen("nada", 21, 21)
                         self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '-'
-            x1 += 1
-            if x1 > len(camino):
-                x1 = 0
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.x += 4
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.y += 4
+            
             #print("hola")
 
         

@@ -127,7 +127,6 @@ class Mapa(object):
                                         if (m[i][j+1] == "#" or m[i][j-1] == "#") or (m[i][j+1] != "#" and m[i][j-1] != "#") or (m[i+1][j] == "#" or m[i-1][j] == "#") or (m[i+1][j] != "#" and m[i-1][j] != "#"):
                                             if self.validar_Cruces(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces2(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                print("Hola")                                                                                    
                                             if self.validar_Cruces(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
                                                 #pass

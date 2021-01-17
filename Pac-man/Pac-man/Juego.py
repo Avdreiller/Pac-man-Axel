@@ -12,22 +12,37 @@ import HiloFantasma
 class Juego(object):
     """description of class"""
     nodos = []
-    mapaJ = None
+    mapa_imagenes = []
     ruta = []
+    respaldo = []
+    pacman = None
 
     def llenar_lista_nodos(self):
         mapa = Mapa.Mapa
         m = mapa.generar_Mapa(mapa)
-        self.mapaJ = m
+        self.respaldo = m
+        self.mapa_imagenes = []
         contador = 0
         self.nodos = []
         self.ruta = []
+        #for x in range(len(m)):
+        #    self.mapa_imagenes.append([])
+        #    for j in range(len(m)):
+        #        self.mapa_imagenes[x].append(Nodo.Nodo(0,'',None,0,0))
+        id = 0
         for i in range(len(m)):
+            self.mapa_imagenes.append([])
             for j in range(len(m)):
+                
+                
                 if m[i][j] != '#' and m[i][j] != ' ':
                     n = Nodo.Nodo(contador, m[i][j], None, i, j)
                     self.nodos.append(n)
+                    id = contador
                     contador += 1
+                n = Nodo.Nodo(id, m[i][j], None, i, j)
+                self.mapa_imagenes[i].append(n)
+                id == 0
         for x in range(len(self.nodos)):
             self.ruta.append([])
             for j in range(len(self.nodos)):
@@ -36,8 +51,8 @@ class Juego(object):
             for j in range(len(self.nodos)):
                 i1,j1 = self.nodos[i].x, self.nodos[i].y
                 i2,j2 = self.nodos[j].x, self.nodos[j].y
-                #if i1 == 11 and (j1-1 == -1 or j1+1 == len(m)+1):
-                    #self.ruta[i][j] = 1
+                if (j1-1 == -1 or j1+1 == len(m)) and (j2-1 == -1 or j2+1 == len(m)):
+                    self.ruta[i][j] = 1
                 #if j1-1 >= 0:
                 if (i1,j1+1)==(i2,j2) or (i1,j1-1)==(i2,j2) or (i1+1,j1)==(i2,j2) or (i1-1,j1)==(i2,j2):
                     self.ruta[i][j] = 1
@@ -48,7 +63,7 @@ class Juego(object):
         if sumax < 0 or sumax > 22 or sumay < 0 or sumay > 22:
             return False
         else:
-            if self.mapaJ[sumax][sumay]=='#':
+            if self.mapa_imagenes[sumax][sumay].tipo=='#':
                 return True
         return False
 
@@ -120,11 +135,11 @@ class Juego(object):
         BLACK = (0, 0, 0)
         tamCuadro = 21
         imagenes = Imagenes.Imagenes(tamCuadro,tamCuadro)
-        mapa_imagenes = []
-        for x in range(23):
-            mapa_imagenes.append([])
-            for j in range(23):
-                mapa_imagenes[x].append(Nodo.Nodo(0,'',None,0,0))
+        #mapa_imagenes = []
+        #for x in range(23):
+        #    mapa_imagenes.append([])
+        #    for j in range(23):
+        #        self.mapa_imagenes[x].append(Nodo.Nodo(0,'',None,0,0))
         
         size = (820, 720)
         screen = pygame.display.set_mode(size)
@@ -151,36 +166,32 @@ class Juego(object):
                     for i in range(1, 500, tamCuadro+1):
                         if j1 < 23:
                             if primera_vandera == True:   
-                                if self.mapaJ[i1][j1]=='#':
+                                if self.mapa_imagenes[i1][j1].tipo =='#':
                                     img = self.asignar_Muro(self,i1,j1,i,j,tamCuadro+10,imagenes)
-                                    n = Nodo.Nodo(id,self.mapaJ[i1][j1],img, i1, j1)
-                                    mapa_imagenes[i1][j1] = n
+                                    #self.nodos[id].imagen = img
+                                    self.mapa_imagenes[i1][j1].imagen = img
                                     if img != None:
                                         screen.blit(img.imagen, (i+155, j+105))
-
-                                if self.mapaJ[i1][j1]=='@':
+                                        
+                                elif self.mapa_imagenes[i1][j1].tipo=='@':
                                     posicion_x_pacman = i1
                                     posicion_y_pacman = j1
-                                    n = Nodo.Nodo(id,self.mapaJ[i1][j1],Imagen.Imagen(imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8), i1, j1)
-                                    mapa_imagenes[i1][j1] = n
-                                    screen.blit(mapa_imagenes[i1][j1].imagen.imagen, (mapa_imagenes[i1][j1].imagen.x, mapa_imagenes[i1][j1].imagen.y))
-                                if self.mapaJ[i1][j1]=='_':
+                                    self.mapa_imagenes[i1][j1].imagen = Imagen.Imagen(imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
+                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.x, self.mapa_imagenes[i1][j1].imagen.y))
+                                elif self.mapa_imagenes[i1][j1].tipo=='_':
+                                    self.mapa_imagenes[i1][j1].imagen = Imagen.Imagen(imagenes.obtener_imagen("bola", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.x, self.mapa_imagenes[i1][j1].imagen.y))
                                 
-                                    n = Nodo.Nodo(id,self.mapaJ[i1][j1],Imagen.Imagen(imagenes.obtener_imagen("bola", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro), i1, j1)
-                                    mapa_imagenes[i1][j1] = n
-                                    screen.blit(mapa_imagenes[i1][j1].imagen.imagen, (mapa_imagenes[i1][j1].imagen.x, mapa_imagenes[i1][j1].imagen.y))
-                                
-                                if self.mapaJ[i1][j1]==''or self.mapaJ[i1][j1]==' 'or self.mapaJ[i1][j1]=='-'or self.mapaJ[i1][j1]=='1'or self.mapaJ[i1][j1]=='2'or self.mapaJ[i1][j1]=='3'or self.mapaJ[i1][j1]=='4':
-                                    n = Nodo.Nodo(id,self.mapaJ[i1][j1],Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro), i1, j1)
-                                    mapa_imagenes[i1][j1] = n
-                                    screen.blit(mapa_imagenes[i1][j1].imagen.imagen, (mapa_imagenes[i1][j1].imagen.x, mapa_imagenes[i1][j1].imagen.y))
+                                elif self.mapa_imagenes[i1][j1].tipo==''or self.mapa_imagenes[i1][j1].tipo==' 'or self.mapa_imagenes[i1][j1].tipo=='-'or self.mapa_imagenes[i1][j1].tipo=='1'or self.mapa_imagenes[i1][j1].tipo=='2'or self.mapa_imagenes[i1][j1].tipo=='3'or self.mapa_imagenes[i1][j1].tipo=='4':
+                                    self.mapa_imagenes[i1][j1].imagen = Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.x, self.mapa_imagenes[i1][j1].imagen.y))
                                 id += 1
                             else:
                                 
-                                if mapa_imagenes[i1][j1].tipo=='@':
+                                if self.mapa_imagenes[i1][j1].tipo=='@':
                                     posicion_x_pacman = i1
                                     posicion_y_pacman = j1
-                                imag = mapa_imagenes[i1][j1].imagen
+                                imag = self.mapa_imagenes[i1][j1].imagen
                                 screen.blit(imag.imagen, (imag.x, imag.y))
                             j1 += 1
                     i1 += 1
@@ -189,32 +200,36 @@ class Juego(object):
                 if event.type == pygame.KEYDOWN and bandera == True:
                     bandera = False
                     if event.key == pygame.K_RIGHT:
-                        if(mapa_imagenes[posicion_x_pacman][posicion_y_pacman+1].tipo!='#'):
+                        y=posicion_y_pacman
+                        if posicion_y_pacman+1 >= len(self.mapa_imagenes):
+                            y = -1
+                        if(self.mapa_imagenes[posicion_x_pacman][y+1].tipo!='#'):
                             dire = "RIGHT"
                         else:
                             dire2 = "RIGHT"
                     elif event.key == pygame.K_LEFT:
-                        if(mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
+                        if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
                             dire = "LEFT"
                         else:
                             dire2 = "LEFT"
                     elif event.key == pygame.K_DOWN:
-                        if(mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
+                        if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
                             dire = "DOWN"
                         else:
                             dire2 = "DOWN"
                     elif event.key == pygame.K_UP:
-                        if(mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
+                        if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
                             dire = "UP"
                         else:
                             dire2 = "UP"
                     
                 if event.type == pygame.QUIT:
                     gameOver = False
-            if self.validar_dire(self,dire2,posicion_x_pacman,posicion_y_pacman,  mapa_imagenes)==True:
+            if self.validar_dire(self,dire2,posicion_x_pacman,posicion_y_pacman)==True:
                 dire = dire2
                 dire2 = ""
-            self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, mapa_imagenes, tamCuadro, imagenes)
+            self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes)
+            self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
             bandera = True
             primera_vandera = False
             #self.hilo_Movimientos(self,1,10,camino, x1, mapa_imagenes,screen)
@@ -222,7 +237,7 @@ class Juego(object):
             if x1 == len(camino):
                 x1 = 0
             if bandera_hilo == True:
-                self.hilo(self,mapa_imagenes,d)
+                self.hilo(self,d)
                 bandera_hilo = False
             pygame.display.flip()
             
@@ -230,96 +245,108 @@ class Juego(object):
             #clock.tick(0.5)
         pygame.quit()
 
-    def validar_dire(self, dire2,posicion_x_pacman,posicion_y_pacman, mapa_imagenes):
+    def validar_dire(self, dire2,posicion_x_pacman,posicion_y_pacman):
         if dire2 == "RIGHT":
-            if(mapa_imagenes[posicion_x_pacman][posicion_y_pacman+1].tipo!='#'):
+            y=posicion_y_pacman
+            if posicion_y_pacman+1 >= len(self.mapa_imagenes):
+                y = -1
+            if(self.mapa_imagenes[posicion_x_pacman][y+1].tipo!='#'):
                 return True
         elif dire2 == "LEFT":
-            if(mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
+            if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
                 return True
         elif dire2 == "DOWN":
-            if(mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
+            if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
                 return True
         elif dire2 == "UP":
-            if(mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
+            if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
                 return True
         return False
-    def hilo(self, mapa_imagenes, d):
-        a = HiloFantasma.HiloFantasma()
-        a.delay = 0.2
-        a.d =d 
-        a.nodos = self.nodos
-        a.ruta = self.ruta
-        a.mapa_imagenes = mapa_imagenes
+    def hilo(self, algoridmo):
+        a = HiloFantasma.HiloFantasma(0.2,self.mapa_imagenes,algoridmo,self.nodos,self.ruta,"R", self.pacman, self.respaldo)
+        #a.delay = 0.2
+        #a.d =
+        #a.nodos = self.nodos
+        #a.ruta = self.ruta
+        #a.mapa_imagenes = mapa_imagenes
         a.start()
-    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, mapa_imagenes, tamCuadro, imagenes):
-        
+    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes):
+        val = False
         if dire == "RIGHT":
-            if(mapa_imagenes[posicion_x_pacman][posicion_y_pacman+1].tipo!='#'):
+            x=posicion_x_pacman
+            y=posicion_y_pacman
+            if posicion_y_pacman+1 >= len(self.mapa_imagenes):
+                y = -1
+            if(self.mapa_imagenes[posicion_x_pacman][y+1].tipo!='#'):
                 #self.mapaJ[posicion_x_pacman][posicion_y_pacman+1]='@'
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman+1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman+1].imagen.x -= 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman+1].imagen.y -= 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman+1].tipo = '@'
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
-                self.mapaJ[posicion_x_pacman][posicion_y_pacman]=''
+                self.mapa_imagenes[x][y+1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
+                self.mapa_imagenes[x][y+1].imagen.x -= 4
+                self.mapa_imagenes[x][y+1].imagen.y -= 4
+                self.mapa_imagenes[x][y+1].tipo = '@'
+                val = True
+                #self.mapa_imagenes[x][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
+                #self.mapa_imagenes[x][posicion_y_pacman].imagen.x += 4
+                #self.mapa_imagenes[x][posicion_y_pacman].imagen.y += 4
+                #self.mapa_imagenes[x][posicion_y_pacman].tipo = ''
+                #self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
         elif dire == "LEFT":
-            if(mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo = '@'
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.x -= 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.y -= 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
-                #self.mapaJ[posicion_x_pacman][posicion_y_pacman-1]='@'
-                self.mapaJ[posicion_x_pacman][posicion_y_pacman]=''
+            if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
+                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
+                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo = '@'
+                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.x -= 4
+                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.y -= 4
+                val = True
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
+                ##self.mapaJ[posicion_x_pacman][posicion_y_pacman-1]='@'
+                #self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
         elif dire == "DOWN":
-            if(mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
-                mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
-                mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo = '@'
-                mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.x -= 4
-                mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.y -= 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
-                #self.mapaJ[posicion_x_pacman+1][posicion_y_pacman]='@'
-                self.mapaJ[posicion_x_pacman][posicion_y_pacman]=''
+            if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
+                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
+                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo = '@'
+                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.x -= 4
+                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.y -= 4
+                val = True
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
+                #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
+                ##self.mapaJ[posicion_x_pacman+1][posicion_y_pacman]='@'
+                #self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
         elif dire == "UP":
-            if(mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
-                mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
-                mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo = '@'
-                mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.x -= 4
-                mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.y -= 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
-                mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
-                #self.mapaJ[posicion_x_pacman-1][posicion_y_pacman]='@'
-                self.mapaJ[posicion_x_pacman][posicion_y_pacman]=''
+            if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
+                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
+                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo = '@'
+                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.x -= 4
+                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.y -= 4
+                val = True
+        if val == True:
+            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
+            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
+            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
+            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
+            #self.mapaJ[posicion_x_pacman-1][posicion_y_pacman]='@'
+            self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
     
     hilo_terminado = False
-    def hilo_Movimientos(self, inicio, fin, camino, x1, mapa_imagenes, screen):
+    def hilo_Movimientos(self, inicio, fin, camino, x1, screen):
         global hilo_terminado
         if x1 < len(camino):
-            mapa_imagenes[camino[x1].x][camino[x1].y].imagen.setImagen("otros/FantasmaA")
-            mapa_imagenes[camino[x1].x][camino[x1].y].tipo = ''
-            imag = mapa_imagenes[camino[x1].x][camino[x1].y].imagen
+            self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.setImagen("otros/FantasmaA")
+            self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo = ''
+            imag = self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen
             screen.blit(imag.imagen, (imag.x, imag.y))
             if x1-1 > 0:
                 #self.mapaJ[camino[x1-1].x][camino[x1-1].y] = '_'
                 if self.mapaJ[camino[x1-1].x][camino[x1-1].y] == '_':
-                    mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/bolas")
-                    mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '_'
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/bolas")
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '_'
                 else:
-                    mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/Nada")
-                    mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '-'
-                imag = mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/Nada")
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '-'
+                imag = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen
                 screen.blit(imag.imagen, (imag.x, imag.y))
         #time.sleep(0.01)
         hilo_terminado = True
