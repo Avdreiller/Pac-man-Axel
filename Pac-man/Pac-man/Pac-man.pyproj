@@ -21,7 +21,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Dijkstra.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Floyd.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HiloFantasma.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Imagen.py">
