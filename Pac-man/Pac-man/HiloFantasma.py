@@ -34,9 +34,13 @@ class HiloFantasma(threading.Thread):
             camino = self.algoritmo.getCamino(self.algoritmo, self.nodos[idJ], self.nodos[idF], self.ruta, self.nodos)
             if x1 < len(camino):
                 self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.imagen = imagenes.obtener_imagen("clyde", 29, 29)
-                self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo = '4'
-                self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.x -= 4
-                self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.y -= 4
+                
+                if self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo != '@':
+                    id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
+                    self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.i -= 4
+                    self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.j -= 4
+                
+                
                 if x1 > 0:
                     #self.mapaJ[camino[x1-1].x][camino[x1-1].y] = '_'
                     if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
@@ -46,8 +50,10 @@ class HiloFantasma(threading.Thread):
                     else:
                         self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.imagen = imagenes.obtener_imagen("nada", 21, 21)
                         self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '-'
-                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.x += 4
-                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.y += 4
+                    #if self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo != '@':
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.i += 4
+                    self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.j += 4
+                self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo = '4'
             
             #print("hola")
 

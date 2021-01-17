@@ -159,7 +159,7 @@ class Juego(object):
             
             screen.fill(BLACK)
             i1 = 0
-            id = 0
+            #id = 0
             for j in range(1, 500, tamCuadro + 1):
                 j1 = 0
                 if i1 < 23:
@@ -176,23 +176,29 @@ class Juego(object):
                                 elif self.mapa_imagenes[i1][j1].tipo=='@':
                                     posicion_x_pacman = i1
                                     posicion_y_pacman = j1
-                                    self.mapa_imagenes[i1][j1].imagen = Imagen.Imagen(imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
-                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.x, self.mapa_imagenes[i1][j1].imagen.y))
+                                    img = Imagen.Imagen(imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
+                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                    self.mapa_imagenes[i1][j1].imagen = img
+                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
                                 elif self.mapa_imagenes[i1][j1].tipo=='_':
-                                    self.mapa_imagenes[i1][j1].imagen = Imagen.Imagen(imagenes.obtener_imagen("bola", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
-                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.x, self.mapa_imagenes[i1][j1].imagen.y))
+                                    img = Imagen.Imagen(imagenes.obtener_imagen("bola", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                    self.mapa_imagenes[i1][j1].imagen = img
+                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
                                 
                                 elif self.mapa_imagenes[i1][j1].tipo==''or self.mapa_imagenes[i1][j1].tipo==' 'or self.mapa_imagenes[i1][j1].tipo=='-'or self.mapa_imagenes[i1][j1].tipo=='1'or self.mapa_imagenes[i1][j1].tipo=='2'or self.mapa_imagenes[i1][j1].tipo=='3'or self.mapa_imagenes[i1][j1].tipo=='4':
-                                    self.mapa_imagenes[i1][j1].imagen = Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
-                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.x, self.mapa_imagenes[i1][j1].imagen.y))
-                                id += 1
+                                    img = Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                    self.mapa_imagenes[i1][j1].imagen = img
+                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
+                                #id += 1
                             else:
                                 
                                 if self.mapa_imagenes[i1][j1].tipo=='@':
                                     posicion_x_pacman = i1
                                     posicion_y_pacman = j1
                                 imag = self.mapa_imagenes[i1][j1].imagen
-                                screen.blit(imag.imagen, (imag.x, imag.y))
+                                screen.blit(imag.imagen, (imag.i, imag.j))
                             j1 += 1
                     i1 += 1
             
@@ -228,6 +234,9 @@ class Juego(object):
             if self.validar_dire(self,dire2,posicion_x_pacman,posicion_y_pacman)==True:
                 dire = dire2
                 dire2 = ""
+            if self.validar_dire(self,dire,posicion_x_pacman,posicion_y_pacman)==False:
+                dire2 = ""
+
             self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes)
             self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
             bandera = True
@@ -280,8 +289,8 @@ class Juego(object):
             if(self.mapa_imagenes[posicion_x_pacman][y+1].tipo!='#'):
                 #self.mapaJ[posicion_x_pacman][posicion_y_pacman+1]='@'
                 self.mapa_imagenes[x][y+1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
-                self.mapa_imagenes[x][y+1].imagen.x -= 4
-                self.mapa_imagenes[x][y+1].imagen.y -= 4
+                self.mapa_imagenes[x][y+1].imagen.i -= 4
+                self.mapa_imagenes[x][y+1].imagen.j -= 4
                 self.mapa_imagenes[x][y+1].tipo = '@'
                 val = True
                 #self.mapa_imagenes[x][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
@@ -293,8 +302,8 @@ class Juego(object):
             if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
                 self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                 self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo = '@'
-                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.x -= 4
-                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.y -= 4
+                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.i -= 4
+                self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.j -= 4
                 val = True
                 #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
                 #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
@@ -306,8 +315,8 @@ class Juego(object):
             if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
                 self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                 self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo = '@'
-                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.x -= 4
-                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.y -= 4
+                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.i -= 4
+                self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.j -= 4
                 val = True
                 #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
                 #self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
@@ -319,13 +328,13 @@ class Juego(object):
             if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
                 self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                 self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo = '@'
-                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.x -= 4
-                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.y -= 4
+                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.i -= 4
+                self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.j -= 4
                 val = True
         if val == True:
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
-            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.x += 4
-            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.y += 4
+            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.i += 4
+            self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.j += 4
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
             #self.mapaJ[posicion_x_pacman-1][posicion_y_pacman]='@'
             self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
