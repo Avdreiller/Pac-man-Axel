@@ -27,7 +27,7 @@ class MenuInicio(object):
         pacmanicono_pos_x = 260
         pacmanicono_pos_y = 450
         imagenes = Imagenes.Imagenes()
-        btn_Nueva_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("NuevaPartida",200,50), 260, 200, 200, 50)
+        btn_Nueva_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("NuevaPartida",200,50), 320, 200, 200, 50)
         lista_botones.append(btn_Nueva_Partida)
         btn_Cargar_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("CargarPartida",200,50), 20, 20, 200, 50)
         lista_botones.append(btn_Cargar_Partida)
@@ -50,7 +50,7 @@ class MenuInicio(object):
                 screen.blit(pacmanicono, (pacmanicono_pos_x, pacmanicono_pos_y))
                 #screen.blit(btn_Nueva_Partida.imagen, (btn_Nueva_Partida.x, btn_Nueva_Partida.y))
                 screen.blit(lista_botones[0].imagen, (lista_botones[0].i, lista_botones[0].j))
-                screen.blit(lista_botones[1].imagen, (lista_botones[1].i, lista_botones[1].j))
+                #screen.blit(lista_botones[1].imagen, (lista_botones[1].i, lista_botones[1].j))
                 #print(pacmanicono.get_rect())
                 pygame.display.flip()
         pygame.quit()
