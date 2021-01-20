@@ -30,6 +30,9 @@
     <Compile Include="HiloFantasma.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HiloGeneral.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Imagen.py">
       <SubType>Code</SubType>
     </Compile>

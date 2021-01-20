@@ -51,11 +51,14 @@ class Imagenes(object):
         self.bola = pygame.image.load("recursos/otros/bolas.png").convert_alpha()
         #self.bola = pygame.transform.scale(self.bola,(ancho,alto))
         self.nada = pygame.image.load("recursos/otros/Nada.png").convert_alpha()
+        self.powerPellets = pygame.image.load("recursos/otros/PowerPellets.png").convert_alpha()
         #self.nada = pygame.transform.scale(self.nada,(ancho,alto))
         self.blinky = pygame.image.load("recursos/otros/FantasmaR.png").convert_alpha()
         self.pinky = pygame.image.load("recursos/otros/FantasmaRs.png").convert_alpha()
         self.inky = pygame.image.load("recursos/otros/FantasmaC.png").convert_alpha()
         self.clyde = pygame.image.load("recursos/otros/FantasmaAn.png").convert_alpha()
+        self.sad = pygame.image.load("recursos/otros/FantasmaSad.png").convert_alpha()
+        self.sadGris = pygame.image.load("recursos/otros/FantasmaSadGris.png").convert_alpha()
         #self.clyde = pygame.transform.scale(self.clyde,(ancho,alto))
 
         self.interseccion = pygame.image.load("recursos/muros/Intersección.png").convert_alpha()
@@ -107,6 +110,9 @@ class Imagenes(object):
         elif nombre == "nada":
             self.nada = pygame.transform.scale(self.nada,(ancho,alto))
             return self.nada
+        elif nombre == "power":
+            self.powerPellets = pygame.transform.scale(self.powerPellets,(ancho,alto))
+            return self.powerPellets
         
         return None
     def obtener_imagen_fantasma(self, nombre,ancho, alto):
@@ -122,6 +128,12 @@ class Imagenes(object):
         elif nombre == "clyde":
             self.clyde = pygame.transform.scale(self.clyde,(ancho,alto))
             return self.clyde
+        elif nombre == "sad":
+            self.sad = pygame.transform.scale(self.sad,(ancho,alto))
+            return self.sad
+        elif nombre == "sadGris":
+            self.sadGris = pygame.transform.scale(self.sadGris,(ancho,alto))
+            return self.sadGris
         return None
 
     def obtener_imagen_muro(self, nombre,ancho, alto):

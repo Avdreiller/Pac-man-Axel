@@ -9,6 +9,7 @@ import threading
 import time
 import Dijkstra
 import HiloFantasma
+import HiloGeneral
 class Juego(object):
     """description of class"""
     nodos = []
@@ -43,11 +44,16 @@ class Juego(object):
                     self.nodos.append(n)
                     id = contador
                     contador += 1
+                    
                 n = Nodo.Nodo(id, m[i][j], None, i, j)
                 #print(id, contador)
                 self.mapa_imagenes[i].append(n)
                 id = -1
-        
+        for x in range(4):
+            lista = []
+            for k in range(len(self.nodos)):
+                lista.append(self.nodos[k].tipo)
+            self.fantasmas.append(lista)
         for x in range(len(self.nodos)):
             self.ruta.append([])
             for j in range(len(self.nodos)):
@@ -124,7 +130,7 @@ class Juego(object):
         f = Floyd.Floyd
         
         camino = []
-        f.pasarPesos(f,self.ruta)
+        #f.pasarPesos(f,self.ruta)
         
 
         #print(self.nodos[0].x,self.nodos[0].y,"-------------")
@@ -159,7 +165,13 @@ class Juego(object):
         dire = "RIGHT"
         dire2 = ""
         bandera_hilo = True
-        
+        powerP = False
+        lista_Tiempo = []
+        lista_Validaciones = []
+        lista_Tiempo.append(10)
+        lista_Validaciones.append(False)
+        a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones)
+        a.start()
         while gameOver:
             #camino = d.getCamino(d, self.nodos[100], self.nodos[0], self.ruta, self.nodos)
             for event in pygame.event.get():
@@ -195,6 +207,7 @@ class Juego(object):
             screen.fill(BLACK)
             i1 = 0
             #id = 0
+
             for j in range(1, 500, tamCuadro + 1):
                 j1 = 0
                 if i1 < 23:
@@ -222,38 +235,17 @@ class Juego(object):
                                     img = Imagen.Imagen(imagenes.obtener_imagen("bola", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
                                     self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
                                     self.mapa_imagenes[i1][j1].imagen = img
-                                    id = self.mapa_imagenes[i1][j1].id
-                                    #print(self.mapa_imagenes[i1][j1].imagen.i,self.mapa_imagenes[i1][j1].imagen.j,id, "("+self.mapa_imagenes[i1][j1].tipo+")")
-                                    #print(self.nodos[id].imagen.i,self.nodos[id].imagen.j,self.nodos[id].id)
                                     screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                
+                                elif self.mapa_imagenes[i1][j1].tipo=='+':
+                                    img = Imagen.Imagen(imagenes.obtener_imagen("power", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                    self.mapa_imagenes[i1][j1].imagen = img
+                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
                                 elif self.mapa_imagenes[i1][j1].tipo==''or self.mapa_imagenes[i1][j1].tipo==' 'or self.mapa_imagenes[i1][j1].tipo=='-' or self.mapa_imagenes[i1][j1].tipo=='1' or self.mapa_imagenes[i1][j1].tipo=='2' or self.mapa_imagenes[i1][j1].tipo=='3' or self.mapa_imagenes[i1][j1].tipo=='4':
                                     img = Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
                                     self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
                                     self.mapa_imagenes[i1][j1].imagen = img
                                     screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                    #if self.mapa_imagenes[i1][j1].id == 111:
-                                #elif self.mapa_imagenes[i1][j1].tipo=='1':
-                                #    img = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
-                                #    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                #    self.mapa_imagenes[i1][j1].imagen = img
-                                #    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                #elif self.mapa_imagenes[i1][j1].tipo=='2':
-                                #    img = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
-                                #    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                #    self.mapa_imagenes[i1][j1].imagen = img
-                                #    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                #elif self.mapa_imagenes[i1][j1].tipo=='3':
-                                #    img = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
-                                #    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                #    self.mapa_imagenes[i1][j1].imagen = img
-                                #    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                #elif self.mapa_imagenes[i1][j1].tipo=='4':
-                                #    img = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
-                                #    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                #    self.mapa_imagenes[i1][j1].imagen = img
-                                #    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                    #id += 1
                             else:
                                 
                                 if self.mapa_imagenes[i1][j1].tipo=='@':
@@ -261,35 +253,17 @@ class Juego(object):
                                     posicion_y_pacman = j1
                                     self.mapa_imagenes[i1][j1].imagen.i = i+156
                                     self.mapa_imagenes[i1][j1].imagen.j = j+106
+                                
                                 imag = self.mapa_imagenes[i1][j1].imagen
                                 screen.blit(imag.imagen, (imag.i, imag.j))
                             j1 += 1
                     i1 += 1
-            
-            if self.validar_dire(self,dire2,posicion_x_pacman,posicion_y_pacman)==True:
-                dire = dire2
-                dire2 = ""
-            if self.validar_dire(self,dire,posicion_x_pacman,posicion_y_pacman)==False:
-                dire2 = ""
-
-            self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes)
-            self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
-            bandera = True
-            primera_vandera = False
-
-            if bandera_hilo == True:
-                for x in range(4):
-                    lista = []
-                    for k in range(len(self.nodos)):
-                        lista.append(self.nodos[k].tipo)
-                    self.fantasmas.append(lista)
-                self.hilo(self,d, '1',0.1)
-                self.hilo(self,f, '4',0.4)
-                self.hilo(self,d, '2',0.3)
-                self.hilo(self,d, '3',0.4)
-                
-                
-                bandera_hilo = False
+            if self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo=='@' and self.respaldo[posicion_x_pacman][posicion_y_pacman]=='+':
+                powerP = True
+                lista_Tiempo[0] = 0
+            if lista_Validaciones[0] == True:
+                powerP = False
+                lista_Validaciones[0] = False
             fantasma1 = 0
             fantasma2 = 0
             fantasma3 = 0
@@ -315,17 +289,47 @@ class Juego(object):
                             x -= 4
                             y -= 4
                         if self.mapa_imagenes[i][j].id == fantasma1:
+                            
                             imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                            if powerP == True:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
                             screen.blit(imag.imagen, (imag.i, imag.j))
                         if self.mapa_imagenes[i][j].id == fantasma2:
                             imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                            if powerP == True:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
                             screen.blit(imag.imagen, (imag.i, imag.j))
                         if self.mapa_imagenes[i][j].id == fantasma3:
                             imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                            if powerP == True:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
                             screen.blit(imag.imagen, (imag.i, imag.j))
                         if self.mapa_imagenes[i][j].id == fantasma4:
                             imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                            if powerP == True:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
                             screen.blit(imag.imagen, (imag.i, imag.j))
+            if self.validar_dire(self,dire2,posicion_x_pacman,posicion_y_pacman)==True:
+                dire = dire2
+                dire2 = ""
+            if self.validar_dire(self,dire,posicion_x_pacman,posicion_y_pacman)==False:
+                dire2 = ""
+
+            self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes)
+            self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
+            bandera = True
+            primera_vandera = False
+
+            if bandera_hilo == True:
+                
+                self.hilo(self,d, '1',0.1)
+                self.hilo(self,d, '4',0.4)
+                self.hilo(self,d, '2',0.3)
+                self.hilo(self,d, '3',0.4)
+                
+                
+                bandera_hilo = False
+            
             pygame.display.flip()
             
             #time.sleep(0.15)
