@@ -172,6 +172,7 @@ class Juego(object):
         lista_Validaciones.append(False)
         a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones)
         a.start()
+        validacion = [False,False,False,False]
         while gameOver:
             #camino = d.getCamino(d, self.nodos[100], self.nodos[0], self.ruta, self.nodos)
             for event in pygame.event.get():
@@ -278,7 +279,51 @@ class Juego(object):
                         fantasma3 = x
                     if self.fantasmas[k][x]=='4'and k==3:
                         fantasma4 = x
-            n = None        
+            n = None 
+            if powerP == False:
+                if validacion[0] == False and validacion[1] == False and validacion[2] == False and validacion[3] == False:
+                    idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
+                    if(idP == fantasma1 or idP == fantasma2 or idP == fantasma3 or idP == fantasma4):
+                        self.validar_Muerte(self,posicion_x_pacman-1,posicion_y_pacman)
+                        self.mapa_imagenes[13][11].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
+                        self.mapa_imagenes[13][11].tipo = '@'
+                        self.mapa_imagenes[13][11].imagen.i -= 4
+                        self.mapa_imagenes[13][11].imagen.j -= 4
+                        
+                        self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
+                        self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.i += 4
+                        self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.j += 4
+                        self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
+                        self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
+                        posicion_x_pacman = 13
+                        posicion_y_pacman = 11
+                        for x in range(len(validacion)):
+                            validacion[x] = True
+                        #for i in range(len(self.mapa_imagenes)):
+                        #    for j in range(len(self.mapa_imagenes)):
+                        #        if self.respaldo[i][j]=='1':
+                        #            self.fantasmas[0][fantasma1] = self.nodos[fantasma1].tipo
+                        #            self.fantasmas[0][self.mapa_imagenes[10][11].id] = '1'
+                        #        if self.respaldo[i][j]=='2':
+                        #            self.fantasmas[1][fantasma2] = self.nodos[fantasma2].tipo
+                        #            self.fantasmas[1][self.mapa_imagenes[11][12].id] = '2'
+                        #        if self.respaldo[i][j]=='3':
+                        #            self.fantasmas[2][fantasma3] = self.nodos[fantasma3].tipo
+                        #            self.fantasmas[2][self.mapa_imagenes[11][10].id] = '3'
+                        #        if self.respaldo[i][j]=='4':
+                        #            self.fantasmas[3][fantasma4] = self.nodos[fantasma4].tipo
+                        #            self.fantasmas[3][self.mapa_imagenes[11][11].id] = '4'
+            else:
+                idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
+                if idP == fantasma1:
+                    validacion[0] = True
+                if idP == fantasma2:
+                    validacion[1] = True
+                if idP == fantasma3:
+                    validacion[2] = True
+                if idP == fantasma4:
+                    validacion[3] = True
+
             for i in range(len(self.respaldo)):
                 for j in range(len(self.respaldo)):
                     n = self.mapa_imagenes[i][j]
@@ -322,10 +367,10 @@ class Juego(object):
 
             if bandera_hilo == True:
                 
-                self.hilo(self,d, '1',0.1)
-                self.hilo(self,d, '4',0.4)
-                self.hilo(self,d, '2',0.3)
-                self.hilo(self,d, '3',0.4)
+                self.hilo(self,d, '1',0.1, validacion)
+                self.hilo(self,d, '4',0.4, validacion)
+                self.hilo(self,d, '2',0.3, validacion)
+                self.hilo(self,d, '3',0.4, validacion)
                 
                 
                 bandera_hilo = False
@@ -354,8 +399,8 @@ class Juego(object):
                 return True
         return False
 
-    def hilo(self, algoridmo, fantasma, dalay):
-        a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes,algoridmo,self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas)
+    def hilo(self, algoridmo, fantasma, dalay,validacion):
+        a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes,algoridmo,self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas,validacion)
         a.start()
 
     def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes):

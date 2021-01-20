@@ -7,7 +7,7 @@ TOTAL = 0
 
 MY_LOCK = threading.Lock()
 class HiloFantasma(threading.Thread):
-    def __init__(self, delay, mapa_imagenes, algoritmo, nodos, ruta, fantasma, jugador, respaldo,fantasmas):
+    def __init__(self, delay, mapa_imagenes, algoritmo, nodos, ruta, fantasma, jugador, respaldo,fantasmas, validacion):
         threading.Thread.__init__(self)
         self.delay = delay
         self.mapa_imagenes = mapa_imagenes
@@ -18,6 +18,7 @@ class HiloFantasma(threading.Thread):
         self.jugador = jugador
         self.respaldo = respaldo
         self.fantasmas = fantasmas
+        self.validacion = validacion
 
     def run(self):
         imagenes = Imagenes.Imagenes()
@@ -46,6 +47,7 @@ class HiloFantasma(threading.Thread):
             idF = 0
             idF1 = 0
             idF2 = 0
+            idF3 = 0
             idF4 = 0
             valr = False
             for k in range(len(self.fantasmas)):
@@ -56,35 +58,17 @@ class HiloFantasma(threading.Thread):
                         idF1 = x
                     if self.fantasmas[k][x]=='2' and k==1:
                         idF2 = x
+                    if self.fantasmas[k][x]=='3'and k==2:
+                        idF3 = x
                     if self.fantasmas[k][x]=='4'and k==3:
                         idF4 = x
-                    
-                    #valr = True
-                    
-                    #posicion_x_fantasma = self.fantasmas[0][x].x
-                    #posicion_y_fantasma = self.fantasmas[0][x].y
             for i in range(len(self.mapa_imagenes)):
                 for j in range(len(self.mapa_imagenes)):
                     if self.mapa_imagenes[i][j].tipo == '@':
                         idJ = self.mapa_imagenes[i][j].id
-                    #if self.mapa_imagenes[i][j].tipo == self.fantasma:
-                        #valr = True
-                        #posicion_x_fantasma = i
-                        #posicion_y_fantasma = j
-                    if self.mapa_imagenes[i][j].id == idF:
-                        posicion_x_fantasma = i
-                        posicion_y_fantasma = j
-                    #if self.mapa_imagenes[i][j].tipo == '1':
-                    #    idF1 = self.mapa_imagenes[i][j].id
-                    #if self.mapa_imagenes[i][j].tipo == '2':
-                    #    idF2 = self.mapa_imagenes[i][j].id
-                    #if self.mapa_imagenes[i][j].tipo == '4':
-                    #    idF4 = self.mapa_imagenes[i][j].id
-
-            #if valr == True:    
-                #idF = self.mapa_imagenes[posicion_x_fantasma][posicion_y_fantasma].id
-            #else:
-                #idF = self.mapa_imagenes[posicion_x_fantasma][posicion_y_fantasma].id
+                    #if self.mapa_imagenes[i][j].id == idF:
+                    #    posicion_x_fantasma = i
+                    #    posicion_y_fantasma = j
 
             if self.fantasma == '4':
                 if fin == True:
@@ -98,11 +82,7 @@ class HiloFantasma(threading.Thread):
                 
                     
                     if ran < 45:
-                        #camino = self.algoritmo.getCamino(self.algoritmo, self.nodos[idJ], self.nodos[idF], self.ruta, self.nodos)
                         seg_jugador = True
-                        #x1 = 1
-                        #fin = True
-                        #x1 = 1
                     elif ran >= 45 and ran <=45:
                         if fin == True:
                             ran = randrange(len(self.nodos))
@@ -137,19 +117,62 @@ class HiloFantasma(threading.Thread):
                 x1 = 1
             if x1 < len(camino):
                 
-                if self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo != '@':
-                    id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
+                
                     
-                    if self.fantasmas[fant][id] != self.fantasma:
-                        self.fantasmas[fant][id] = self.fantasma
-                        posicion_x_fantasma = camino[x1].x
-                        posicion_y_fantasma = camino[x1].y
-                        if x1 > 0:
-                            id2 = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].id
-                            if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
-                                self.fantasmas[fant][id2] = '_'
-                            else:
-                                self.fantasmas[fant][id2] = '-'
+                if self.validacion[0]==True or self.validacion[1]==True or self.validacion[2]==True or self.validacion[3]==True :
+                    #for i in range(len(self.mapa_imagenes)):
+                    #    for j in range(len(self.mapa_imagenes)):
+                    #        if self.respaldo[i][j]==self.fantasma:
+                    self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                    if self.fantasma=='1':
+                        self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
+                    if self.fantasma=='2':
+                        self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
+                    if self.fantasma=='3':
+                        self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
+                    if self.fantasma=='4':
+                        self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
+                    self.validacion[fant]=False
+                    fin = True
+                else:
+                    if self.validacion[0]==True:
+                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                        if self.fantasma=='1':
+                            self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
+                        self.validacion[fant]=False
+                        fin = True
+                    elif self.validacion[0]==True:
+                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                        if self.fantasma=='2':
+                            self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
+                        self.validacion[fant]=False
+                        fin = True
+                    elif self.validacion[0]==True:
+                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                        if self.fantasma=='3':
+                            self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
+                        self.validacion[fant]=False
+                        fin = True
+                    elif self.validacion[0]==True:
+                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                        if self.fantasma=='4':
+                            self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
+                        self.validacion[fant]=False
+                        fin = True
+                    else:
+                        if self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo != '@':
+                            id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
+                    
+                            if self.fantasmas[fant][id] != self.fantasma:
+                                self.fantasmas[fant][id] = self.fantasma
+                                #posicion_x_fantasma = camino[x1].x
+                                #posicion_y_fantasma = camino[x1].y
+                                if x1 > 0:
+                                    id2 = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].id
+                                    if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
+                                        self.fantasmas[fant][id2] = '_'
+                                    else:
+                                        self.fantasmas[fant][id2] = '-'
                     #elif self.fantasma == '2':
                     #    self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.imagen = imagenes.obtener_imagen_fantasma("pinky", 29, 29)
                     #elif self.fantasma == '3':
@@ -182,9 +205,9 @@ class HiloFantasma(threading.Thread):
             else:
                 fin = True
         
-
+            
             TOTAL = TOTAL + 1
-
+            print(TOTAL)
             MY_LOCK.release()
             
         
