@@ -28,45 +28,43 @@ class Juego(object):
         contador = 0
         self.nodos = []
         self.ruta = []
-        #for x in range(len(m)):
-        #    self.mapa_imagenes.append([])
-        #    for j in range(len(m)):
-        #        self.mapa_imagenes[x].append(Nodo.Nodo(0,'',None,0,0))
         id = -1
+        total_puntos = 0
         for i in range(len(m)):
             self.mapa_imagenes.append([])
             for j in range(len(m)):
-                
-                
                 if m[i][j] != '#' and m[i][j] != ' 'and m[i][j] != '':
+                    if m[i][j] == '_' or m[i][j] == '+':
+                        total_puntos += 1
                     n = Nodo.Nodo(contador, m[i][j], None, i, j)
-                    #print("("+m[i][j]+")")
                     self.nodos.append(n)
                     id = contador
                     contador += 1
-                    
                 n = Nodo.Nodo(id, m[i][j], None, i, j)
-                #print(id, contador)
                 self.mapa_imagenes[i].append(n)
                 id = -1
+
         for x in range(4):
             lista = []
             for k in range(len(self.nodos)):
                 lista.append(self.nodos[k].tipo)
             self.fantasmas.append(lista)
+
         for x in range(len(self.nodos)):
             self.ruta.append([])
             for j in range(len(self.nodos)):
                 self.ruta[x].append(0)
+
         for i in range(len(self.nodos)):
             for j in range(len(self.nodos)):
                 i1,j1 = self.nodos[i].x, self.nodos[i].y
                 i2,j2 = self.nodos[j].x, self.nodos[j].y
                 if (j1-1 == -1 or j1+1 == len(m)) and (j2-1 == -1 or j2+1 == len(m)):
                     self.ruta[i][j] = 1
-                #if j1-1 >= 0:
                 if (i1,j1+1)==(i2,j2) or (i1,j1-1)==(i2,j2) or (i1+1,j1)==(i2,j2) or (i1-1,j1)==(i2,j2):
                     self.ruta[i][j] = 1
+
+        return total_puntos
                 
     def validar(self,mposx,mposy,posx,posy):
         sumax = mposx + posx;
@@ -118,64 +116,60 @@ class Juego(object):
     def pantalla_juego(self):
         posicion_x_pacman = 0
         posicion_y_pacman = 0
+        total_puntos = 0
+        puntaje = 0
+        
+        bandera_hilo = True
+        gameOver = True
         bandera = True
+        powerP = False
+        
+        dire = "RIGHT"
+        dire2 = ""
+
+        lista_Tiempo = []
+        lista_Validaciones = []
+        lista_Tiempo.append(10)
+        lista_Validaciones.append(False)
+        validaciones = [[False,False,False,False],[False,False,False,False]]
         
         d = Dijkstra.Dijkstra
+        
+        #fuente = pygame.font.Font(None, 30)
+        fuente = pygame.font.SysFont("Stencil", 25)
         while bandera == True:
-            self.llenar_lista_nodos(self)
+            total_puntos = self.llenar_lista_nodos(self)
             d = Dijkstra.Dijkstra
             if d.calcular_pesos(d, self.ruta) == True:
                 bandera = False
+        #print(total_puntos)
         bandera = True
         f = Floyd.Floyd
         
         camino = []
         #f.pasarPesos(f,self.ruta)
         
-
-        #print(self.nodos[0].x,self.nodos[0].y,"-------------")
-        #camino = f.getCamino(f, self.nodos[100], self.nodos[0], self.ruta, self.nodos)
-        
-        #camino = d.getCamino(d, self.nodos[100], self.nodos[0], self.ruta, self.nodos)
-        #if(camino != None):
-        #    for x in range(len(camino)):
-        #        print(camino[x].id)
         pygame.init()
         
         AZUL = (0, 0, 255)
         BLACK = (0, 0, 0)
         tamCuadro = 21
         imagenes = Imagenes.Imagenes()
-        #mapa_imagenes = []
-        #for x in range(23):
-        #    mapa_imagenes.append([])
-        #    for j in range(23):
-        #        self.mapa_imagenes[x].append(Nodo.Nodo(0,'',None,0,0))
         
         size = (820, 720)
         screen = pygame.display.set_mode(size)
-        #pygame.key.set_repeat(500,30)
         pygame.display.set_caption("Grid on PYGAME")
         clock = pygame.time.Clock()
-        gameOver = True
+        
         logo = pygame.image.load("recursos/muros/MuroSolo.png")
         logo = pygame.transform.scale(logo, (tamCuadro,tamCuadro))
-        primera_vandera = True
-        x1 = 0
-        dire = "RIGHT"
-        dire2 = ""
-        bandera_hilo = True
-        powerP = False
-        lista_Tiempo = []
-        lista_Validaciones = []
-        lista_Tiempo.append(10)
-        lista_Validaciones.append(False)
+
         a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones)
         a.start()
-        validaciones = [[False,False,False,False],[False,False,False,False]]
+        
         self.llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
+
         while gameOver:
-            #camino = d.getCamino(d, self.nodos[100], self.nodos[0], self.ruta, self.nodos)
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and bandera == True:
                     bandera = False
@@ -205,7 +199,10 @@ class Juego(object):
                     
                 if event.type == pygame.QUIT:
                     gameOver = False
-        
+            
+            total_puntos, puntaje = self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, total_puntos, puntaje)
+            self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
+
             screen.fill(BLACK)
 
             fantasma1 = 0
@@ -228,8 +225,6 @@ class Juego(object):
                         if self.mapa_imagenes[i][j].tipo=='@':
                             posicion_x_pacman = i
                             posicion_y_pacman = j
-                            #self.mapa_imagenes[i1][j1].imagen.i = i+156
-                            #self.mapa_imagenes[i1][j1].imagen.j = j+106
                                 
                         imag = self.mapa_imagenes[i][j].imagen
                         screen.blit(imag.imagen, (imag.i, imag.j))
@@ -258,12 +253,6 @@ class Juego(object):
                                 if powerP == True:
                                     imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
                                 screen.blit(imag.imagen, (imag.i, imag.j))
-                        
-                        
-            
-            #$for i in range(len(self.respaldo)):
-                #for j in range(len(self.respaldo)):
-                    
 
             if lista_Validaciones[0] == True:
                 powerP = False
@@ -313,17 +302,26 @@ class Juego(object):
             if self.validar_dire(self,dire,posicion_x_pacman,posicion_y_pacman)==False:
                 dire2 = ""
 
-            self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes)
-            self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
+            
             bandera = True
-            primera_vandera = False
+
+            text = "Puntaje"
+            mensaje = fuente.render(text, 1, (27, 67, 207))
+            screen.blit(mensaje, (30, 115))
+
+            text = str(puntaje)
+            j = 145
+            for c in text:
+                mensaje = fuente.render(c, 1, (225, 121, 121))
+                screen.blit(mensaje, (80, j))
+                j+=25
 
             if bandera_hilo == True:
                 
-                self.hilo(self,d, '1',0.1, validaciones)
-                self.hilo(self,d, '4',0.4, validaciones)
-                self.hilo(self,d, '2',0.3, validaciones)
-                self.hilo(self,d, '3',0.4, validaciones)
+                #self.hilo(self,d, '1',0.1, validaciones)
+                #self.hilo(self,d, '4',0.4, validaciones)
+                #self.hilo(self,d, '2',0.3, validaciones)
+                #self.hilo(self,d, '3',0.4, validaciones)
                 
                 bandera_hilo = False
             
@@ -331,6 +329,7 @@ class Juego(object):
             
             #time.sleep(0.15)
             clock.tick(8)
+            
         pygame.quit()
 
     def llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman):
@@ -388,8 +387,10 @@ class Juego(object):
         a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes,algoridmo,self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas,validaciones)
         a.start()
 
-    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes):
+    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, total_puntos, puntaje):
         val = False
+        x1=posicion_x_pacman
+        y1=posicion_y_pacman
         if dire == "RIGHT":
             x=posicion_x_pacman
             y=posicion_y_pacman
@@ -402,6 +403,7 @@ class Juego(object):
                 self.mapa_imagenes[x][y+1].imagen.j -= 4
                 self.mapa_imagenes[x][y+1].tipo = '@'
                 val = True
+                y1+=1
                 
         elif dire == "LEFT":
             if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
@@ -411,6 +413,7 @@ class Juego(object):
                 self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.i -= 4
                 self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.j -= 4
                 val = True
+                y1-=1
                 
         elif dire == "DOWN":
             if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
@@ -420,6 +423,7 @@ class Juego(object):
                 self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.i -= 4
                 self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.j -= 4
                 val = True
+                x1+=1
                 
         elif dire == "UP":
             if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
@@ -429,12 +433,23 @@ class Juego(object):
                 self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.i -= 4
                 self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.j -= 4
                 val = True
+                x1-=1
         if val == True:
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("nada", tamCuadro, tamCuadro)
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.i += 4
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.j += 4
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
+            if self.respaldo[x1][y1] == '_':
+                total_puntos -= 1
+                puntaje += 10
+                #print(total_puntos)
+            if self.respaldo[x1][y1] == '+':
+                total_puntos -= 1
+                puntaje += 50
+                #print(total_puntos)
             self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
+
+        return total_puntos, puntaje
     
     def validar_Muerte(self,posicion_x_pacman,posicion_y_pacman):
         if self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo == '4':
