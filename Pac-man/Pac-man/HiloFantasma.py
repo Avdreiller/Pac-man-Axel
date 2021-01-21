@@ -7,7 +7,7 @@ TOTAL = 0
 
 MY_LOCK = threading.Lock()
 class HiloFantasma(threading.Thread):
-    def __init__(self, delay, mapa_imagenes, algoritmo, nodos, ruta, fantasma, jugador, respaldo,fantasmas, validacion):
+    def __init__(self, delay, mapa_imagenes, algoritmo, nodos, ruta, fantasma, jugador, respaldo,fantasmas, validaciones):
         threading.Thread.__init__(self)
         self.delay = delay
         self.mapa_imagenes = mapa_imagenes
@@ -18,7 +18,7 @@ class HiloFantasma(threading.Thread):
         self.jugador = jugador
         self.respaldo = respaldo
         self.fantasmas = fantasmas
-        self.validacion = validacion
+        self.validaciones = validaciones
 
     def run(self):
         imagenes = Imagenes.Imagenes()
@@ -119,45 +119,49 @@ class HiloFantasma(threading.Thread):
                 
                 
                     
-                if self.validacion[0]==True or self.validacion[1]==True or self.validacion[2]==True or self.validacion[3]==True :
+                if self.validaciones[0][0]==True or self.validaciones[0][1]==True or self.validaciones[0][2]==True or self.validaciones[0][3]==True :
                     #for i in range(len(self.mapa_imagenes)):
                     #    for j in range(len(self.mapa_imagenes)):
                     #        if self.respaldo[i][j]==self.fantasma:
-                    self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                   
                     if self.fantasma=='1':
+                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
                         self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
                     if self.fantasma=='2':
+                        self.fantasmas[fant][idF] = self.nodos[idF2].tipo
                         self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
                     if self.fantasma=='3':
+                        self.fantasmas[fant][idF] = self.nodos[idF3].tipo
                         self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
                     if self.fantasma=='4':
+                        self.fantasmas[fant][idF] = self.nodos[idF4].tipo
                         self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
-                    self.validacion[fant]=False
+                    self.validaciones[0][fant]=False
                     fin = True
                 else:
-                    if self.validacion[0]==True:
-                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                    if self.validaciones[1][0]==True:
                         if self.fantasma=='1':
+                            self.fantasmas[fant][idF] = self.nodos[idF1].tipo
                             self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
-                        self.validacion[fant]=False
+                            self.validaciones[1][fant]=False
                         fin = True
-                    elif self.validacion[0]==True:
-                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                    elif self.validaciones[1][1]==True:
                         if self.fantasma=='2':
+                            self.fantasmas[fant][idF] = self.nodos[idF2].tipo
                             self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
-                        self.validacion[fant]=False
+                            self.validaciones[1][fant]=False
                         fin = True
-                    elif self.validacion[0]==True:
-                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                    elif self.validaciones[1][2]==True:
                         if self.fantasma=='3':
+                            self.fantasmas[fant][idF] = self.nodos[idF3].tipo
                             self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
-                        self.validacion[fant]=False
+                            self.validaciones[1][fant]=False
                         fin = True
-                    elif self.validacion[0]==True:
-                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                    elif self.validaciones[1][3]==True:
                         if self.fantasma=='4':
+                            self.fantasmas[fant][idF] = self.nodos[idF4].tipo
                             self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
-                        self.validacion[fant]=False
+                            self.validaciones[1][fant]=False
                         fin = True
                     else:
                         if self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo != '@':
