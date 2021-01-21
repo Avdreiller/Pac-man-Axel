@@ -173,6 +173,7 @@ class Juego(object):
         a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones)
         a.start()
         validaciones = [[False,False,False,False],[False,False,False,False]]
+        self.llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
         while gameOver:
             #camino = d.getCamino(d, self.nodos[100], self.nodos[0], self.ruta, self.nodos)
             for event in pygame.event.get():
@@ -204,68 +205,9 @@ class Juego(object):
                     
                 if event.type == pygame.QUIT:
                     gameOver = False
-
+        
             screen.fill(BLACK)
-            i1 = 0
-            #id = 0
 
-            for j in range(1, 500, tamCuadro + 1):
-                j1 = 0
-                if i1 < 23:
-                    for i in range(1, 500, tamCuadro+1):
-                        if j1 < 23:
-                            if primera_vandera == True:   
-                                if self.mapa_imagenes[i1][j1].tipo =='#':
-                                    img = self.asignar_Muro(self,i1,j1,i,j,tamCuadro+10,imagenes)
-                                    #self.nodos[id].imagen = img
-                                    self.mapa_imagenes[i1][j1].imagen = img
-                                    if img != None:
-                                        screen.blit(img.imagen, (i+155, j+105))
-                                        
-                                elif self.mapa_imagenes[i1][j1].tipo=='@':
-                                    posicion_x_pacman = i1
-                                    posicion_y_pacman = j1
-                                    img = Imagen.Imagen(imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
-                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                    self.mapa_imagenes[i1][j1].imagen = img
-                                    id = self.mapa_imagenes[i1][j1].id
-                                    #print(self.mapa_imagenes[i1][j1].imagen.i,self.mapa_imagenes[i1][j1].imagen.j,id, "("+self.mapa_imagenes[i1][j1].tipo+")")
-                                    #print(self.nodos[id].imagen.i,self.nodos[id].imagen.j,self.nodos[id].id)
-                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                elif self.mapa_imagenes[i1][j1].tipo=='_':
-                                    img = Imagen.Imagen(imagenes.obtener_imagen("bola", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
-                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                    self.mapa_imagenes[i1][j1].imagen = img
-                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                elif self.mapa_imagenes[i1][j1].tipo=='+':
-                                    img = Imagen.Imagen(imagenes.obtener_imagen("power", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
-                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                    self.mapa_imagenes[i1][j1].imagen = img
-                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                                elif self.mapa_imagenes[i1][j1].tipo==''or self.mapa_imagenes[i1][j1].tipo==' 'or self.mapa_imagenes[i1][j1].tipo=='-' or self.mapa_imagenes[i1][j1].tipo=='1' or self.mapa_imagenes[i1][j1].tipo=='2' or self.mapa_imagenes[i1][j1].tipo=='3' or self.mapa_imagenes[i1][j1].tipo=='4':
-                                    img = Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
-                                    self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
-                                    self.mapa_imagenes[i1][j1].imagen = img
-                                    screen.blit(self.mapa_imagenes[i1][j1].imagen.imagen, (self.mapa_imagenes[i1][j1].imagen.i, self.mapa_imagenes[i1][j1].imagen.j))
-                            else:
-                                
-                                if self.mapa_imagenes[i1][j1].tipo=='@':
-                                    posicion_x_pacman = i1
-                                    posicion_y_pacman = j1
-                                    self.mapa_imagenes[i1][j1].imagen.i = i+156
-                                    self.mapa_imagenes[i1][j1].imagen.j = j+106
-                                
-                                imag = self.mapa_imagenes[i1][j1].imagen
-                                screen.blit(imag.imagen, (imag.i, imag.j))
-                            j1 += 1
-                    i1 += 1
-            if lista_Validaciones[0] == True:
-                powerP = False
-                lista_Validaciones[0] = False
-            if self.respaldo[posicion_x_pacman][posicion_y_pacman]=='+':
-                powerP = True
-                lista_Tiempo[0] = 0
-            
             fantasma1 = 0
             fantasma2 = 0
             fantasma3 = 0
@@ -281,6 +223,57 @@ class Juego(object):
                     if self.fantasmas[k][x]=='4'and k==3:
                         fantasma4 = x
             n = None 
+            for j in range(len(self.mapa_imagenes)):
+                    for i in range(len(self.mapa_imagenes)):
+                        if self.mapa_imagenes[i][j].tipo=='@':
+                            posicion_x_pacman = i
+                            posicion_y_pacman = j
+                            #self.mapa_imagenes[i1][j1].imagen.i = i+156
+                            #self.mapa_imagenes[i1][j1].imagen.j = j+106
+                                
+                        imag = self.mapa_imagenes[i][j].imagen
+                        screen.blit(imag.imagen, (imag.i, imag.j))
+
+                        n = self.mapa_imagenes[i][j]
+                        if n != None:
+                            x = n.imagen.i
+                            y = n.imagen.j
+                            if n.tipo != '@':
+                                x -= 4
+                                y -= 4
+                            v = False
+                            if self.mapa_imagenes[i][j].id == fantasma1:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                v = True
+                            if self.mapa_imagenes[i][j].id == fantasma2:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                v = True
+                            if self.mapa_imagenes[i][j].id == fantasma3:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                v = True
+                            if self.mapa_imagenes[i][j].id == fantasma4:
+                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                v = True
+                            if v == True:
+                                if powerP == True:
+                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                screen.blit(imag.imagen, (imag.i, imag.j))
+                        
+                        
+            
+            #$for i in range(len(self.respaldo)):
+                #for j in range(len(self.respaldo)):
+                    
+
+            if lista_Validaciones[0] == True:
+                powerP = False
+                lista_Validaciones[0] = False
+            if self.respaldo[posicion_x_pacman][posicion_y_pacman]=='+':
+                powerP = True
+                lista_Tiempo[0] = 0
+            
+            
+            
             if powerP == False:
                 if validaciones[0][0] == False and validaciones[0][1] == False and validaciones[0][2] == False and validaciones[0][3] == False:
                     idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
@@ -312,36 +305,8 @@ class Juego(object):
                 if idP == fantasma4:
                     validaciones[1][3] = True
 
-            for i in range(len(self.respaldo)):
-                for j in range(len(self.respaldo)):
-                    n = self.mapa_imagenes[i][j]
-                    if n != None:
-                        x = n.imagen.i
-                        y = n.imagen.j
-                        if n.tipo != '@':
-                            x -= 4
-                            y -= 4
-                        if self.mapa_imagenes[i][j].id == fantasma1:
-                            
-                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            if powerP == True:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            screen.blit(imag.imagen, (imag.i, imag.j))
-                        if self.mapa_imagenes[i][j].id == fantasma2:
-                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            if powerP == True:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            screen.blit(imag.imagen, (imag.i, imag.j))
-                        if self.mapa_imagenes[i][j].id == fantasma3:
-                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            if powerP == True:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            screen.blit(imag.imagen, (imag.i, imag.j))
-                        if self.mapa_imagenes[i][j].id == fantasma4:
-                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            if powerP == True:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                            screen.blit(imag.imagen, (imag.i, imag.j))
+            
+
             if self.validar_dire(self,dire2,posicion_x_pacman,posicion_y_pacman)==True:
                 dire = dire2
                 dire2 = ""
@@ -360,7 +325,6 @@ class Juego(object):
                 self.hilo(self,d, '2',0.3, validaciones)
                 self.hilo(self,d, '3',0.4, validaciones)
                 
-                
                 bandera_hilo = False
             
             pygame.display.flip()
@@ -369,6 +333,39 @@ class Juego(object):
             clock.tick(8)
         pygame.quit()
 
+    def llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman):
+        i1 = 0
+        for j in range(1, 500, tamCuadro + 1):
+                j1 = 0
+                if i1 < 23:
+                    for i in range(1, 500, tamCuadro+1):
+                        if j1 < 23:
+                              
+                            if self.mapa_imagenes[i1][j1].tipo =='#':
+                                img = self.asignar_Muro(self,i1,j1,i,j,tamCuadro+10,imagenes)
+                                self.mapa_imagenes[i1][j1].imagen = img
+                                        
+                            elif self.mapa_imagenes[i1][j1].tipo=='@':
+                                posicion_x_pacman = i1
+                                posicion_y_pacman = j1
+                                img = Imagen.Imagen(imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8), i+156, j+106, tamCuadro+8, tamCuadro+8)
+                                self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                self.mapa_imagenes[i1][j1].imagen = img
+                            elif self.mapa_imagenes[i1][j1].tipo=='_':
+                                img = Imagen.Imagen(imagenes.obtener_imagen("bola", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                self.mapa_imagenes[i1][j1].imagen = img
+                            elif self.mapa_imagenes[i1][j1].tipo=='+':
+                                img = Imagen.Imagen(imagenes.obtener_imagen("power", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                self.mapa_imagenes[i1][j1].imagen = img
+                            elif self.mapa_imagenes[i1][j1].tipo==''or self.mapa_imagenes[i1][j1].tipo==' 'or self.mapa_imagenes[i1][j1].tipo=='-' or self.mapa_imagenes[i1][j1].tipo=='1' or self.mapa_imagenes[i1][j1].tipo=='2' or self.mapa_imagenes[i1][j1].tipo=='3' or self.mapa_imagenes[i1][j1].tipo=='4':
+                                img = Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
+                                self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                self.mapa_imagenes[i1][j1].imagen = img
+                            
+                            j1 += 1
+                    i1 += 1
     def validar_dire(self, dire2,posicion_x_pacman,posicion_y_pacman):
         if dire2 == "RIGHT":
             y=posicion_y_pacman
@@ -439,24 +436,6 @@ class Juego(object):
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
             self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
     
-    #hilo_terminado = False
-    #def hilo_Movimientos(self, inicio, fin, camino, x1, screen):
-    #    global hilo_terminado
-    #    if x1 < len(camino):
-    #        self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen.setImagen("otros/FantasmaA")
-    #        self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo = ''
-    #        imag = self.mapa_imagenes[camino[x1].x][camino[x1].y].imagen
-    #        screen.blit(imag.imagen, (imag.x, imag.y))
-    #        if x1-1 > 0:
-    #            if self.mapaJ[camino[x1-1].x][camino[x1-1].y] == '_':
-    #                self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/bolas")
-    #                self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '_'
-    #            else:
-    #                self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen.setImagen("otros/Nada")
-    #                self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].tipo = '-'
-    #            imag = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].imagen
-    #            screen.blit(imag.imagen, (imag.x, imag.y))
-    #    hilo_terminado = True
     def validar_Muerte(self,posicion_x_pacman,posicion_y_pacman):
         if self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo == '4':
             print("Comio")
