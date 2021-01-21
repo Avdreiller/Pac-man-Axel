@@ -300,20 +300,7 @@ class Juego(object):
                         posicion_y_pacman = 11
                         for x in range(len(validaciones[0])):
                             validaciones[0][x] = True
-                        #for i in range(len(self.mapa_imagenes)):
-                        #    for j in range(len(self.mapa_imagenes)):
-                        #        if self.respaldo[i][j]=='1':
-                        #            self.fantasmas[0][fantasma1] = self.nodos[fantasma1].tipo
-                        #            self.fantasmas[0][self.mapa_imagenes[10][11].id] = '1'
-                        #        if self.respaldo[i][j]=='2':
-                        #            self.fantasmas[1][fantasma2] = self.nodos[fantasma2].tipo
-                        #            self.fantasmas[1][self.mapa_imagenes[11][12].id] = '2'
-                        #        if self.respaldo[i][j]=='3':
-                        #            self.fantasmas[2][fantasma3] = self.nodos[fantasma3].tipo
-                        #            self.fantasmas[2][self.mapa_imagenes[11][10].id] = '3'
-                        #        if self.respaldo[i][j]=='4':
-                        #            self.fantasmas[3][fantasma4] = self.nodos[fantasma4].tipo
-                        #            self.fantasmas[3][self.mapa_imagenes[11][11].id] = '4'
+                        
             else:
                 idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
                 if idP == fantasma1:
