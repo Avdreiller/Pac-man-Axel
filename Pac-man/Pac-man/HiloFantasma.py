@@ -29,6 +29,7 @@ class HiloFantasma(threading.Thread):
         conta = 0
         fin = True
         seg_jugador = False
+        seg_General = False
         fant = 0
         if self.fantasma == '2':
             fant = 1
@@ -62,16 +63,22 @@ class HiloFantasma(threading.Thread):
                         idF3 = x
                     if self.fantasmas[k][x]=='4'and k==3:
                         idF4 = x
+            
             for i in range(len(self.mapa_imagenes)):
                 for j in range(len(self.mapa_imagenes)):
                     if self.mapa_imagenes[i][j].tipo == '@':
                         idJ = self.mapa_imagenes[i][j].id
-
+            #if idJ != idF and (self.fantasma == '1' or self.fantasma == '2'):
             if self.fantasma == '4':
                 if fin == True:
-                    ran = randrange(len(self.nodos))
+                    vall = True
+                    while vall == True:
+                        ran = randrange(len(self.nodos))
+                        if ran != idF:
+                            vall = False
                     camino = self.algoritmo.getCamino(self.algoritmo, self.nodos[ran], self.nodos[idF], self.ruta, self.nodos)
                     fin = False
+                    #seg_General = True
                     x1 = 1
             elif self.fantasma == '3':
                 if fin == True:
@@ -80,14 +87,19 @@ class HiloFantasma(threading.Thread):
                     
                     if ran < 45:
                         seg_jugador = True
-                    elif ran >= 45 and ran <=45:
+                    elif ran >= 45 and ran <=55:
                         if fin == True:
-                            ran = randrange(len(self.nodos))
+                            vall = True
+                            while vall == True:
+                                ran = randrange(len(self.nodos))
+                                if ran != idF:
+                                    vall = False
+                            #ran = randrange(len(self.nodos))
                             camino = self.algoritmo.getCamino(self.algoritmo, self.nodos[ran], self.nodos[idF], self.ruta, self.nodos)
                             fin = False
                             x1 = 1
-
-                    elif ran > 45:
+                            #seg_General = True
+                    elif ran > 55:
                         ran1 = randrange(3)
                         if ran1 == 0:
                             camino = self.algoritmo.getCamino(self.algoritmo, self.nodos[idF1], self.nodos[idF], self.ruta, self.nodos)
@@ -97,6 +109,7 @@ class HiloFantasma(threading.Thread):
                             camino = self.algoritmo.getCamino(self.algoritmo, self.nodos[idF4], self.nodos[idF], self.ruta, self.nodos)
                         else:
                             print("No Entro al segundo rando")
+                        seg_General = True
                         fin = True
                         x1 = 1
                     else:
@@ -110,6 +123,7 @@ class HiloFantasma(threading.Thread):
                 fin = True
                 seg_jugador = False
                 x1 = 1
+                seg_General = True
             if x1 < len(camino):
                 
                 
@@ -156,18 +170,23 @@ class HiloFantasma(threading.Thread):
                             self.validaciones[1][fant]=False
                         fin = True
                     else:
-                        if self.mapa_imagenes[camino[x1].x][camino[x1].y].tipo != '@':
-                            id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
-                    
-                            if self.fantasmas[fant][id] != self.fantasma:
-                                self.fantasmas[fant][id] = self.fantasma
-                                if x1 > 0:
-                                    id2 = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].id
-                                    if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
-                                        self.fantasmas[fant][id2] = '_'
-                                    else:
-                                        self.fantasmas[fant][id2] = '-'
                         
+                        id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
+                    
+                        if self.fantasmas[fant][id] != self.fantasma:
+                            self.fantasmas[fant][id] = self.fantasma
+                            if x1 > 0:
+                                id2 = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].id
+                                if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
+                                    self.fantasmas[fant][id2] = '_'
+                                else:
+                                    self.fantasmas[fant][id2] = '-'
+                #if seg_General == True:
+                    #x1 += 1
+                    #if x1 >=1:
+                    #    x1 = 1
+                    
+
                 if fin == False:
                     x1 += 1
             else:
