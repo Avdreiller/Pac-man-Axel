@@ -59,6 +59,7 @@ class Imagenes(object):
         self.clyde = pygame.image.load("recursos/otros/FantasmaAn.png").convert_alpha()
         self.sad = pygame.image.load("recursos/otros/FantasmaSad.png").convert_alpha()
         self.sadGris = pygame.image.load("recursos/otros/FantasmaSadGris.png").convert_alpha()
+        self.ojosD = pygame.image.load("recursos/otros/ojosDerecha.png").convert_alpha()
         #self.clyde = pygame.transform.scale(self.clyde,(ancho,alto))
 
         self.interseccion = pygame.image.load("recursos/muros/Intersección.png").convert_alpha()
@@ -134,6 +135,9 @@ class Imagenes(object):
         elif nombre == "sadGris":
             self.sadGris = pygame.transform.scale(self.sadGris,(ancho,alto))
             return self.sadGris
+        elif nombre == "ojosD":
+            self.ojosD = pygame.transform.scale(self.ojosD,(ancho,alto))
+            return self.ojosD
         return None
 
     def obtener_imagen_muro(self, nombre,ancho, alto):

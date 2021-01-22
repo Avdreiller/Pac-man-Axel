@@ -136,11 +136,12 @@ class Juego(object):
         dire = "RIGHT"
         dire2 = ""
 
+        tiempo_Color = 7
         lista_Tiempo = []
         lista_Validaciones = []
         lista_Tiempo.append(10)
         lista_Validaciones.append(False)
-        validaciones = [[False,False,False,False],[False,False,False,False]]
+        validaciones = [[False,False,False,False],[False,False,False,False],False]
         
         
         
@@ -156,7 +157,7 @@ class Juego(object):
         
         
         camino = []
-        #f.pasarPesos(f,self.ruta)
+        f.pasarPesos(f,self.ruta)
         
 
         for x in range(6):
@@ -178,7 +179,7 @@ class Juego(object):
         a.start()
         
         self.llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
-
+        color_Fantasma = 0 
         while gameOver:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and bandera == True:
@@ -247,22 +248,97 @@ class Juego(object):
                                 x -= 4
                                 y -= 4
                             v = False
-                            if self.mapa_imagenes[i][j].id == fantasma1:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                v = True
-                            if self.mapa_imagenes[i][j].id == fantasma2:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                v = True
-                            if self.mapa_imagenes[i][j].id == fantasma3:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                v = True
-                            if self.mapa_imagenes[i][j].id == fantasma4:
-                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                v = True
-                            if v == True:
-                                if powerP == True:
-                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                screen.blit(imag.imagen, (imag.i, imag.j))
+                            if powerP != True:
+                                if self.mapa_imagenes[i][j].id == fantasma1:
+                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                    screen.blit(imag.imagen, (imag.i, imag.j))
+                                    #v = True
+                                if self.mapa_imagenes[i][j].id == fantasma2:
+                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                    screen.blit(imag.imagen, (imag.i, imag.j))
+                                    #v = True
+                                if self.mapa_imagenes[i][j].id == fantasma3:
+                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                    screen.blit(imag.imagen, (imag.i, imag.j))
+                                    #v = True
+                                if self.mapa_imagenes[i][j].id == fantasma4:
+                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                    screen.blit(imag.imagen, (imag.i, imag.j))
+                                #v = True
+                            #if v == True:
+                            else:
+                                if self.mapa_imagenes[i][j].id == fantasma1 or self.mapa_imagenes[i][j].id == fantasma2 or self.mapa_imagenes[i][j].id == fantasma3 or self.mapa_imagenes[i][j].id == fantasma4:
+                                    if validaciones[1][0] == True and self.mapa_imagenes[i][j].id == fantasma1:
+                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                        screen.blit(imag.imagen, (imag.i, imag.j))
+                                    elif self.mapa_imagenes[i][j].id == fantasma1:
+                                        if lista_Tiempo[0] == tiempo_Color:
+                                            if color_Fantasma == 0:
+                                                color_Fantasma = 1
+                                                tiempo_Color += 1
+                                            else:
+                                                color_Fantasma = 0
+                                                tiempo_Color += 1 
+
+                                        if color_Fantasma == 0:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                        else:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                    if validaciones[1][1] == True and self.mapa_imagenes[i][j].id == fantasma2:
+                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                        screen.blit(imag.imagen, (imag.i, imag.j))
+                                    elif self.mapa_imagenes[i][j].id == fantasma2:
+                                        if lista_Tiempo[0] == tiempo_Color:
+                                            if color_Fantasma == 0:
+                                                color_Fantasma = 1
+                                                tiempo_Color += 1
+                                            else:
+                                                color_Fantasma = 0
+                                                tiempo_Color += 1 
+
+                                        if color_Fantasma == 0:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                        else:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                    if validaciones[1][2] == True and self.mapa_imagenes[i][j].id == fantasma3:
+                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                        screen.blit(imag.imagen, (imag.i, imag.j))
+                                    elif self.mapa_imagenes[i][j].id == fantasma3:
+                                        if lista_Tiempo[0] == tiempo_Color:
+                                            if color_Fantasma == 0:
+                                                color_Fantasma = 1
+                                                tiempo_Color += 1
+                                            else:
+                                                color_Fantasma = 0
+                                                tiempo_Color += 1 
+
+                                        if color_Fantasma == 0:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                        else:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                    if validaciones[1][3] == True and self.mapa_imagenes[i][j].id == fantasma4:
+                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                        screen.blit(imag.imagen, (imag.i, imag.j))
+                                    elif self.mapa_imagenes[i][j].id == fantasma4:
+                                        if lista_Tiempo[0] == tiempo_Color:
+                                            if color_Fantasma == 0:
+                                                color_Fantasma = 1
+                                                tiempo_Color += 1
+                                            else:
+                                                color_Fantasma = 0
+                                                tiempo_Color += 1 
+
+                                        if color_Fantasma == 0:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                        else:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                        screen.blit(imag.imagen, (imag.i, imag.j))
 
             if lista_Validaciones[0] == True:
                 powerP = False
@@ -270,7 +346,9 @@ class Juego(object):
             if self.respaldo[posicion_x_pacman][posicion_y_pacman]=='+':
                 powerP = True
                 lista_Tiempo[0] = 0
-            
+                tiempo_Color = 7
+                color_Fantasma = 0
+            validaciones[2] = powerP
             
             
             if powerP == False:
@@ -349,10 +427,10 @@ class Juego(object):
 
             if bandera_hilo == True:
                 
-                self.hilo(self,d, '1',0.1, validaciones)
-                self.hilo(self,d, '4',0.4, validaciones)
-                self.hilo(self,d, '2',0.3, validaciones)
-                self.hilo(self,d, '3',0.4, validaciones)
+                self.hilo(self,d, f, '1',0.1, validaciones)
+                self.hilo(self,d, f, '4',0.3, validaciones)
+                self.hilo(self,d, f, '2',0.3, validaciones)
+                self.hilo(self,d, f, '3',0.3, validaciones)
                 
                 bandera_hilo = False
             
@@ -414,8 +492,8 @@ class Juego(object):
                 return True
         return False
 
-    def hilo(self, algoridmo, fantasma, dalay,validaciones):
-        a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes,algoridmo,self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas,validaciones)
+    def hilo(self, dijkstra, floyd, fantasma, dalay,validaciones):
+        a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes, dijkstra, floyd, self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas,validaciones)
         a.start()
 
     def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, total_puntos, puntaje):
