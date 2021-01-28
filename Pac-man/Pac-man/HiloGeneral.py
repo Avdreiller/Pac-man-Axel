@@ -27,6 +27,7 @@ class HiloGeneral(threading.Thread):
                 self.lista_Tiempo[self.posicion]= contador
 
             TOTAL = TOTAL + 1
-            time.sleep(1)
+            
             MY_LOCK.release()
+            time.sleep(1)
             

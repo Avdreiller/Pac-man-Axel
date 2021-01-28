@@ -139,7 +139,8 @@ class Juego(object):
         imagenes = Imagenes.Imagenes()
         d = Dijkstra.Dijkstra
         f = Floyd.Floyd()
-        
+        super_Velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("speed",40,40), 750, 20, 40, 40)
+        no_super_velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("nspeed",40,40), 750, 20, 40, 40)
         bandera_hilo = True
         gameOver = True
         bandera = True
@@ -149,9 +150,8 @@ class Juego(object):
         dire2 = ""
 
         tiempo_Color = 7
-        lista_Tiempo = []
-        lista_Validaciones = [False]
-        lista_Tiempo.append(10)
+        lista_Tiempo = [10,1,6]
+        lista_Validaciones = [False,False,False]
         validacion_Fin = [True]
         validaciones = [[False,False,False,False],[False,False,False,False],False]
         
@@ -183,7 +183,7 @@ class Juego(object):
         
         size = (820, 720)
         screen = pygame.display.set_mode(size)
-        pygame.display.set_caption("Grid on PYGAME")
+        pygame.display.set_caption("Pac Man")
         clock = pygame.time.Clock()
         
         logo = pygame.image.load("recursos/muros/MuroSolo.png")
@@ -191,11 +191,22 @@ class Juego(object):
 
         a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones, validacion_Fin)
         a.start()
+        a1 = HiloGeneral.HiloGeneral(1,1,lista_Tiempo,lista_Validaciones, validacion_Fin)
+        a1.start()
+        a1 = HiloGeneral.HiloGeneral(6,2,lista_Tiempo,lista_Validaciones, validacion_Fin)
+        a1.start()
         
         self.llenar_Matriz_Imagenes(tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
         color_Fantasma = 0 
+        super_Habilidad = False
         while gameOver:
             for event in pygame.event.get():
+                if pygame.mouse.get_pressed(3)==(1,0,0):
+                    x1, y1 = event.pos
+                    if(super_Velocidad.comparar_cord(x1,y1) and super_Habilidad == True):
+                        super_Habilidad = False
+                        lista_Tiempo[1] = 1
+                        lista_Validaciones[1] = False
                 if event.type == pygame.KEYDOWN and bandera == True:
                     bandera = False
                     if event.key == pygame.K_RIGHT:
@@ -389,30 +400,45 @@ class Juego(object):
             
             else:
                 idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
-                if idP == fantasma1:
+                val = False
+                if idP == fantasma1 and validaciones[1][0] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
                     self.puntaje += 300
                     validaciones[1][0] = True
                     contador_fantasma += 1
-                if idP == fantasma2:
+                    val = True
+                if idP == fantasma2 and validaciones[1][1] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
                     self.puntaje += 300
                     validaciones[1][1] = True
                     contador_fantasma += 1
-                if idP == fantasma3:
+                    val = True
+                if idP == fantasma3 and validaciones[1][2] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
                     self.puntaje += 300
                     validaciones[1][2] = True
                     contador_fantasma += 1
-                if idP == fantasma4:
+                    val = True
+                if idP == fantasma4 and validaciones[1][3] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
                     self.puntaje += 300
                     validaciones[1][3] = True
                     contador_fantasma += 1
+                    val = True
+                if val == True:
+                    if lista_Validaciones[1]==False and lista_Tiempo[1] == 1:
+                        lista_Tiempo[1] = 0
+                    elif lista_Validaciones[1]==False and lista_Tiempo[1] != 1:
+                        super_Habilidad = True
+                    
+                        
+            if lista_Validaciones[1] == True:
+                lista_Validaciones[1] = False
+                
             i1 = 165
             for x in range(len(self.vidas)):
 
@@ -447,7 +473,10 @@ class Juego(object):
                 self.hilo(d, f, '3',0.3, validaciones, validacion_Fin)
                 
                 bandera_hilo = False
-            
+            if super_Habilidad == True:
+                screen.blit(super_Velocidad.imagen,(super_Velocidad.i,super_Velocidad.j))
+            else:
+                screen.blit(no_super_velocidad.imagen,(no_super_velocidad.i,no_super_velocidad.j))
             pygame.display.flip()
             
             #time.sleep(0.15)

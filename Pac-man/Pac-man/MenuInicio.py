@@ -33,6 +33,7 @@ class MenuInicio(object):
         btn_Nueva_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("NuevaPartida",200,50), 320, 200, 200, 50)
         lista_botones.append(btn_Nueva_Partida)
         btn_Cargar_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("CargarPartida",200,50), 320, 300, 200, 50)
+        super_Velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("nspeed",40,40), 750, 20, 40, 40)
         lista_botones.append(btn_Cargar_Partida)
         cur_Mouse = []
         run=True
@@ -64,5 +65,6 @@ class MenuInicio(object):
                 screen.blit(btn_Cargar_Partida.imagen, (btn_Cargar_Partida.i, btn_Cargar_Partida.j))
                 #screen.blit(lista_botones[1].imagen, (lista_botones[1].i, lista_botones[1].j))
                 #print(pacmanicono.get_rect())
+                screen.blit(super_Velocidad.imagen,(super_Velocidad.i,super_Velocidad.j))
                 pygame.display.flip()
         pygame.quit()

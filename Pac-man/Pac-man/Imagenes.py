@@ -57,6 +57,17 @@ class Imagenes(object):
         self.pinky = pygame.image.load("recursos/otros/FantasmaRs.png").convert_alpha()
         self.inky = pygame.image.load("recursos/otros/FantasmaC.png").convert_alpha()
         self.clyde = pygame.image.load("recursos/otros/FantasmaAn.png").convert_alpha()
+
+        self.blinkyC = pygame.image.load("recursos/pantallaCarga/Blinky.png").convert_alpha()
+        self.pinkyC = pygame.image.load("recursos/pantallaCarga/Pinky.png").convert_alpha()
+        self.inkyC = pygame.image.load("recursos/pantallaCarga/Inky.png").convert_alpha()
+        self.clydeC = pygame.image.load("recursos/pantallaCarga/Clyde.png").convert_alpha()
+        self.pacManC = pygame.image.load("recursos/pantallaCarga/Pacman.png").convert_alpha()
+        self.pacManC1 = pygame.image.load("recursos/pantallaCarga/PacMan1.png").convert_alpha()
+        self.pacManC2 = pygame.image.load("recursos/pantallaCarga/PacMan2.png").convert_alpha()
+        self.pacManC3 = pygame.image.load("recursos/pantallaCarga/PacMan3.png").convert_alpha()
+        self.pacManC4 = pygame.image.load("recursos/pantallaCarga/PacMan4.png").convert_alpha()
+
         self.sad = pygame.image.load("recursos/otros/FantasmaSad.png").convert_alpha()
         self.sadGris = pygame.image.load("recursos/otros/FantasmaSadGris.png").convert_alpha()
         self.ojosD = pygame.image.load("recursos/otros/ojosDerecha.png").convert_alpha()
@@ -99,6 +110,8 @@ class Imagenes(object):
         #self.nuevaPartida = pygame.transform.scale(self.nuevaPartida,(ancho,alto))
         self.cargarPartida = pygame.image.load("recursos/botones/CargarPartida.png").convert_alpha()
         #self.cargarPartida = pygame.transform.scale(self.cargarPartida,(ancho,alto))
+        self.speed = pygame.image.load("recursos/botones/Speed.png").convert_alpha()
+        self.nspeed = pygame.image.load("recursos/botones/NoSpeed.png").convert_alpha()
 
 
     def obtener_imagen(self, nombre,ancho, alto):
@@ -210,4 +223,40 @@ class Imagenes(object):
         elif nombre == "CargarPartida":
             self.cargarPartida = pygame.transform.scale(self.cargarPartida,(ancho,alto))
             return self.cargarPartida
+        elif nombre == "speed":
+            self.speed = pygame.transform.scale(self.speed,(ancho,alto))
+            return self.speed
+        elif nombre == "nspeed":
+            self.nspeed = pygame.transform.scale(self.nspeed,(ancho,alto))
+            return self.nspeed
+        
         return None
+
+    def obtener_imagen_carga(self, nombre, ancho, alto):
+        if nombre == "pacmanC":
+            self.pacManC = pygame.transform.scale(self.pacManC,(ancho,alto))
+            return self.pacManC
+        if nombre == "pacmanC1":
+            self.pacManC1 = pygame.transform.scale(self.pacManC1,(ancho,alto))
+            return self.pacManC1
+        elif nombre == "pacmanC2":
+            self.pacManC2 = pygame.transform.scale(self.pacManC2,(ancho,alto))
+            return self.pacManC2
+        elif nombre == "pacmanC3":
+            self.pacManC3 = pygame.transform.scale(self.pacManC3,(ancho,alto))
+            return self.pacManC3
+        elif nombre == "pacmanC4":
+            self.pacManC4 = pygame.transform.scale(self.pacManC4,(ancho,alto))
+            return self.pacManC4
+        elif nombre == "blinkyC":
+            self.blinkyC = pygame.transform.scale(self.blinkyC,(ancho,alto))
+            return self.blinkyC
+        elif nombre == "pinkyC":
+            self.pinkyC = pygame.transform.scale(self.pinkyC,(ancho,alto))
+            return self.pinkyC
+        elif nombre == "inkyC":
+            self.inkyC = pygame.transform.scale(self.inkyC,(ancho,alto))
+            return self.inkyC
+        elif nombre == "clydeC":
+            self.clydeC = pygame.transform.scale(self.clydeC,(ancho,alto))
+            return self.clydeC

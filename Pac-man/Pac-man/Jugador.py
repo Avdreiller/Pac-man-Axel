@@ -11,7 +11,7 @@ class Jugador(object):
         screen = pygame.display.set_mode(size)
 
         fondo = pygame.image.load("recursos/fondos/fondo.jpg")
-        pygame.display.set_caption("juego ball")
+        pygame.display.set_caption("Pac Man")
 
         fondo = pygame.transform.scale(fondo,(820,720))
 
