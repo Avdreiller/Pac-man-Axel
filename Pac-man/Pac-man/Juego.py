@@ -10,33 +10,47 @@ import time
 import Dijkstra
 import HiloFantasma
 import HiloGeneral
+import PantallaCarga
 class Juego(object):
     """description of class"""
-    nodos = []
-    mapa_imagenes = []
-    ruta = []
-    respaldo = []
-    pacman = None
-    fantasmas = []
-    vidas = []
+    def __init__(self, puntos):
+        self.nodos = []
+        self.mapa_imagenes = []
+        self.ruta = []
+        self.respaldo = []
+        self.pacman = None
+        self.fantasmas = []
+        self.vidas = []
+        self.total_puntos = puntos
 
-
-    def llenar_lista_nodos(self):
-        mapa = Mapa.Mapa
-        m = mapa.generar_Mapa(mapa)
+    def obtener_Mapa(self,nivel):
+        m =[]
+        archivo_texto=open("datos/mapas/Nivel"+str(nivel+1)+".txt","r")
+        lineas = []
+        for line in archivo_texto:
+            lineas.append(line)
+        
+        for x in range(23):
+            m.append([])
+            for j in range(23):
+                m[x].append(lineas[x][j])
+        archivo_texto.close()
+        return m
+    def llenar_lista_nodos(self,nivel):
+        #mapa = Mapa.Mapa
+        m = self.obtener_Mapa(nivel)
         self.respaldo = m
         self.mapa_imagenes = []
         contador = 0
         self.nodos = []
         self.ruta = []
         id = -1
-        total_puntos = 0
         for i in range(len(m)):
             self.mapa_imagenes.append([])
             for j in range(len(m)):
                 if m[i][j] != '#' and m[i][j] != ' 'and m[i][j] != '':
                     if m[i][j] == '_' or m[i][j] == '+':
-                        total_puntos += 1
+                        self.total_puntos += 1
                     n = Nodo.Nodo(contador, m[i][j], None, i, j)
                     self.nodos.append(n)
                     id = contador
@@ -65,7 +79,6 @@ class Juego(object):
                 if (i1,j1+1)==(i2,j2) or (i1,j1-1)==(i2,j2) or (i1+1,j1)==(i2,j2) or (i1-1,j1)==(i2,j2):
                     self.ruta[i][j] = 1
 
-        return total_puntos
                 
     def validar(self,mposx,mposy,posx,posy):
         sumax = mposx + posx;
@@ -79,45 +92,44 @@ class Juego(object):
 
     def asignar_Muro(self, mposx, mposy,i,j,tamCuadro,imagenes):
 
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro("Intersección", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro("MuroSolo", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_final("FinalIzquierdo", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_final("FinalDerecho", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_final("FinalSuperior", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_final("FinalInferior", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_intermedio("MuroIntermedioHorizontal", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_intermedio("MuroIntermedioVertical", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_esquina("EsquinaSuperiorIzquierda", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_esquina("EsquinaInferiorDerecha", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_esquina("EsquinaInferiorIzquierda", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_esquina("EsquinaSuperiorDerecha", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == False:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == False:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_interseccion("InterseccionSuperior", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == False and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == False and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_interseccion("InterseccionDerecha", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == False and self.validar(self,mposx, mposy,1,0) == True and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == False and self.validar(mposx, mposy,1,0) == True and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_interseccion("InterseccionIzquierda", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
-        if self.validar(self,mposx, mposy,0,1) == True and self.validar(self,mposx, mposy,0,-1) == True and self.validar(self,mposx, mposy,1,0) == False and self.validar(self,mposx, mposy,-1,0) == True:
+        if self.validar(mposx, mposy,0,1) == True and self.validar(mposx, mposy,0,-1) == True and self.validar(mposx, mposy,1,0) == False and self.validar(mposx, mposy,-1,0) == True:
             return Imagen.Imagen(imagenes.obtener_imagen_muro_interseccion("InterseccionInferior", tamCuadro, tamCuadro), i+155, j+105, tamCuadro, tamCuadro)
         return None
         
 
-    def pantalla_juego(self):
+    def pantalla_juego(self, recorrido, peso, nivel):
         posicion_x_pacman = 0
         posicion_y_pacman = 0
-        total_puntos = 0
         puntaje = 0
         contador_fantasma = 0
 
@@ -126,7 +138,7 @@ class Juego(object):
         tamCuadro = 21
         imagenes = Imagenes.Imagenes()
         d = Dijkstra.Dijkstra
-        f = Floyd.Floyd
+        f = Floyd.Floyd()
         
         bandera_hilo = True
         gameOver = True
@@ -148,7 +160,7 @@ class Juego(object):
         #fuente = pygame.font.Font(None, 30)
         fuente = pygame.font.SysFont("Stencil", 25)
         while bandera == True:
-            total_puntos = self.llenar_lista_nodos(self)
+            self.llenar_lista_nodos(nivel)
             d = Dijkstra.Dijkstra
             if d.calcular_pesos(d, self.ruta) == True:
                 bandera = False
@@ -157,7 +169,9 @@ class Juego(object):
         
         
         camino = []
-        f.pasarPesos(f,self.ruta)
+        f.recorrido = recorrido[0]
+        f.peso = peso[0]
+        #f.pasarPesos(f,self.ruta)
         
 
         for x in range(6):
@@ -177,8 +191,8 @@ class Juego(object):
 
         a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones)
         a.start()
-        
-        self.llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
+        validacion_Fin = [True]
+        self.llenar_Matriz_Imagenes(tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
         color_Fantasma = 0 
         while gameOver:
             for event in pygame.event.get():
@@ -211,7 +225,7 @@ class Juego(object):
                 if event.type == pygame.QUIT:
                     gameOver = False
             
-            total_puntos, puntaje = self.moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, total_puntos, puntaje)
+            puntaje = self.moverPacman(dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, puntaje)
             self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
 
             screen.fill(BLACK)
@@ -355,7 +369,7 @@ class Juego(object):
                 if validaciones[0][0] == False and validaciones[0][1] == False and validaciones[0][2] == False and validaciones[0][3] == False:
                     idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
                     if(idP == fantasma1 or idP == fantasma2 or idP == fantasma3 or idP == fantasma4):
-                        self.validar_Muerte(self,posicion_x_pacman-1,posicion_y_pacman)
+                        self.validar_Muerte(posicion_x_pacman-1,posicion_y_pacman)
                         self.mapa_imagenes[13][11].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                         self.mapa_imagenes[13][11].tipo = '@'
                         self.mapa_imagenes[13][11].imagen.i -= 4
@@ -405,10 +419,10 @@ class Juego(object):
                 screen.blit(self.vidas[x], (i1, 625))
                 i1+=30            
 
-            if self.validar_dire(self,dire2,posicion_x_pacman,posicion_y_pacman)==True:
+            if self.validar_dire(dire2,posicion_x_pacman,posicion_y_pacman)==True:
                 dire = dire2
                 dire2 = ""
-            if self.validar_dire(self,dire,posicion_x_pacman,posicion_y_pacman)==False:
+            if self.validar_dire(dire,posicion_x_pacman,posicion_y_pacman)==False:
                 dire2 = ""
 
             
@@ -427,10 +441,10 @@ class Juego(object):
 
             if bandera_hilo == True:
                 
-                self.hilo(self,d, f, '1',0.1, validaciones)
-                self.hilo(self,d, f, '4',0.3, validaciones)
-                self.hilo(self,d, f, '2',0.3, validaciones)
-                self.hilo(self,d, f, '3',0.3, validaciones)
+                self.hilo(d, f, '1',0.1, validaciones, validacion_Fin)
+                self.hilo(d, f, '4',0.3, validaciones, validacion_Fin)
+                self.hilo(d, f, '2',0.3, validaciones, validacion_Fin)
+                self.hilo(d, f, '3',0.3, validaciones, validacion_Fin)
                 
                 bandera_hilo = False
             
@@ -438,7 +452,11 @@ class Juego(object):
             
             #time.sleep(0.15)
             clock.tick(8)
-            
+            print(self.total_puntos)
+            if self.total_puntos <= 0 and nivel < 10:
+                validacion_Fin[0] == False
+                pc = PantallaCarga.PantallaCarga
+                pc.pantalla(pc,'J',nivel+1)
         pygame.quit()
 
     def llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman):
@@ -450,7 +468,7 @@ class Juego(object):
                         if j1 < 23:
                               
                             if self.mapa_imagenes[i1][j1].tipo =='#':
-                                img = self.asignar_Muro(self,i1,j1,i,j,tamCuadro+10,imagenes)
+                                img = self.asignar_Muro(i1,j1,i,j,tamCuadro+10,imagenes)
                                 self.mapa_imagenes[i1][j1].imagen = img
                                         
                             elif self.mapa_imagenes[i1][j1].tipo=='@':
@@ -492,11 +510,11 @@ class Juego(object):
                 return True
         return False
 
-    def hilo(self, dijkstra, floyd, fantasma, dalay,validaciones):
-        a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes, dijkstra, floyd, self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas,validaciones)
+    def hilo(self, dijkstra, floyd, fantasma, dalay,validaciones, validacion_Fin):
+        a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes, dijkstra, floyd, self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas,validaciones,validacion_Fin)
         a.start()
 
-    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, total_puntos, puntaje):
+    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, puntaje):
         val = False
         x1=posicion_x_pacman
         y1=posicion_y_pacman
@@ -506,7 +524,7 @@ class Juego(object):
             if posicion_y_pacman+1 >= len(self.mapa_imagenes):
                 y = -1
             if(self.mapa_imagenes[posicion_x_pacman][y+1].tipo!='#'):
-                self.validar_Muerte(self,posicion_x_pacman,y+1)
+                self.validar_Muerte(posicion_x_pacman,y+1)
                 self.mapa_imagenes[x][y+1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                 self.mapa_imagenes[x][y+1].imagen.i -= 4
                 self.mapa_imagenes[x][y+1].imagen.j -= 4
@@ -516,7 +534,7 @@ class Juego(object):
                 
         elif dire == "LEFT":
             if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
-                self.validar_Muerte(self,posicion_x_pacman,posicion_y_pacman-1)
+                self.validar_Muerte(posicion_x_pacman,posicion_y_pacman-1)
                 self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                 self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo = '@'
                 self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].imagen.i -= 4
@@ -526,7 +544,7 @@ class Juego(object):
                 
         elif dire == "DOWN":
             if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
-                self.validar_Muerte(self,posicion_x_pacman+1,posicion_y_pacman)
+                self.validar_Muerte(posicion_x_pacman+1,posicion_y_pacman)
                 self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                 self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo = '@'
                 self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].imagen.i -= 4
@@ -536,7 +554,7 @@ class Juego(object):
                 
         elif dire == "UP":
             if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
-                self.validar_Muerte(self,posicion_x_pacman-1,posicion_y_pacman)
+                self.validar_Muerte(posicion_x_pacman-1,posicion_y_pacman)
                 self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.imagen = imagenes.obtener_imagen("pacman", tamCuadro+8, tamCuadro+8)
                 self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo = '@'
                 self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].imagen.i -= 4
@@ -551,17 +569,17 @@ class Juego(object):
             y = x1
             if x1 >= len(self.mapa_imagenes):
                 y = 1
-            if self.respaldo[x1][y] == '_':
-                total_puntos -= 1
+            if self.respaldo[y][y1] == '_':
+                self.total_puntos -= 1
                 puntaje += 10
                 #print(total_puntos)
-            if self.respaldo[x1][y] == '+':
-                total_puntos -= 1
+            if self.respaldo[y][y1] == '+':
+                self.total_puntos -= 1
                 puntaje += 50
                 #print(total_puntos)
             self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
 
-        return total_puntos, puntaje
+        return puntaje
     
     def validar_Muerte(self,posicion_x_pacman,posicion_y_pacman):
         if self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo == '4':

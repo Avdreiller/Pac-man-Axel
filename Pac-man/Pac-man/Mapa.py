@@ -1,5 +1,6 @@
 from random import randrange
 class Mapa(object):
+    
     def validar(x, y, cord1, cord2, cord3, cord4, cord5, cord6, cord7, cord8, cord9, cord10, m):
         if m[x+cord1][y+cord2] != '_' and (m[x+cord3][y+cord4] == '_' or m[x+cord5][y+cord6] == '_') and m[x+cord7][y+cord8] == '_' and m[x+cord9][y+cord10] == '_':
             return True
@@ -129,40 +130,28 @@ class Mapa(object):
                                                 m[i][j] = '#'
                                             if self.validar_Cruces(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces2(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces2(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces2(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces2(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces2(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
-                                                #pass
                                         
             
 

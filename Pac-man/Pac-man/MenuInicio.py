@@ -2,11 +2,14 @@ import pygame, sys
 import Imagen
 import Imagenes
 import Juego
+import PantallaCarga
 import Nodo
+import Jugador
 class MenuInicio(object):
     """description of class"""
     def Menu():    
         j = Juego.Juego
+        
         lista_botones = []
         pygame.init()
 
@@ -29,7 +32,7 @@ class MenuInicio(object):
         imagenes = Imagenes.Imagenes()
         btn_Nueva_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("NuevaPartida",200,50), 320, 200, 200, 50)
         lista_botones.append(btn_Nueva_Partida)
-        btn_Cargar_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("CargarPartida",200,50), 20, 20, 200, 50)
+        btn_Cargar_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("CargarPartida",200,50), 320, 300, 200, 50)
         lista_botones.append(btn_Cargar_Partida)
         cur_Mouse = []
         run=True
@@ -41,7 +44,15 @@ class MenuInicio(object):
                 if pygame.mouse.get_pressed(3)==(1,0,0):
                     x1, y1 = event.pos
                     if(btn_Nueva_Partida.comparar_cord(x1,y1)):
-                        j.pantalla_juego(j)
+                        #j.pantalla_juego(j)
+                        p = PantallaCarga.PantallaCarga
+                        p.pantalla(p,'J',0)
+                        var = False
+                        run = False
+                    if(btn_Cargar_Partida.comparar_cord(x1,y1)):
+                        #j.pantalla_juego(j)
+                        pj = Jugador.Jugador
+                        pj.pantalla(pj)
                         var = False
                         run = False
             if var:
@@ -50,6 +61,7 @@ class MenuInicio(object):
                 screen.blit(pacmanicono, (pacmanicono_pos_x, pacmanicono_pos_y))
                 #screen.blit(btn_Nueva_Partida.imagen, (btn_Nueva_Partida.x, btn_Nueva_Partida.y))
                 screen.blit(lista_botones[0].imagen, (lista_botones[0].i, lista_botones[0].j))
+                screen.blit(btn_Cargar_Partida.imagen, (btn_Cargar_Partida.i, btn_Cargar_Partida.j))
                 #screen.blit(lista_botones[1].imagen, (lista_botones[1].i, lista_botones[1].j))
                 #print(pacmanicono.get_rect())
                 pygame.display.flip()

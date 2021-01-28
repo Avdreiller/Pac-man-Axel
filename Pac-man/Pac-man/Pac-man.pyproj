@@ -27,6 +27,9 @@
     <Compile Include="Floyd.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HiloCarga.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="HiloFantasma.py">
       <SubType>Code</SubType>
     </Compile>
@@ -42,6 +45,9 @@
     <Compile Include="Juego.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Jugador.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Mapa.py">
       <SubType>Code</SubType>
     </Compile>
@@ -52,6 +58,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Pac_man.py" />
+    <Compile Include="PantallaCarga.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Relacion.py">
       <SubType>Code</SubType>
     </Compile>

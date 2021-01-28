@@ -8,7 +8,7 @@ TOTAL = 0
 
 MY_LOCK = threading.Lock()
 class HiloFantasma(threading.Thread):
-    def __init__(self, delay, mapa_imagenes, dijkstra, floyd, nodos, ruta, fantasma, jugador, respaldo,fantasmas, validaciones):
+    def __init__(self, delay, mapa_imagenes, dijkstra, floyd, nodos, ruta, fantasma, jugador, respaldo,fantasmas, validaciones,validacion_Fin):
         threading.Thread.__init__(self)
         self.delay = delay
         self.mapa_imagenes = mapa_imagenes
@@ -21,6 +21,7 @@ class HiloFantasma(threading.Thread):
         self.respaldo = respaldo
         self.fantasmas = fantasmas
         self.validaciones = validaciones
+        self.validacion_Fin = validacion_Fin
 
     def run(self):
         clock = pygame.time.Clock()
@@ -46,7 +47,7 @@ class HiloFantasma(threading.Thread):
         elif self.fantasma == '4':
             fant = 3
         camino = []
-        while True:
+        while self.validacion_Fin[0] == True:
             if self.validaciones[2] == True:
                 if self.validaciones[1][fant]!=True:
                     time.sleep(0.3)
@@ -178,8 +179,8 @@ class HiloFantasma(threading.Thread):
                         ran = randrange(len(self.nodos))
                         if ran != idJ and ran != idF:
                             vall = False
-                    camino1 = self.floyd.getCamino(self.floyd, self.nodos[ran], self.nodos[idJ], self.ruta, self.nodos)
-                    camino2 = self.floyd.getCamino(self.floyd, self.nodos[idF], self.nodos[idJ], self.ruta, self.nodos)
+                    camino1 = self.floyd.getCamino(self.nodos[ran], self.nodos[idJ], self.ruta, self.nodos)
+                    camino2 = self.floyd.getCamino(self.nodos[idF], self.nodos[idJ], self.ruta, self.nodos)
                     if len(camino1)> 5:
                         vall2 = True
                         for x in range(len(camino1)):
@@ -189,7 +190,7 @@ class HiloFantasma(threading.Thread):
                         if vall2 == True:
                             #if len(camino2)<len(camino1):
                             vall1 = False
-                camino = self.floyd.getCamino(self.floyd, self.nodos[ran], self.nodos[idF], self.ruta, self.nodos)
+                camino = self.floyd.getCamino(self.nodos[ran], self.nodos[idF], self.ruta, self.nodos)
                 fin = False
                 #seg_General = True
                 x1 = 1
@@ -204,7 +205,7 @@ class HiloFantasma(threading.Thread):
                             if ran != idF:
                                 vall = False
                         
-                        camino = self.floyd.getCamino(self.floyd, self.nodos[ran], self.nodos[idF], self.ruta, self.nodos)
+                        camino = self.floyd.getCamino(self.nodos[ran], self.nodos[idF], self.ruta, self.nodos)
                         if len(camino)> 5:
                             vall1 = False
                     fin = False

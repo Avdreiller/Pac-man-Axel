@@ -1,8 +1,9 @@
 import sys
 class Floyd(object):
     """description of class"""
-    peso = []
-    recorrido = []
+    def __init__(self):
+        self.peso = []
+        self.recorrido = []
 
     def pasarPesos(self, m):
         for x in range(len(m)):
@@ -16,17 +17,14 @@ class Floyd(object):
             for j in range(len(m)):
                 if i==j :
                     self.peso[i][j] = 0
+                    self.recorrido[j][i] = 0
                 elif m[i][j] == 1:
                     self.peso[i][j] = 1
+                    self.recorrido[j][i] = j
                 else:
                     self.peso[i][j]=sys.maxsize
-
-        for i in range(len(m)):
-            for j in range(len(m)):
-                if i==j:
-                    self.recorrido[j][i] = 0
-                else:
                     self.recorrido[j][i] = j
+
         sum = 0
         for c in range(len(m)):
             for i in range(len(m)):
@@ -37,6 +35,8 @@ class Floyd(object):
                             if sum <= self.peso[i][j]:
                                 self.peso[i][j] = sum
                                 self.recorrido[i][j] = self.recorrido[c][j]
+        return self.recorrido,self.peso
+                        
                         
 
 
