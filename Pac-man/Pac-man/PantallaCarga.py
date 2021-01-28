@@ -2,7 +2,7 @@ import pygame, sys
 import Juego
 import HiloCarga
 class PantallaCarga(object):
-    def pantalla(self,accion, nivel):    
+    def pantalla(self,accion, nivel, puntos):    
         
         pygame.init()
 
@@ -43,7 +43,7 @@ class PantallaCarga(object):
                     run = False
             if accion == 'J':
                 if validacion[0] == True:
-                    j = Juego.Juego()
+                    j = Juego.Juego(puntos)
                     j.pantalla_juego(ruta,peso,nivel)
                     var = False
                     run = False
@@ -53,7 +53,7 @@ class PantallaCarga(object):
                     if validacion[x] == True:
                         cont+=1
                 if cont == 10:
-                    self.pantalla(self,'J',nivel)
+                    self.pantalla(self,'J',nivel,puntos)
                     var = False
                     run = False
             if var:

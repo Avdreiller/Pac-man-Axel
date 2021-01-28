@@ -85,80 +85,80 @@ class HiloFantasma(threading.Thread):
 
             cam = camino
             camino, fin, x1, seg_jugador, seg_General = self.obtener_Ruta(fin, x1, seg_jugador, seg_General, idF,idF1,idF2,idF4, idJ, id_Centro, fant, cam)
-
-            if x1 < len(camino):
+            if camino != None:
+                if x1 < len(camino):
                 
                 
                     
-                if self.validaciones[0][0]==True or self.validaciones[0][1]==True or self.validaciones[0][2]==True or self.validaciones[0][3]==True :
+                    if self.validaciones[0][0]==True or self.validaciones[0][1]==True or self.validaciones[0][2]==True or self.validaciones[0][3]==True :
                    
-                    if self.fantasma=='1':
-                        self.fantasmas[fant][idF] = self.nodos[idF1].tipo
-                        self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
-                    if self.fantasma=='2':
-                        self.fantasmas[fant][idF] = self.nodos[idF2].tipo
-                        self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
-                    if self.fantasma=='3':
-                        self.fantasmas[fant][idF] = self.nodos[idF3].tipo
-                        self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
-                    if self.fantasma=='4':
-                        self.fantasmas[fant][idF] = self.nodos[idF4].tipo
-                        self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
-                    self.validaciones[0][fant]=False
-                    fin = True
-                #else:
-                #    if self.validaciones[1][0]==True:
-                #        if self.fantasma=='1':
-                #            self.fantasmas[fant][idF] = self.nodos[idF1].tipo
-                #            self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
-                #            self.validaciones[1][fant]=False
-                #        fin = True
-                #    elif self.validaciones[1][1]==True:
-                #        if self.fantasma=='2':
-                #            self.fantasmas[fant][idF] = self.nodos[idF2].tipo
-                #            self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
-                #            self.validaciones[1][fant]=False
-                #        fin = True
-                #    elif self.validaciones[1][2]==True:
-                #        if self.fantasma=='3':
-                #            self.fantasmas[fant][idF] = self.nodos[idF3].tipo
-                #            self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
-                #            self.validaciones[1][fant]=False
-                #        fin = True
-                #    elif self.validaciones[1][3]==True:
-                #        if self.fantasma=='4':
-                #            self.fantasmas[fant][idF] = self.nodos[idF4].tipo
-                #            self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
-                #            self.validaciones[1][fant]=False
-                #        fin = True
-                else:
+                        if self.fantasma=='1':
+                            self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                            self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
+                        if self.fantasma=='2':
+                            self.fantasmas[fant][idF] = self.nodos[idF2].tipo
+                            self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
+                        if self.fantasma=='3':
+                            self.fantasmas[fant][idF] = self.nodos[idF3].tipo
+                            self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
+                        if self.fantasma=='4':
+                            self.fantasmas[fant][idF] = self.nodos[idF4].tipo
+                            self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
+                        self.validaciones[0][fant]=False
+                        fin = True
+                    #else:
+                    #    if self.validaciones[1][0]==True:
+                    #        if self.fantasma=='1':
+                    #            self.fantasmas[fant][idF] = self.nodos[idF1].tipo
+                    #            self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
+                    #            self.validaciones[1][fant]=False
+                    #        fin = True
+                    #    elif self.validaciones[1][1]==True:
+                    #        if self.fantasma=='2':
+                    #            self.fantasmas[fant][idF] = self.nodos[idF2].tipo
+                    #            self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
+                    #            self.validaciones[1][fant]=False
+                    #        fin = True
+                    #    elif self.validaciones[1][2]==True:
+                    #        if self.fantasma=='3':
+                    #            self.fantasmas[fant][idF] = self.nodos[idF3].tipo
+                    #            self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
+                    #            self.validaciones[1][fant]=False
+                    #        fin = True
+                    #    elif self.validaciones[1][3]==True:
+                    #        if self.fantasma=='4':
+                    #            self.fantasmas[fant][idF] = self.nodos[idF4].tipo
+                    #            self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
+                    #            self.validaciones[1][fant]=False
+                    #        fin = True
+                    else:
                         
-                    id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
+                        id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
                     
-                    if self.fantasmas[fant][id] != self.fantasma:
-                        self.fantasmas[fant][id] = self.fantasma
-                        if x1 > 0:
-                            id2 = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].id
-                            if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
-                                self.fantasmas[fant][id2] = '_'
-                            else:
-                                self.fantasmas[fant][id2] = '-'
-                #if seg_General == True:
-                    #x1 += 1
-                    #if x1 >=1:
-                    #    x1 = 1
+                        if self.fantasmas[fant][id] != self.fantasma:
+                            self.fantasmas[fant][id] = self.fantasma
+                            if x1 > 0:
+                                id2 = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].id
+                                if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
+                                    self.fantasmas[fant][id2] = '_'
+                                else:
+                                    self.fantasmas[fant][id2] = '-'
+                    #if seg_General == True:
+                        #x1 += 1
+                        #if x1 >=1:
+                        #    x1 = 1
                     
 
-                if fin == False:
-                    x1 += 1
-            else:
+                    if fin == False:
+                        x1 += 1
+                else:
                 
-                fin = True
-            if idF == id_Centro and self.validaciones[1][fant] == True:
-                self.validaciones[1][fant]=False
-                fin = True
+                    fin = True
+                if idF == id_Centro and self.validaciones[1][fant] == True:
+                    self.validaciones[1][fant]=False
+                    fin = True
             
-            TOTAL = TOTAL + 1
+                TOTAL = TOTAL + 1
             
             MY_LOCK.release()
             

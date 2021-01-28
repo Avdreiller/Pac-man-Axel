@@ -21,7 +21,8 @@ class Juego(object):
         self.pacman = None
         self.fantasmas = []
         self.vidas = []
-        self.total_puntos = puntos
+        self.total_puntos = 0
+        self.puntaje = puntos
 
     def obtener_Mapa(self,nivel):
         m =[]
@@ -130,7 +131,6 @@ class Juego(object):
     def pantalla_juego(self, recorrido, peso, nivel):
         posicion_x_pacman = 0
         posicion_y_pacman = 0
-        puntaje = 0
         contador_fantasma = 0
 
         AZUL = (0, 0, 255)
@@ -150,9 +150,9 @@ class Juego(object):
 
         tiempo_Color = 7
         lista_Tiempo = []
-        lista_Validaciones = []
+        lista_Validaciones = [False]
         lista_Tiempo.append(10)
-        lista_Validaciones.append(False)
+        validacion_Fin = [True]
         validaciones = [[False,False,False,False],[False,False,False,False],False]
         
         
@@ -189,9 +189,9 @@ class Juego(object):
         logo = pygame.image.load("recursos/muros/MuroSolo.png")
         logo = pygame.transform.scale(logo, (tamCuadro,tamCuadro))
 
-        a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones)
+        a = HiloGeneral.HiloGeneral(10,0,lista_Tiempo,lista_Validaciones, validacion_Fin)
         a.start()
-        validacion_Fin = [True]
+        
         self.llenar_Matriz_Imagenes(tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
         color_Fantasma = 0 
         while gameOver:
@@ -225,7 +225,7 @@ class Juego(object):
                 if event.type == pygame.QUIT:
                     gameOver = False
             
-            puntaje = self.moverPacman(dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, puntaje)
+            self.moverPacman(dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes)
             self.pacman = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman]
 
             screen.fill(BLACK)
@@ -391,26 +391,26 @@ class Juego(object):
                 idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
                 if idP == fantasma1:
                     if contador_fantasma >= 1:
-                        puntaje += 100
-                    puntaje += 300
+                        self.puntaje += 100
+                    self.puntaje += 300
                     validaciones[1][0] = True
                     contador_fantasma += 1
                 if idP == fantasma2:
                     if contador_fantasma >= 1:
-                        puntaje += 100
-                    puntaje += 300
+                        self.puntaje += 100
+                    self.puntaje += 300
                     validaciones[1][1] = True
                     contador_fantasma += 1
                 if idP == fantasma3:
                     if contador_fantasma >= 1:
-                        puntaje += 100
-                    puntaje += 300
+                        self.puntaje += 100
+                    self.puntaje += 300
                     validaciones[1][2] = True
                     contador_fantasma += 1
                 if idP == fantasma4:
                     if contador_fantasma >= 1:
-                        puntaje += 100
-                    puntaje += 300
+                        self.puntaje += 100
+                    self.puntaje += 300
                     validaciones[1][3] = True
                     contador_fantasma += 1
             i1 = 165
@@ -432,7 +432,7 @@ class Juego(object):
             mensaje = fuente.render(text, 1, (27, 67, 207))
             screen.blit(mensaje, (30, 115))
 
-            text = str(puntaje)
+            text = str(self.puntaje)
             j = 145
             for c in text:
                 mensaje = fuente.render(c, 1, (225, 121, 121))
@@ -454,9 +454,9 @@ class Juego(object):
             clock.tick(8)
             print(self.total_puntos)
             if self.total_puntos <= 0 and nivel < 10:
-                validacion_Fin[0] == False
+                validacion_Fin[0] = False
                 pc = PantallaCarga.PantallaCarga
-                pc.pantalla(pc,'J',nivel+1)
+                pc.pantalla(pc,'J',nivel+1,self.puntaje)
         pygame.quit()
 
     def llenar_Matriz_Imagenes(self,tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman):
@@ -514,7 +514,7 @@ class Juego(object):
         a = HiloFantasma.HiloFantasma(dalay,self.mapa_imagenes, dijkstra, floyd, self.nodos,self.ruta,fantasma, self.pacman, self.respaldo, self.fantasmas,validaciones,validacion_Fin)
         a.start()
 
-    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes, puntaje):
+    def moverPacman(self,dire,posicion_x_pacman,posicion_y_pacman, tamCuadro, imagenes):
         val = False
         x1=posicion_x_pacman
         y1=posicion_y_pacman
@@ -530,7 +530,7 @@ class Juego(object):
                 self.mapa_imagenes[x][y+1].imagen.j -= 4
                 self.mapa_imagenes[x][y+1].tipo = '@'
                 val = True
-                y1+=1
+                y1 = y+1
                 
         elif dire == "LEFT":
             if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
@@ -566,20 +566,16 @@ class Juego(object):
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.i += 4
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].imagen.j += 4
             self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo = ''
-            y = x1
-            if x1 >= len(self.mapa_imagenes):
-                y = 1
-            if self.respaldo[y][y1] == '_':
+            
+            if self.respaldo[x1][y1] == '_':
                 self.total_puntos -= 1
-                puntaje += 10
+                self.puntaje += 10
                 #print(total_puntos)
-            if self.respaldo[y][y1] == '+':
+            if self.respaldo[x1][y1] == '+':
                 self.total_puntos -= 1
-                puntaje += 50
+                self.puntaje += 50
                 #print(total_puntos)
             self.respaldo[posicion_x_pacman][posicion_y_pacman]=''
-
-        return puntaje
     
     def validar_Muerte(self,posicion_x_pacman,posicion_y_pacman):
         if self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].tipo == '4':
