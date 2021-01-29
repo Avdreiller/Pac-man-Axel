@@ -1,49 +1,49 @@
 import pygame
 class Imagenes(object):
     """description of class"""
-    def __init__ (self):
-        self.pacMan = None
-        self.bola = None
-        self.nada = None
-        self.clyde = None
+    #def __init__ (self):
+    #    self.pacMan = None
+    #    self.bola = None
+    #    self.nada = None
+    #    self.clyde = None
 
-        self.interseccion = None
-        self.interseccion = None
-        self.muroSolo = None
-        self.muroSolo = None
-        self.finalIzquierdo = None
-        self.finalIzquierdo = None
-        self.finalDerecho = None
-        self.finalDerecho = None
-        self.finalSuperior = None
-        self.finalSuperior = None
-        self.finalInferior = None
-        self.finalInferior = None
-        self.muroIntermedioHorizontal = None
-        self.muroIntermedioHorizontal = None
-        self.muroIntermedioVertical = None
-        self.muroIntermedioVertical = None
-        self.esquinaSuperiorIzquierda = None
-        self.esquinaSuperiorIzquierda = None
-        self.esquinaInferiorDerecha = None
-        self.esquinaInferiorDerecha = None
-        self.esquinaInferiorIzquierda = None
-        self.esquinaInferiorIzquierda = None
-        self.esquinaSuperiorDerecha = None
-        self.esquinaSuperiorDerecha = None
-        self.interseccionSuperior = None
-        self.interseccionSuperior = None
-        self.interseccionDerecha = None
-        self.interseccionDerecha = None
-        self.interseccionIzquierda = None
-        self.interseccionIzquierda = None
-        self.interseccionInferior = None
-        self.interseccionInferior = None
+    #    self.interseccion = None
+    #    self.interseccion = None
+    #    self.muroSolo = None
+    #    self.muroSolo = None
+    #    self.finalIzquierdo = None
+    #    self.finalIzquierdo = None
+    #    self.finalDerecho = None
+    #    self.finalDerecho = None
+    #    self.finalSuperior = None
+    #    self.finalSuperior = None
+    #    self.finalInferior = None
+    #    self.finalInferior = None
+    #    self.muroIntermedioHorizontal = None
+    #    self.muroIntermedioHorizontal = None
+    #    self.muroIntermedioVertical = None
+    #    self.muroIntermedioVertical = None
+    #    self.esquinaSuperiorIzquierda = None
+    #    self.esquinaSuperiorIzquierda = None
+    #    self.esquinaInferiorDerecha = None
+    #    self.esquinaInferiorDerecha = None
+    #    self.esquinaInferiorIzquierda = None
+    #    self.esquinaInferiorIzquierda = None
+    #    self.esquinaSuperiorDerecha = None
+    #    self.esquinaSuperiorDerecha = None
+    #    self.interseccionSuperior = None
+    #    self.interseccionSuperior = None
+    #    self.interseccionDerecha = None
+    #    self.interseccionDerecha = None
+    #    self.interseccionIzquierda = None
+    #    self.interseccionIzquierda = None
+    #    self.interseccionInferior = None
+    #    self.interseccionInferior = None
 
-        self.nuevaPartida = None
-        self.nuevaPartida = None
-        self.cargarPartida = None
-        self.cargarPartida = None
+    #    self.nuevaPartida = None
+    #    self.nuevaPartida = None
+    #    self.cargarPartida = None
+    #    self.cargarPartida = None
     
     def __init__ (self):
         self.pacMan = pygame.image.load("recursos/otros/PacMan.png").convert_alpha()
@@ -76,6 +76,7 @@ class Imagenes(object):
         self.interseccion = pygame.image.load("recursos/muros/Intersección.png").convert_alpha()
         #self.interseccion = pygame.transform.scale(self.interseccion,(ancho,alto))
         self.muroSolo = pygame.image.load("recursos/muros/MuroSolo.png").convert_alpha()
+        self.rayo = pygame.image.load("recursos/muros/Rayo.png").convert_alpha()
         #self.muroSolo = pygame.transform.scale(self.muroSolo,(ancho,alto))
         self.finalIzquierdo = pygame.image.load("recursos/muros/FinalIzquierdo.png").convert_alpha()
         #self.finalIzquierdo = pygame.transform.scale(self.finalIzquierdo,(ancho,alto))
@@ -112,6 +113,7 @@ class Imagenes(object):
         #self.cargarPartida = pygame.transform.scale(self.cargarPartida,(ancho,alto))
         self.speed = pygame.image.load("recursos/botones/Speed.png").convert_alpha()
         self.nspeed = pygame.image.load("recursos/botones/NoSpeed.png").convert_alpha()
+        self.speedA = pygame.image.load("recursos/botones/SpeedActivo.png").convert_alpha()
 
 
     def obtener_imagen(self, nombre,ancho, alto):
@@ -160,6 +162,9 @@ class Imagenes(object):
         elif nombre == "MuroSolo":
             self.muroSolo = pygame.transform.scale(self.muroSolo,(ancho,alto))
             return self.muroSolo
+        elif nombre == "Rayo":
+            self.rayo = pygame.transform.scale(self.rayo,(ancho,alto))
+            return self.rayo
         return None
 
     def obtener_imagen_muro_final(self, nombre, ancho, alto):
@@ -229,6 +234,9 @@ class Imagenes(object):
         elif nombre == "nspeed":
             self.nspeed = pygame.transform.scale(self.nspeed,(ancho,alto))
             return self.nspeed
+        elif nombre == "speedA":
+            self.speedA = pygame.transform.scale(self.speedA,(ancho,alto))
+            return self.speedA
         
         return None
 

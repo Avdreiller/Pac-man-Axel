@@ -63,7 +63,10 @@ class Juego(object):
         for x in range(4):
             lista = []
             for k in range(len(self.nodos)):
-                lista.append(self.nodos[k].tipo)
+                if self.nodos[k].tipo == '%':
+                    lista.append('1')
+                else:
+                    lista.append(self.nodos[k].tipo)
             self.fantasmas.append(lista)
 
         for x in range(len(self.nodos)):
@@ -139,8 +142,9 @@ class Juego(object):
         imagenes = Imagenes.Imagenes()
         d = Dijkstra.Dijkstra
         f = Floyd.Floyd()
-        super_Velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("speed",40,40), 750, 20, 40, 40)
-        no_super_velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("nspeed",40,40), 750, 20, 40, 40)
+        super_Velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("speed",40,40), 625, 73, 40, 40)
+        no_super_velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("nspeed",40,40), 625, 73, 40, 40)
+        super_Velocidad_Activa= Imagen.Imagen(imagenes.obtener_imagen_boton("speedA",40,40), 625, 73, 40, 40)
         bandera_hilo = True
         gameOver = True
         bandera = True
@@ -199,6 +203,7 @@ class Juego(object):
         self.llenar_Matriz_Imagenes(tamCuadro, imagenes, posicion_x_pacman, posicion_y_pacman)
         color_Fantasma = 0 
         super_Habilidad = False
+        super_Vel = False
         while gameOver:
             for event in pygame.event.get():
                 if pygame.mouse.get_pressed(3)==(1,0,0):
@@ -207,9 +212,11 @@ class Juego(object):
                         super_Habilidad = False
                         lista_Tiempo[1] = 1
                         lista_Validaciones[1] = False
+                        super_Vel = True 
+                        lista_Tiempo[2] = 0
                 if event.type == pygame.KEYDOWN and bandera == True:
                     bandera = False
-                    if event.key == pygame.K_RIGHT:
+                    if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         y=posicion_y_pacman
                         if posicion_y_pacman+1 >= len(self.mapa_imagenes):
                             y = -1
@@ -217,21 +224,27 @@ class Juego(object):
                             dire = "RIGHT"
                         else:
                             dire2 = "RIGHT"
-                    elif event.key == pygame.K_LEFT:
+                    elif event.key == pygame.K_LEFT or event.key == pygame.K_a:
                         if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
                             dire = "LEFT"
                         else:
                             dire2 = "LEFT"
-                    elif event.key == pygame.K_DOWN:
-                        if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
+                    elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                        if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#' and self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='%'):
                             dire = "DOWN"
                         else:
                             dire2 = "DOWN"
-                    elif event.key == pygame.K_UP:
+                    elif event.key == pygame.K_UP or event.key == pygame.K_w:
                         if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):
                             dire = "UP"
                         else:
                             dire2 = "UP"
+                    if event.key == pygame.K_SPACE and super_Habilidad == True:
+                        super_Habilidad = False
+                        lista_Tiempo[1] = 1
+                        lista_Validaciones[1] = False
+                        super_Vel = True 
+                        lista_Tiempo[2] = 0
                     
                 if event.type == pygame.QUIT:
                     gameOver = False
@@ -269,9 +282,12 @@ class Juego(object):
                         if n != None:
                             x = n.imagen.i
                             y = n.imagen.j
-                            if n.tipo != '@':
+                            if n.tipo != '@' and n.tipo != '%':
                                 x -= 4
                                 y -= 4
+                            elif n.tipo == '%':
+                                x += 1
+                                y += 2
                             v = False
                             if powerP != True:
                                 if self.mapa_imagenes[i][j].id == fantasma1:
@@ -374,7 +390,11 @@ class Juego(object):
                 tiempo_Color = 7
                 color_Fantasma = 0
             validaciones[2] = powerP
-            
+            if lista_Validaciones[1] == True:
+                lista_Validaciones[1] = False
+            if lista_Validaciones[2] == True:
+                super_Vel = False
+                lista_Validaciones[2] = False
             
             if powerP == False:
                 if validaciones[0][0] == False and validaciones[0][1] == False and validaciones[0][2] == False and validaciones[0][3] == False:
@@ -401,6 +421,7 @@ class Juego(object):
             else:
                 idP = self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman].id
                 val = False
+                contador_Fant = 0
                 if idP == fantasma1 and validaciones[1][0] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
@@ -408,6 +429,7 @@ class Juego(object):
                     validaciones[1][0] = True
                     contador_fantasma += 1
                     val = True
+                    contador_Fant +=1
                 if idP == fantasma2 and validaciones[1][1] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
@@ -415,6 +437,7 @@ class Juego(object):
                     validaciones[1][1] = True
                     contador_fantasma += 1
                     val = True
+                    contador_Fant +=1
                 if idP == fantasma3 and validaciones[1][2] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
@@ -422,6 +445,7 @@ class Juego(object):
                     validaciones[1][2] = True
                     contador_fantasma += 1
                     val = True
+                    contador_Fant +=1
                 if idP == fantasma4 and validaciones[1][3] == False:
                     if contador_fantasma >= 1:
                         self.puntaje += 100
@@ -429,15 +453,14 @@ class Juego(object):
                     validaciones[1][3] = True
                     contador_fantasma += 1
                     val = True
+                    contador_Fant +=1
                 if val == True:
-                    if lista_Validaciones[1]==False and lista_Tiempo[1] == 1:
-                        lista_Tiempo[1] = 0
-                    elif lista_Validaciones[1]==False and lista_Tiempo[1] != 1:
-                        super_Habilidad = True
+                    if super_Vel == False:
+                        if (lista_Validaciones[1]==False and lista_Tiempo[1] == 1) and contador_Fant <= 1:
+                            lista_Tiempo[1] = 0
+                        elif (lista_Validaciones[1]==False and lista_Tiempo[1] <= 1) or contador_Fant > 1:
+                            super_Habilidad = True
                     
-                        
-            if lista_Validaciones[1] == True:
-                lista_Validaciones[1] = False
                 
             i1 = 165
             for x in range(len(self.vidas)):
@@ -473,15 +496,20 @@ class Juego(object):
                 self.hilo(d, f, '3',0.3, validaciones, validacion_Fin)
                 
                 bandera_hilo = False
-            if super_Habilidad == True:
+            if super_Vel == True:
+                screen.blit(super_Velocidad_Activa.imagen,(super_Velocidad_Activa.i,super_Velocidad_Activa.j))
+            elif super_Habilidad == True:
                 screen.blit(super_Velocidad.imagen,(super_Velocidad.i,super_Velocidad.j))
             else:
                 screen.blit(no_super_velocidad.imagen,(no_super_velocidad.i,no_super_velocidad.j))
             pygame.display.flip()
             
             #time.sleep(0.15)
-            clock.tick(8)
-            print(self.total_puntos)
+            if super_Vel == True:
+                clock.tick(16)
+            else:
+                clock.tick(8)
+            #print(self.total_puntos)
             if self.total_puntos <= 0 and nivel < 10:
                 validacion_Fin[0] = False
                 pc = PantallaCarga.PantallaCarga
@@ -518,7 +546,10 @@ class Juego(object):
                                 img = Imagen.Imagen(imagenes.obtener_imagen("nada", tamCuadro, tamCuadro), i+160, j+110, tamCuadro, tamCuadro)
                                 self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
                                 self.mapa_imagenes[i1][j1].imagen = img
-                            
+                            elif self.mapa_imagenes[i1][j1].tipo=='%':
+                                img = Imagen.Imagen(imagenes.obtener_imagen_muro("Rayo", tamCuadro+11, tamCuadro+12), i+155, j+104, tamCuadro, tamCuadro)
+                                self.nodos[self.mapa_imagenes[i1][j1].id].imagen = img
+                                self.mapa_imagenes[i1][j1].imagen = img
                             j1 += 1
                     i1 += 1
     def validar_dire(self, dire2,posicion_x_pacman,posicion_y_pacman):
@@ -532,7 +563,7 @@ class Juego(object):
             if(self.mapa_imagenes[posicion_x_pacman][posicion_y_pacman-1].tipo!='#'):
                 return True
         elif dire2 == "DOWN":
-            if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#'):
+            if(self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='#' and self.mapa_imagenes[posicion_x_pacman+1][posicion_y_pacman].tipo!='%'):
                 return True
         elif dire2 == "UP":
             if(self.mapa_imagenes[posicion_x_pacman-1][posicion_y_pacman].tipo!='#'):

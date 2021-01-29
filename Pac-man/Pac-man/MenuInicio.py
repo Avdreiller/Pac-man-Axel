@@ -52,8 +52,10 @@ class MenuInicio(object):
                         run = False
                     if(btn_Cargar_Partida.comparar_cord(x1,y1)):
                         #j.pantalla_juego(j)
-                        pj = Jugador.Jugador
-                        pj.pantalla(pj)
+                        #pj = Jugador.Jugador
+                        #pj.pantalla(pj)
+                        p = PantallaCarga.PantallaCarga
+                        p.pantalla(p,'C',0,0)
                         var = False
                         run = False
             if var:

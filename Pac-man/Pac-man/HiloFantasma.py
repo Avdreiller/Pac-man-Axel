@@ -141,6 +141,8 @@ class HiloFantasma(threading.Thread):
                                 id2 = self.mapa_imagenes[camino[x1-1].x][camino[x1-1].y].id
                                 if self.respaldo[camino[x1-1].x][camino[x1-1].y] == '_':
                                     self.fantasmas[fant][id2] = '_'
+                                elif self.respaldo[camino[x1-1].x][camino[x1-1].y] == '%':
+                                    self.fantasmas[fant][id2] = '%'
                                 else:
                                     self.fantasmas[fant][id2] = '-'
                     #if seg_General == True:
