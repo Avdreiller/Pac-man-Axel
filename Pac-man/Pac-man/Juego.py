@@ -221,7 +221,7 @@ class Juego(object):
         validacion_Fin = [True]
         validaciones = [[False,False,False,False],[False,False,False,False],False]
         pausa = [False]
-        confi_EST = [False, False, False, False, 2] #Estadisticas de configuracion
+        confi_EST = [False, False, False, False, 6] #Estadisticas de configuracion
         self.cargar_confi(confi_EST)
         validacion_ini = False
         
@@ -332,7 +332,8 @@ class Juego(object):
                             if configuracion.comparar_cord(x1,y1):
                                 confi = True
                             if salir.comparar_cord(x1,y1):
-                                pass
+                                gameOver = False
+                                var = False
                     
                     if(configuracion_juego.comparar_cord(x1,y1)):
                         if pausa[0] == True:
@@ -630,7 +631,6 @@ class Juego(object):
                     self.game_ov(imagenes, screen,fuente3, inicio2, validacion_ini)
                 pygame.display.flip()
             
-                #time.sleep(0.15)
                 if pausa[0] == True:
                     clock.tick(50)
                 else:
@@ -638,7 +638,6 @@ class Juego(object):
                         clock.tick(12)
                     else:
                         clock.tick(6)
-                #print(self.total_puntos)
             
                 if self.total_puntos <= 0 and nivel <= 9:
                     if nivel >= 9:
