@@ -5,6 +5,7 @@ import Juego
 import PantallaCarga
 import Nodo
 import Jugador
+import Niveles
 class MenuInicio(object):
     """description of class"""
     def Menu():    
@@ -33,7 +34,7 @@ class MenuInicio(object):
         btn_Nueva_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("NuevaPartida",200,50), 320, 200, 200, 50)
         lista_botones.append(btn_Nueva_Partida)
         btn_Cargar_Partida = Imagen.Imagen(imagenes.obtener_imagen_boton("CargarPartida",200,50), 320, 300, 200, 50)
-        super_Velocidad= Imagen.Imagen(imagenes.obtener_imagen_boton("nspeed",40,40), 750, 20, 40, 40)
+        configuracion_juego= Imagen.Imagen(imagenes.obtener_imagen_boton("configuracionJ",40,40), 760, 20, 40, 40)
         lista_botones.append(btn_Cargar_Partida)
         cur_Mouse = []
         run=True
@@ -43,11 +44,13 @@ class MenuInicio(object):
                 if event.type == pygame.QUIT: 
                     run = False
                 if pygame.mouse.get_pressed(3)==(1,0,0):
-                    x1, y1 = event.pos
+                    x1, y1 = pygame.mouse.get_pos()
                     if(btn_Nueva_Partida.comparar_cord(x1,y1)):
                         #j.pantalla_juego(j)
-                        p = PantallaCarga.PantallaCarga
-                        p.pantalla(p,'J',0,0)
+                        #p = PantallaCarga.PantallaCarga
+                        #p.pantalla(p,'J',0,0)
+                        n = Niveles.Niveles
+                        n.Nivel(0)
                         var = False
                         run = False
                     if(btn_Cargar_Partida.comparar_cord(x1,y1)):
@@ -60,13 +63,13 @@ class MenuInicio(object):
                         run = False
             if var:
                 screen.fill(white)
-                screen.blit(fondo, logorect)
+                screen.blit(fondo, (0,0))
                 screen.blit(pacmanicono, (pacmanicono_pos_x, pacmanicono_pos_y))
                 #screen.blit(btn_Nueva_Partida.imagen, (btn_Nueva_Partida.x, btn_Nueva_Partida.y))
                 screen.blit(lista_botones[0].imagen, (lista_botones[0].i, lista_botones[0].j))
                 screen.blit(btn_Cargar_Partida.imagen, (btn_Cargar_Partida.i, btn_Cargar_Partida.j))
+                screen.blit(configuracion_juego.imagen, (configuracion_juego.i, configuracion_juego.j))
                 #screen.blit(lista_botones[1].imagen, (lista_botones[1].i, lista_botones[1].j))
                 #print(pacmanicono.get_rect())
-                screen.blit(super_Velocidad.imagen,(super_Velocidad.i,super_Velocidad.j))
                 pygame.display.flip()
         pygame.quit()

@@ -54,6 +54,9 @@
     <Compile Include="MenuInicio.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Niveles.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Nodo.py">
       <SubType>Code</SubType>
     </Compile>

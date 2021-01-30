@@ -34,7 +34,6 @@ class Dijkstra(object):
             if(self.peso[x] == sys.maxsize):
                 return False
         return True
-
     def getCamino(self, ini, fin , grafo ,nodos):
         self.peso = []
         self.ruta = []
@@ -48,10 +47,10 @@ class Dijkstra(object):
         self.peso[ini.id] = 0
         self.ruta[ini.id] = ini.id 
         
-        for count in range(len(grafo)):
+        for count in range(len(nodos)):
             u = self.minDistance(self, nodosVisit, grafo) 
             nodosVisit[u] = True
-            for v in range(len(grafo)):
+            for v in range(len(nodos)):
                 if nodosVisit[v] != True and grafo[u][v]!=0 and self.peso[u] != sys.maxsize and self.peso[u] + grafo[u][v] < self.peso[v]:
                     self.peso[v] = self.peso[u] + grafo[u][v]
                     self.ruta[v] = u

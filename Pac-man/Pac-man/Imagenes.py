@@ -114,8 +114,71 @@ class Imagenes(object):
         self.speed = pygame.image.load("recursos/botones/Speed.png").convert_alpha()
         self.nspeed = pygame.image.load("recursos/botones/NoSpeed.png").convert_alpha()
         self.speedA = pygame.image.load("recursos/botones/SpeedActivo.png").convert_alpha()
+        self.configuracion_juego = pygame.image.load("recursos/botones/Configuracion.png").convert_alpha()
+        self.resaltarB = pygame.image.load("recursos/botones/Resaltador.png").convert_alpha()
+
+        self.batman = pygame.image.load("recursos/niveles/batman.jpg").convert_alpha()
+        self.deadpool = pygame.image.load("recursos/niveles/deadpool.jpg").convert_alpha()
+        self.dragonball  = pygame.image.load("recursos/niveles/dragonball .jpg").convert_alpha()
+        self.iroman = pygame.image.load("recursos/niveles/iroman.jpg").convert_alpha()
+        self.narutoshippuden = pygame.image.load("recursos/niveles/narutoshippuden.jpg").convert_alpha()
+        self.onepiece = pygame.image.load("recursos/niveles/onepiece.jpg").convert_alpha()
+        self.simsoms = pygame.image.load("recursos/niveles/simsoms.jpg").convert_alpha()
+        self.spirderman = pygame.image.load("recursos/niveles/spirderman.jpg").convert_alpha()
+        self.superman = pygame.image.load("recursos/niveles/superman.jpg").convert_alpha()
+        self.theJocker = pygame.image.load("recursos/niveles/theJocker.jpg").convert_alpha()
+
+        self.batman_Fondo = pygame.image.load("recursos/fondos/niveles/batman.jpg").convert_alpha()
+        self.deadpool_Fondo = pygame.image.load("recursos/fondos/niveles/deadpool.jpg").convert_alpha()
+        self.dragonball_Fondo  = pygame.image.load("recursos/fondos/niveles/dragonball .jpg").convert_alpha()
+        self.iroman_Fondo = pygame.image.load("recursos/fondos/niveles/iroman.jpg").convert_alpha()
+        self.narutoshippuden_Fondo = pygame.image.load("recursos/fondos/niveles/narutoshippuden.jpg").convert_alpha()
+        self.simsoms_Fondo = pygame.image.load("recursos/fondos/niveles/simsoms.jpg").convert_alpha()
+        self.spirderman_Fondo = pygame.image.load("recursos/fondos/niveles/spirderman.jpg").convert_alpha()
+        self.superman_Fondo = pygame.image.load("recursos/fondos/niveles/superman.jpg").convert_alpha()
+        self.theJocker_Fondo = pygame.image.load("recursos/fondos/niveles/theJocker.jpg").convert_alpha()
+        self.onepiece_Fondo = pygame.image.load("recursos/fondos/niveles/onepiece.jpg").convert_alpha()
+        self.panel = pygame.image.load("recursos/otros/Panel.png").convert_alpha()
 
 
+
+    def obtener_imagen_fondo(self, nombre,ancho, alto):
+        if nombre == "batmanF":
+            self.batman_Fondo = pygame.transform.scale(self.batman_Fondo,(ancho,alto))
+            return self.batman_Fondo
+        elif nombre == "deadpoolF":
+            self.deadpool_Fondo = pygame.transform.scale(self.deadpool_Fondo,(ancho,alto))
+            return self.deadpool_Fondo
+        elif nombre == "dragonballF":
+            self.dragonball_Fondo = pygame.transform.scale(self.dragonball_Fondo,(ancho,alto))
+            return self.dragonball_Fondo
+        elif nombre == "iromanF":
+            self.iroman_Fondo = pygame.transform.scale(self.iroman_Fondo,(ancho,alto))
+            return self.iroman_Fondo
+        elif nombre == "narutoshippudenF":
+            self.narutoshippuden_Fondo = pygame.transform.scale(self.narutoshippuden_Fondo,(ancho,alto))
+            return self.narutoshippuden_Fondo
+        elif nombre == "onepieceF":
+            self.onepiece_Fondo = pygame.transform.scale(self.onepiece_Fondo,(ancho,alto))
+            return self.onepiece_Fondo
+        elif nombre == "simsomsF":
+            self.simsoms_Fondo = pygame.transform.scale(self.simsoms_Fondo,(ancho,alto))
+            return self.simsoms_Fondo
+        elif nombre == "spirdermanF":
+            self.spirderman_Fondo = pygame.transform.scale(self.spirderman_Fondo,(ancho,alto))
+            return self.spirderman_Fondo
+        elif nombre == "supermanF":
+            self.superman_Fondo = pygame.transform.scale(self.superman_Fondo,(ancho,alto))
+            return self.superman_Fondo
+        elif nombre == "theJockerF":
+            self.theJocker_Fondo = pygame.transform.scale(self.theJocker_Fondo,(ancho,alto))
+            return self.theJocker_Fondo
+        elif nombre == "panel":
+            self.panel = pygame.transform.scale(self.panel,(ancho,alto))
+            return self.panel
+        
+        
+        return None
     def obtener_imagen(self, nombre,ancho, alto):
         if nombre == "pacman":
             self.pacMan = pygame.transform.scale(self.pacMan,(ancho,alto))
@@ -129,7 +192,6 @@ class Imagenes(object):
         elif nombre == "power":
             self.powerPellets = pygame.transform.scale(self.powerPellets,(ancho,alto))
             return self.powerPellets
-        
         return None
     def obtener_imagen_fantasma(self, nombre,ancho, alto):
         if nombre == "blinky":
@@ -237,6 +299,12 @@ class Imagenes(object):
         elif nombre == "speedA":
             self.speedA = pygame.transform.scale(self.speedA,(ancho,alto))
             return self.speedA
+        elif nombre == "configuracionJ":
+            self.configuracion_juego = pygame.transform.scale(self.configuracion_juego,(ancho,alto))
+            return self.configuracion_juego
+        elif nombre == "resaltarB":
+            self.resaltarB = pygame.transform.scale(self.resaltarB,(ancho,alto))
+            return self.resaltarB
         
         return None
 
@@ -268,3 +336,36 @@ class Imagenes(object):
         elif nombre == "clydeC":
             self.clydeC = pygame.transform.scale(self.clydeC,(ancho,alto))
             return self.clydeC
+
+    def obtener_imagen_nivel(self, nombre, ancho, alto):
+        if nombre == "batman":
+            self.batman = pygame.transform.scale(self.batman,(ancho,alto))
+            return self.batman
+        elif nombre == "deadpool":
+            self.deadpool = pygame.transform.scale(self.deadpool,(ancho,alto))
+            return self.deadpool
+        elif nombre == "dragonball":
+            self.dragonball = pygame.transform.scale(self.dragonball,(ancho,alto))
+            return self.dragonball
+        elif nombre == "iroman":
+            self.iroman = pygame.transform.scale(self.iroman,(ancho,alto))
+            return self.iroman
+        elif nombre == "narutoshippuden":
+            self.narutoshippuden = pygame.transform.scale(self.narutoshippuden,(ancho,alto))
+            return self.narutoshippuden
+        elif nombre == "onepiece":
+            self.onepiece = pygame.transform.scale(self.onepiece,(ancho,alto))
+            return self.onepiece
+        elif nombre == "simsoms":
+            self.simsoms = pygame.transform.scale(self.simsoms,(ancho,alto))
+            return self.simsoms
+        elif nombre == "spirderman":
+            self.spirderman = pygame.transform.scale(self.spirderman,(ancho,alto))
+            return self.spirderman
+        elif nombre == "superman":
+            self.superman = pygame.transform.scale(self.superman,(ancho,alto))
+            return self.superman
+        elif nombre == "theJocker":
+            self.theJocker = pygame.transform.scale(self.theJocker,(ancho,alto))
+            return self.theJocker
+        return None
