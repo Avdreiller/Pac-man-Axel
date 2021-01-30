@@ -1,0 +1,2 @@
+SuperVelocidad: False
+Inmortalidad: addsa

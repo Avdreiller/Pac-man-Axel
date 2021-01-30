@@ -43,6 +43,7 @@ class MenuInicio(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: 
                     run = False
+                    
                 if pygame.mouse.get_pressed(3)==(1,0,0):
                     x1, y1 = pygame.mouse.get_pos()
                     if(btn_Nueva_Partida.comparar_cord(x1,y1)):

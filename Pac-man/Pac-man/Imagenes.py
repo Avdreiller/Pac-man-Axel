@@ -52,6 +52,7 @@ class Imagenes(object):
         #self.bola = pygame.transform.scale(self.bola,(ancho,alto))
         self.nada = pygame.image.load("recursos/otros/Nada.png").convert_alpha()
         self.powerPellets = pygame.image.load("recursos/otros/PowerPellets.png").convert_alpha()
+        self.tres = pygame.image.load("recursos/otros/tres.png").convert_alpha()
         #self.nada = pygame.transform.scale(self.nada,(ancho,alto))
         self.blinky = pygame.image.load("recursos/otros/FantasmaR.png").convert_alpha()
         self.pinky = pygame.image.load("recursos/otros/FantasmaRs.png").convert_alpha()
@@ -192,6 +193,9 @@ class Imagenes(object):
         elif nombre == "power":
             self.powerPellets = pygame.transform.scale(self.powerPellets,(ancho,alto))
             return self.powerPellets
+        elif nombre == "tres":
+            self.tres = pygame.transform.scale(self.tres,(ancho,alto))
+            return self.tres
         return None
     def obtener_imagen_fantasma(self, nombre,ancho, alto):
         if nombre == "blinky":
