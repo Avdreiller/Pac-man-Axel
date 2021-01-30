@@ -41,62 +41,6 @@ class Mapa(object):
 
     def validar_Cruces2(m, i, j, cord1, cord2, cord3, cord4, cord5, cord6):
         if m[i+cord1][j+cord2]!='#' and ((m[i+cord3][j+cord4]=='#'or m[i+cord5][j+cord6] == '#') or (m[i+cord3][j+cord4]=='#'and m[i+cord5][j+cord6] == '#')):
-            #if m[i+cord3][j+cord4]=='#':
-            #    x = i+cord5
-            #    y = j+cord6
-            #    contador = 0
-            #    if m[x][y+1]=='#':
-            #        contador += 1
-            #    if m[x][y-1]=='#':
-            #        contador += 1
-            #    if m[x+1][y]=='#':
-            #        contador += 1
-            #    if m[x-1][y]=='#':
-            #        contador += 1
-            #    if contador >=1:
-            #        return False
-            #else:
-            #    if m[i+cord5][j+cord6]=='#':
-            #        x = i+cord3
-            #        y = j+cord4
-            #        contador = 0
-            #        if m[x][y+1]=='#':
-            #            contador += 1
-            #        if m[x][y-1]=='#':
-            #            contador += 1
-            #        if m[x+1][y]=='#':
-            #            contador += 1
-            #        if m[x-1][y]=='#':
-            #            contador += 1
-            #        if contador >=2:
-            #            return False
-            #    else:
-            #        x = i+cord5
-            #        y = j+cord6
-            #        contador = 0
-            #        if m[x][y+1]=='#':
-            #            contador += 1
-            #        if m[x][y-1]=='#':
-            #            contador += 1
-            #        if m[x+1][y]=='#':
-            #            contador += 1
-            #        if m[x-1][y]=='#':
-            #            contador += 1
-            #        if contador >=2:
-            #            return False
-            #        x1 = i+cord3
-            #        y1 = j+cord4
-            #        contador2 = 0
-            #        if m[x1][y1+1]=='#':
-            #            contador2 += 1
-            #        if m[x1][y1-1]=='#':
-            #            contador2 += 1
-            #        if m[x1+1][y1]=='#':
-            #            contador2 += 1
-            #        if m[x1-1][y1]=='#':
-            #            contador2 += 1
-            #        if contador2 >=2:
-            #            return False
             return True
         return False
 
@@ -153,18 +97,9 @@ class Mapa(object):
                                             if self.validar_Cruces2(m,i,j,1,1,1,0,0,1)==True and self.validar_Cruces2(m,i,j,-1,-1,-1,0,0,-1)==True and self.validar_Cruces2(m,i,j,-1,1,-1,0,0,1)==True and self.validar_Cruces(m,i,j,1,-1,1,0,0,-1)==True:
                                                 m[i][j] = '#'
                                         
-            
-
                         if i == 11:
                             m[i][j] = '_'
 
-        
-        #cadena = ''
-        #for i in range(23):
-        #    cadena = ''
-        #    for j in range(23):
-        #        cadena += str(m[i][j])
-        #    print(cadena)
         archivo_texto.close()
         return m
 

@@ -14,7 +14,6 @@ import PantallaCarga
 import Niveles
 import MenuInicio
 class Juego(object):
-    """description of class"""
     def __init__(self, puntos):
         self.nodos = []
         self.mapa_imagenes = []
@@ -187,19 +186,24 @@ class Juego(object):
         salir = Imagen.Imagen(imagenes.obtener_imagen_boton("resaltarB",200, 45), 315, 414, 200, 45)
         lista_botones_menu.append(salir)
 
+        inicio2 = Imagen.Imagen(imagenes.obtener_imagen_boton("resaltarB",200, 45), 315, 546, 200, 45)
+
         matris_botones = []
-        posy = 248
+        posy = 247
         for i in range(4):
             matris_botones.append([])
-            posx = 430
+            posx = 418
 
             for j in range(2):
-                salir = Imagen.Imagen(imagenes.obtener_imagen_boton("resaltarB",100, 45), posx, posy, 100, 45)
-                matris_botones[i].append(salir)
+                if j < 1:
+                    imm = Imagen.Imagen(imagenes.obtener_imagen_boton("resaltar2",70, 40), posx, posy, 70, 40)
+                else:
+                    imm = Imagen.Imagen(imagenes.obtener_imagen_boton("resaltar2",75, 40), posx, posy, 75, 40)
+                matris_botones[i].append(imm)
                 posx +=100
             posy += 56
         validaciones_botones_menu = [False,False,False,False]
-        
+        validaciones_botones_confi = [[False,False],[False,False],[False,False],[False,False]]
 
         fondo = self.obtener_fondo(nivel)        
         
@@ -217,12 +221,15 @@ class Juego(object):
         validacion_Fin = [True]
         validaciones = [[False,False,False,False],[False,False,False,False],False]
         pausa = [False]
-        confi_EST = [False, False, False, False, 6] #Estadisticas de configuracion
+        confi_EST = [False, False, False, False, 2] #Estadisticas de configuracion
+        self.cargar_confi(confi_EST)
+        validacion_ini = False
         
         
         #fuente = pygame.font.Font(None, 30)
         fuente = pygame.font.SysFont("Stencil", 25)
         fuente3 = pygame.font.SysFont("Agency FB", 30)
+        fuente2 = pygame.font.SysFont("Agency FB", 45)
         while bandera == True:
             self.llenar_lista_nodos(nivel)
             d = Dijkstra.Dijkstra
@@ -264,6 +271,7 @@ class Juego(object):
         
         super_Vel = False
         confi = False
+        game_Over = False
         while gameOver:
             var = True
             self.vidas = []
@@ -292,45 +300,77 @@ class Juego(object):
                             lista_Validaciones[1] = False
                             super_Vel = True 
                             lista_Tiempo[2] = 0
+                        if game_Over == True:
+                            if inicio2.comparar_cord(x1,y1):
+                                m = MenuInicio.MenuInicio
+                                m.Menu()
+                                var = False
+                                gameOver = False
                     else:
-                        if inicio.comparar_cord(x1,y1):
-                            m = MenuInicio.MenuInicio
-                            m.Menu()
-                            var = False
-                            gameOver = False
-                        if niveles.comparar_cord(x1,y1):
-                            n = Niveles.Niveles
-                            n.Nivel(0)
-                            var = False
-                            gameOver = False
-                        if configuracion.comparar_cord(x1,y1):
-                            confi = True
-                        if salir.comparar_cord(x1,y1):
-                            pass
+                        if confi == True:
+                            for i in range(4):
+                                for j in range(2):
+                                    if matris_botones[i][j].comparar_cord(x1,y1):
+                                        if j == 0:
+                                            confi_EST[i] = True
+                                        else:
+                                            confi_EST[i] = False
+                                            super_Vel = False
+                                        self.guardar_confi(confi_EST)
+
+                        else:
+                            if inicio.comparar_cord(x1,y1):
+                                m = MenuInicio.MenuInicio
+                                m.Menu()
+                                var = False
+                                gameOver = False
+                            if niveles.comparar_cord(x1,y1):
+                                n = Niveles.Niveles
+                                n.Nivel(0)
+                                var = False
+                                gameOver = False
+                            if configuracion.comparar_cord(x1,y1):
+                                confi = True
+                            if salir.comparar_cord(x1,y1):
+                                pass
                     
                     if(configuracion_juego.comparar_cord(x1,y1)):
                         if pausa[0] == True:
                             pausa[0] = False
                         else:
                             pausa[0] = True
+                if game_Over == True:
+                    x1, y1 = pygame.mouse.get_pos()
+                    if inicio2.comparar_cord(x1,y1):
+                        validacion_ini = True
+                    else:
+                        validacion_ini = False
                 if pausa[0] == True:
                     x1, y1 = pygame.mouse.get_pos()
-                    if inicio.comparar_cord(x1,y1):
-                        validaciones_botones_menu[0]=True
+                    if confi == True:
+                        for i in range(4):
+                            for j in range(2):
+                                if matris_botones[i][j].comparar_cord(x1,y1):
+                                    validaciones_botones_confi[i][j]= True
+                                else:
+                                    validaciones_botones_confi[i][j]= False
                     else:
-                        validaciones_botones_menu[0] = False
-                    if niveles.comparar_cord(x1,y1):
-                        validaciones_botones_menu[1]=True
-                    else:
-                        validaciones_botones_menu[1] = False
-                    if configuracion.comparar_cord(x1,y1):
-                        validaciones_botones_menu[2]=True
-                    else:
-                        validaciones_botones_menu[2] = False
-                    if salir.comparar_cord(x1,y1):
-                        validaciones_botones_menu[3]=True
-                    else:
-                        validaciones_botones_menu[3] = False
+                        if inicio.comparar_cord(x1,y1):
+                            validaciones_botones_menu[0]=True
+                        else:
+                            validaciones_botones_menu[0] = False
+                        if niveles.comparar_cord(x1,y1):
+                            validaciones_botones_menu[1]=True
+                        else:
+                            validaciones_botones_menu[1] = False
+                        if configuracion.comparar_cord(x1,y1):
+                            validaciones_botones_menu[2]=True
+                        else:
+                            validaciones_botones_menu[2] = False
+                        if salir.comparar_cord(x1,y1):
+                            validaciones_botones_menu[3]=True
+                        else:
+                            validaciones_botones_menu[3] = False
                 if event.type == pygame.KEYDOWN and bandera == True:
                     if pausa[0] == False:
                         bandera = False
@@ -358,224 +398,236 @@ class Juego(object):
                             else:
                                 dire2 = "UP"
                         if event.key == pygame.K_SPACE and confi_EST[1] == True:
+                            
                             confi_EST[1] = False
                             lista_Tiempo[1] = 1
                             lista_Validaciones[1] = False
                             super_Vel = True 
                             lista_Tiempo[2] = 0
                     if event.key == pygame.K_ESCAPE:
-                        if pausa[0] == True:
-                            pausa[0] = False
+                        if confi == True:
+                            confi = False
                         else:
-                            pausa[0] = True
+                            if pausa[0] == True:
+                                pausa[0] = False
+                            else:
+                                pausa[0] = True
                 
                 elif event.type == pygame.QUIT:
                     gameOver = False
                     var = False
+
             if var:
-                if pausa[0] == False: 
-                    self.moverPacman(dire, tamCuadro, imagenes)
-                    self.pacman = self.mapa_imagenes[self.posicion_x_pacman][self.posicion_y_pacman]
+                if game_Over == False:
+                    if pausa[0] == False: 
+                        self.moverPacman(dire, tamCuadro, imagenes)
+                        self.pacman = self.mapa_imagenes[self.posicion_x_pacman][self.posicion_y_pacman]
 
-                screen.fill(BLACK)
-                if fondo != None:
-                    screen.blit(fondo.imagen, (fondo.i,fondo.j))
-                lis_fant = [0,0,0,0]
-                for k in range(len(self.fantasmas)):
-                    for x in range(len(self.fantasmas[k])):
-                        if self.fantasmas[k][x]=='1'and k==0:
-                            lis_fant[0] = x
-                        if self.fantasmas[k][x]=='2' and k==1:
-                            lis_fant[1] = x
-                        if self.fantasmas[k][x]=='3'and k==2:
-                            lis_fant[2] = x
-                        if self.fantasmas[k][x]=='4'and k==3:
-                            lis_fant[3] = x
-                n = None 
-                for j in range(len(self.mapa_imagenes)):
-                        for i in range(len(self.mapa_imagenes)):
-                            if self.mapa_imagenes[i][j].tipo=='@':
-                                self.posicion_x_pacman = i
-                                self.posicion_y_pacman = j
+                    screen.fill(BLACK)
+                    if fondo != None:
+                        screen.blit(fondo.imagen, (fondo.i,fondo.j))
+                    lis_fant = [0,0,0,0]
+                    for k in range(len(self.fantasmas)):
+                        for x in range(len(self.fantasmas[k])):
+                            if self.fantasmas[k][x]=='1'and k==0:
+                                lis_fant[0] = x
+                            if self.fantasmas[k][x]=='2' and k==1:
+                                lis_fant[1] = x
+                            if self.fantasmas[k][x]=='3'and k==2:
+                                lis_fant[2] = x
+                            if self.fantasmas[k][x]=='4'and k==3:
+                                lis_fant[3] = x
+                    n = None 
+                    for j in range(len(self.mapa_imagenes)):
+                            for i in range(len(self.mapa_imagenes)):
+                                if self.mapa_imagenes[i][j].tipo=='@':
+                                    self.posicion_x_pacman = i
+                                    self.posicion_y_pacman = j
                                 
-                            imag = self.mapa_imagenes[i][j].imagen
-                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                imag = self.mapa_imagenes[i][j].imagen
+                                screen.blit(imag.imagen, (imag.i, imag.j))
 
-                            n = self.mapa_imagenes[i][j]
-                            if n != None:
-                                x = n.imagen.i
-                                y = n.imagen.j
-                                if n.tipo != '@' and n.tipo != '%':
-                                    x -= 4
-                                    y -= 4
-                                elif n.tipo == '%':
-                                    x += 1
-                                    y += 2
-                                v = False
-                                if powerP != True:
-                                    if self.mapa_imagenes[i][j].id == lis_fant[0]:
-                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                        screen.blit(imag.imagen, (imag.i, imag.j))
+                                n = self.mapa_imagenes[i][j]
+                                if n != None:
+                                    x = n.imagen.i
+                                    y = n.imagen.j
+                                    if n.tipo != '@' and n.tipo != '%':
+                                        x -= 4
+                                        y -= 4
+                                    elif n.tipo == '%':
+                                        x += 1
+                                        y += 2
+                                    v = False
+                                    if powerP != True:
+                                        if self.mapa_imagenes[i][j].id == lis_fant[0]:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("blinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                            #v = True
+                                        if self.mapa_imagenes[i][j].id == lis_fant[1]:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                            #v = True
+                                        if self.mapa_imagenes[i][j].id == lis_fant[2]:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
+                                            #v = True
+                                        if self.mapa_imagenes[i][j].id == lis_fant[3]:
+                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                            screen.blit(imag.imagen, (imag.i, imag.j))
                                         #v = True
-                                    if self.mapa_imagenes[i][j].id == lis_fant[1]:
-                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("pinky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                        screen.blit(imag.imagen, (imag.i, imag.j))
-                                        #v = True
-                                    if self.mapa_imagenes[i][j].id == lis_fant[2]:
-                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("inky", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                        screen.blit(imag.imagen, (imag.i, imag.j))
-                                        #v = True
-                                    if self.mapa_imagenes[i][j].id == lis_fant[3]:
-                                        imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("clyde", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                        screen.blit(imag.imagen, (imag.i, imag.j))
-                                    #v = True
-                                #if v == True:
-                                else:
-                                    if self.mapa_imagenes[i][j].id == lis_fant[0] or self.mapa_imagenes[i][j].id == lis_fant[1] or self.mapa_imagenes[i][j].id == lis_fant[2] or self.mapa_imagenes[i][j].id == lis_fant[3]:
-                                        if validaciones[1][0] == True and self.mapa_imagenes[i][j].id == lis_fant[0]:
-                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                            screen.blit(imag.imagen, (imag.i, imag.j))
-                                        elif self.mapa_imagenes[i][j].id == lis_fant[0]:
-                                            if lista_Tiempo[0] == tiempo_Color:
+                                    #if v == True:
+                                    else:
+                                        if self.mapa_imagenes[i][j].id == lis_fant[0] or self.mapa_imagenes[i][j].id == lis_fant[1] or self.mapa_imagenes[i][j].id == lis_fant[2] or self.mapa_imagenes[i][j].id == lis_fant[3]:
+                                            if validaciones[1][0] == True and self.mapa_imagenes[i][j].id == lis_fant[0]:
+                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                screen.blit(imag.imagen, (imag.i, imag.j))
+                                            elif self.mapa_imagenes[i][j].id == lis_fant[0]:
+                                                if lista_Tiempo[0] == tiempo_Color:
+                                                    if color_Fantasma == 0:
+                                                        color_Fantasma = 1
+                                                        tiempo_Color += 1
+                                                    else:
+                                                        color_Fantasma = 0
+                                                        tiempo_Color += 1 
+
                                                 if color_Fantasma == 0:
-                                                    color_Fantasma = 1
-                                                    tiempo_Color += 1
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                    screen.blit(imag.imagen, (imag.i, imag.j))
                                                 else:
-                                                    color_Fantasma = 0
-                                                    tiempo_Color += 1 
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                    screen.blit(imag.imagen, (imag.i, imag.j))
+                                            if validaciones[1][1] == True and self.mapa_imagenes[i][j].id == lis_fant[1]:
+                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                screen.blit(imag.imagen, (imag.i, imag.j))
+                                            elif self.mapa_imagenes[i][j].id == lis_fant[1]:
+                                                if lista_Tiempo[0] == tiempo_Color:
+                                                    if color_Fantasma == 0:
+                                                        color_Fantasma = 1
+                                                        tiempo_Color += 1
+                                                    else:
+                                                        color_Fantasma = 0
+                                                        tiempo_Color += 1 
 
-                                            if color_Fantasma == 0:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                                screen.blit(imag.imagen, (imag.i, imag.j))
-                                            else:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                                screen.blit(imag.imagen, (imag.i, imag.j))
-                                        if validaciones[1][1] == True and self.mapa_imagenes[i][j].id == lis_fant[1]:
-                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                            screen.blit(imag.imagen, (imag.i, imag.j))
-                                        elif self.mapa_imagenes[i][j].id == lis_fant[1]:
-                                            if lista_Tiempo[0] == tiempo_Color:
                                                 if color_Fantasma == 0:
-                                                    color_Fantasma = 1
-                                                    tiempo_Color += 1
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                    screen.blit(imag.imagen, (imag.i, imag.j))
                                                 else:
-                                                    color_Fantasma = 0
-                                                    tiempo_Color += 1 
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                    screen.blit(imag.imagen, (imag.i, imag.j))
+                                            if validaciones[1][2] == True and self.mapa_imagenes[i][j].id == lis_fant[2]:
+                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                screen.blit(imag.imagen, (imag.i, imag.j))
+                                            elif self.mapa_imagenes[i][j].id == lis_fant[2]:
+                                                if lista_Tiempo[0] == tiempo_Color:
+                                                    if color_Fantasma == 0:
+                                                        color_Fantasma = 1
+                                                        tiempo_Color += 1
+                                                    else:
+                                                        color_Fantasma = 0
+                                                        tiempo_Color += 1 
 
-                                            if color_Fantasma == 0:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                                screen.blit(imag.imagen, (imag.i, imag.j))
-                                            else:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                                screen.blit(imag.imagen, (imag.i, imag.j))
-                                        if validaciones[1][2] == True and self.mapa_imagenes[i][j].id == lis_fant[2]:
-                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                            screen.blit(imag.imagen, (imag.i, imag.j))
-                                        elif self.mapa_imagenes[i][j].id == lis_fant[2]:
-                                            if lista_Tiempo[0] == tiempo_Color:
                                                 if color_Fantasma == 0:
-                                                    color_Fantasma = 1
-                                                    tiempo_Color += 1
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                    screen.blit(imag.imagen, (imag.i, imag.j))
                                                 else:
-                                                    color_Fantasma = 0
-                                                    tiempo_Color += 1 
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                    screen.blit(imag.imagen, (imag.i, imag.j))
+                                            if validaciones[1][3] == True and self.mapa_imagenes[i][j].id == lis_fant[3]:
+                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                screen.blit(imag.imagen, (imag.i, imag.j))
+                                            elif self.mapa_imagenes[i][j].id == lis_fant[3]:
+                                                if lista_Tiempo[0] == tiempo_Color:
+                                                    if color_Fantasma == 0:
+                                                        color_Fantasma = 1
+                                                        tiempo_Color += 1
+                                                    else:
+                                                        color_Fantasma = 0
+                                                        tiempo_Color += 1 
 
-                                            if color_Fantasma == 0:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                                screen.blit(imag.imagen, (imag.i, imag.j))
-                                            else:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                                screen.blit(imag.imagen, (imag.i, imag.j))
-                                        if validaciones[1][3] == True and self.mapa_imagenes[i][j].id == lis_fant[3]:
-                                            imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("ojosD", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                            screen.blit(imag.imagen, (imag.i, imag.j))
-                                        elif self.mapa_imagenes[i][j].id == lis_fant[3]:
-                                            if lista_Tiempo[0] == tiempo_Color:
                                                 if color_Fantasma == 0:
-                                                    color_Fantasma = 1
-                                                    tiempo_Color += 1
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
                                                 else:
-                                                    color_Fantasma = 0
-                                                    tiempo_Color += 1 
+                                                    imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
+                                                screen.blit(imag.imagen, (imag.i, imag.j))
 
-                                            if color_Fantasma == 0:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sad", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                            else:
-                                                imag = Imagen.Imagen(imagenes.obtener_imagen_fantasma("sadGris", tamCuadro+8, tamCuadro+8), x, y, tamCuadro+8, tamCuadro+8)
-                                            screen.blit(imag.imagen, (imag.i, imag.j))
-
-                if lista_Validaciones[0] == True:
-                    powerP = False
-                    lista_Validaciones[0] = False
-                if self.respaldo[self.posicion_x_pacman][self.posicion_y_pacman]=='+':
-                    powerP = True
-                    lista_Tiempo[0] = 0
-                    tiempo_Color = 7
-                    color_Fantasma = 0
-                validaciones[2] = powerP
-                if lista_Validaciones[1] == True:
-                    lista_Validaciones[1] = False
-                if lista_Validaciones[2] == True:
-                    super_Vel = False
-                    lista_Validaciones[2] = False
+                    if lista_Validaciones[0] == True:
+                        powerP = False
+                        lista_Validaciones[0] = False
+                    if self.respaldo[self.posicion_x_pacman][self.posicion_y_pacman]=='+':
+                        powerP = True
+                        lista_Tiempo[0] = 0
+                        tiempo_Color = 7
+                        color_Fantasma = 0
+                    validaciones[2] = powerP
+                    if lista_Validaciones[1] == True:
+                        lista_Validaciones[1] = False
+                    if lista_Validaciones[2] == True:
+                        super_Vel = False
+                        lista_Validaciones[2] = False
             
-                contador_fantasma = self.choque_Pacman(validaciones, lis_fant, lista_Tiempo, powerP, contador_fantasma, imagenes, tamCuadro, super_Vel, lista_Validaciones, confi_EST)
+                    contador_fantasma = self.choque_Pacman(validaciones, lis_fant, lista_Tiempo, powerP, contador_fantasma, imagenes, tamCuadro, super_Vel, lista_Validaciones, confi_EST)
                     
                 
-                i1 = 165
-                for x in range(len(self.vidas)):
-                    if x <= 15:
-                        screen.blit(self.vidas[x], (i1, 625))
-                        i1+=30
-                    elif x == 16:
-                        img = imagenes.obtener_imagen("tres", tamCuadro+8, tamCuadro+8)
-                        screen.blit(img, (i1, 625))
+                    i1 = 165
+                    for x in range(len(self.vidas)):
+                        if x <= 15:
+                            screen.blit(self.vidas[x], (i1, 625))
+                            i1+=30
+                        elif x == 16:
+                            img = imagenes.obtener_imagen("tres", tamCuadro+8, tamCuadro+8)
+                            screen.blit(img, (i1, 625))
 
-                if self.validar_dire(dire2)==True:
-                    dire = dire2
-                    dire2 = ""
-                if self.validar_dire(dire)==False:
-                    dire2 = ""
+                    if self.validar_dire(dire2)==True:
+                        dire = dire2
+                        dire2 = ""
+                    if self.validar_dire(dire)==False:
+                        dire2 = ""
 
             
-                bandera = True
+                    bandera = True
 
-                text = "Puntaje"
-                mensaje = fuente.render(text, 1, (89, 172, 255))
-                screen.blit(mensaje, (28, 113))
-                mensaje = fuente.render(text, 1, (27, 67, 207))
-                screen.blit(mensaje, (30, 115))
-            
+                    text = "Puntaje"
+                    mensaje = fuente.render(text, 1, (89, 172, 255))
+                    screen.blit(mensaje, (28, 113))
+                    mensaje = fuente.render(text, 1, (27, 67, 207))
+                    screen.blit(mensaje, (30, 115))
+                    
+                    text = "Nivel "+ str(nivel+1)
+                    mensaje = fuente2.render(text, 1, (89, 172, 255))
+                    screen.blit(mensaje, (168, 48))
+                    mensaje = fuente2.render(text, 1, (27, 67, 207))
+                    screen.blit(mensaje, (170, 50))
 
-                text = str(self.puntaje)
-                j = 145
-                for c in text:
-                    mensaje = fuente.render(c, 1, (225, 121, 121))
-                    screen.blit(mensaje, (80, j))
-                    j+=25
+                    text = str(self.puntaje)
+                    j = 145
+                    for c in text:
+                        mensaje = fuente.render(c, 1, (225, 121, 121))
+                        screen.blit(mensaje, (80, j))
+                        j+=25
 
-                if bandera_hilo == True:
+                    if bandera_hilo == True:
                 
-                    self.hilo(d, f, '1',0.001, validaciones, validacion_Fin, pausa)
-                    self.hilo(d, f, '4',0.3, validaciones, validacion_Fin, pausa)
-                    self.hilo(d, f, '2',0.001, validaciones, validacion_Fin, pausa)
-                    self.hilo(d, f, '3',0.001, validaciones, validacion_Fin, pausa)
+                        self.hilo(d, f, '1',0.001, validaciones, validacion_Fin, pausa)
+                        self.hilo(d, f, '4',0.3, validaciones, validacion_Fin, pausa)
+                        self.hilo(d, f, '2',0.001, validaciones, validacion_Fin, pausa)
+                        self.hilo(d, f, '3',0.001, validaciones, validacion_Fin, pausa)
                 
-                    bandera_hilo = False
-                if super_Vel == True:
-                    screen.blit(super_Velocidad_Activa.imagen,(super_Velocidad_Activa.i,super_Velocidad_Activa.j))
-                elif confi_EST[1] == True:
-                    screen.blit(super_Velocidad.imagen,(super_Velocidad.i,super_Velocidad.j))
-                else:
-                    screen.blit(no_super_velocidad.imagen,(no_super_velocidad.i,no_super_velocidad.j))
-            
-                if pausa[0] == True:
-                    if confi == False:
-                        self.menu_opciones(imagenes, screen, fuente3, lista_botones_menu, validaciones_botones_menu)
+                        bandera_hilo = False
+                    if super_Vel == True:
+                        screen.blit(super_Velocidad_Activa.imagen,(super_Velocidad_Activa.i,super_Velocidad_Activa.j))
+                    elif confi_EST[1] == True:
+                        screen.blit(super_Velocidad.imagen,(super_Velocidad.i,super_Velocidad.j))
                     else:
-                        self.menu_configuracion(imagenes, screen, fuente3, lista_botones_menu, validaciones_botones_menu,matris_botones)
-                screen.blit(configuracion_juego.imagen, (configuracion_juego.i, configuracion_juego.j))
-
+                        screen.blit(no_super_velocidad.imagen,(no_super_velocidad.i,no_super_velocidad.j))
+            
+                    if pausa[0] == True:
+                        if confi == False:
+                            self.menu_opciones(imagenes, screen, fuente3, lista_botones_menu, validaciones_botones_menu)
+                        else:
+                            self.menu_configuracion(imagenes, screen, fuente3, lista_botones_menu, validaciones_botones_menu,matris_botones, validaciones_botones_confi, confi_EST)
+                    screen.blit(configuracion_juego.imagen, (configuracion_juego.i, configuracion_juego.j))
+                else:
+                    self.game_ov(imagenes, screen,fuente3, inicio2, validacion_ini)
                 pygame.display.flip()
             
                 #time.sleep(0.15)
@@ -588,10 +640,15 @@ class Juego(object):
                         clock.tick(6)
                 #print(self.total_puntos)
             
-                if self.total_puntos <= 0 and nivel < 9:
-                    validacion_Fin[0] = False
-                    pc = PantallaCarga.PantallaCarga
-                    pc.pantalla(pc,'J',nivel+1,self.puntaje)
+                if self.total_puntos <= 0 and nivel <= 9:
+                    if nivel >= 9:
+                        game_Over = True
+                    else:
+                        validacion_Fin[0] = False
+                        pc = PantallaCarga.PantallaCarga
+                        pc.pantalla(pc,'J',nivel+1,self.puntaje)
+                if len(self.vidas) == 0:
+                    game_Over = True
             else:
                 validacion_Fin[0] = False
         pygame.quit()
@@ -833,37 +890,21 @@ class Juego(object):
         mensaje = fuente3.render(text, 1, (27, 67, 207))
         screen.blit(mensaje, (395, 418))
 
-    def menu_configuracion(self,imagenes:Imagenes, screen, fuente3, lista_botones_menu, validaciones_botones_menu,matris_botones):
+    def menu_configuracion(self,imagenes:Imagenes, screen, fuente3, lista_botones_menu, validaciones_botones_menu,matris_botones,validaciones_botones_confi, confi_EST):
         panel = Imagen.Imagen(imagenes.obtener_imagen_fondo("panel",820,720), 0, 0, 820,720)
 
         screen.blit(panel.imagen, (panel.i,panel.j))
         for i in range(len(matris_botones)):
-            for j in range(len(matris_botones)):
-                matris_botones
-        #for x in lista_botones_menu:
-            #screen.blit(x.imagen, (x.i,x.j))
-        #if validaciones_botones_menu[0] == True:
-        #    screen.blit(lista_botones_menu[0].imagen, (lista_botones_menu[0].i, lista_botones_menu[0].j))
-        #elif validaciones_botones_menu[1] == True:
-        #    screen.blit(lista_botones_menu[1].imagen, (lista_botones_menu[1].i, lista_botones_menu[1].j))
-        #elif validaciones_botones_menu[2] == True:
-        #    screen.blit(lista_botones_menu[2].imagen, (lista_botones_menu[2].i, lista_botones_menu[2].j))
-        #elif validaciones_botones_menu[3] == True:
-        #    screen.blit(lista_botones_menu[3].imagen, (lista_botones_menu[3].i, lista_botones_menu[3].j))
-
-        #screen.blit(panel.imagen, (panel.i,panel.j))
+            for j in range(len(matris_botones[i])):
+                if validaciones_botones_confi[i][j] == True:
+                    screen.blit(matris_botones[i][j].imagen, (matris_botones[i][j].i,matris_botones[i][j].j))
+       
         rojo1 = (240, 66, 74)
         rojo2 = (154, 12, 19)
 
         azul1 = (89, 172, 255)
         azul2 = (27, 67, 207)
-        text1 = "True"
-        mensaje1 = fuente3.render(text1, 1, rojo1)
-        mensaje2 = fuente3.render(text1, 1, rojo2)
-
-        text2 = "False"
-        mensaje4 = fuente3.render(text2, 1, azul1)
-        mensaje5 = fuente3.render(text2, 1, azul2)
+        
 
         pos_x = 200
         pos_x_true = 230
@@ -873,18 +914,50 @@ class Juego(object):
         mensaje = fuente3.render(text, 1, azul2)
         screen.blit(mensaje, (2+pos_x, 250))
 
-        
+        if confi_EST[0] == True:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, rojo1)
+            mensaje2 = fuente3.render(text1, 1, rojo2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, azul1)
+            mensaje5 = fuente3.render(text2, 1, azul2)
+        else:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, azul1)
+            mensaje2 = fuente3.render(text1, 1, azul2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, rojo1)
+            mensaje5 = fuente3.render(text2, 1, rojo2)
         screen.blit(mensaje1, (0+pos_x + pos_x_true, 248))
         screen.blit(mensaje2, (2+pos_x + pos_x_true, 250))
 
         screen.blit(mensaje4, (100+pos_x + pos_x_true, 248))
         screen.blit(mensaje5, (102+pos_x + pos_x_true, 250))
 
-        text = "Super Velocidad:"
+        text = "Habilidad:"
         mensaje = fuente3.render(text, 1, azul1)
         screen.blit(mensaje, (0+pos_x, 304))
         mensaje = fuente3.render(text, 1, azul2)
         screen.blit(mensaje, (2+pos_x, 306))
+
+        if confi_EST[1] == True:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, rojo1)
+            mensaje2 = fuente3.render(text1, 1, rojo2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, azul1)
+            mensaje5 = fuente3.render(text2, 1, azul2)
+        else:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, azul1)
+            mensaje2 = fuente3.render(text1, 1, azul2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, rojo1)
+            mensaje5 = fuente3.render(text2, 1, rojo2)
 
         screen.blit(mensaje1, (0+pos_x + pos_x_true, 304))
         screen.blit(mensaje2, (2+pos_x + pos_x_true, 306))
@@ -892,11 +965,28 @@ class Juego(object):
         screen.blit(mensaje4, (100+pos_x + pos_x_true, 304))
         screen.blit(mensaje5, (102+pos_x + pos_x_true, 306))
 
-        text = "Habilidad:"
+        text = "Super Velocidad:"
         mensaje = fuente3.render(text, 1, azul1)
         screen.blit(mensaje, (0+pos_x, 360))
         mensaje = fuente3.render(text, 1, azul2)
         screen.blit(mensaje, (2+pos_x, 362))
+
+        if confi_EST[2] == True:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, rojo1)
+            mensaje2 = fuente3.render(text1, 1, rojo2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, azul1)
+            mensaje5 = fuente3.render(text2, 1, azul2)
+        else:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, azul1)
+            mensaje2 = fuente3.render(text1, 1, azul2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, rojo1)
+            mensaje5 = fuente3.render(text2, 1, rojo2)
 
         screen.blit(mensaje1, (0+pos_x + pos_x_true, 360))
         screen.blit(mensaje2, (2+pos_x + pos_x_true, 362))
@@ -910,8 +1000,61 @@ class Juego(object):
         mensaje = fuente3.render(text, 1, azul2)
         screen.blit(mensaje, (2+pos_x, 418))
 
+        if confi_EST[3] == True:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, rojo1)
+            mensaje2 = fuente3.render(text1, 1, rojo2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, azul1)
+            mensaje5 = fuente3.render(text2, 1, azul2)
+        else:
+            text1 = "True"
+            mensaje1 = fuente3.render(text1, 1, azul1)
+            mensaje2 = fuente3.render(text1, 1, azul2)
+
+            text2 = "False"
+            mensaje4 = fuente3.render(text2, 1, rojo1)
+            mensaje5 = fuente3.render(text2, 1, rojo2)
+
         screen.blit(mensaje1, (0+pos_x + pos_x_true, 416))
         screen.blit(mensaje2, (2+pos_x + pos_x_true, 418))
 
         screen.blit(mensaje4, (100+pos_x + pos_x_true, 416))
         screen.blit(mensaje5, (102+pos_x + pos_x_true, 418))
+    
+    def cargar_confi(self,confi_EST):
+        archivo_texto=open("datos/configuracion.txt","r")
+        for line in archivo_texto:
+            x = line.split(": ")
+            if x[0] == "Inmortalidad":
+                confi_EST[0] = eval(x[1])
+            if x[0] == "Habilidad":
+                confi_EST[1] = eval(x[1])
+            if x[0] == "Super Velocidad":
+                confi_EST[2] = eval(x[1])
+            if x[0] == "Hambre al 100":
+                confi_EST[3] = eval(x[1])
+        archivo_texto.close()
+
+    def guardar_confi(self,confi_EST):
+        archivo_texto=open("datos/configuracion.txt","w")
+        cadena = "Inmortalidad: "+ str(confi_EST[0])
+        archivo_texto.write(cadena+"\n")
+        cadena = "Habilidad: "+ str(confi_EST[1])
+        archivo_texto.write(cadena+"\n")
+        cadena = "Super Velocidad: "+ str(confi_EST[2])
+        archivo_texto.write(cadena+"\n")
+        cadena = "Hambre al 100: "+ str(confi_EST[3])
+        archivo_texto.write(cadena+"\n")
+        archivo_texto.close()
+    def game_ov(self, imagenes, screen,fuente3, inicio2, validacion_ini):
+        fondo = Imagen.Imagen(imagenes.obtener_imagen_fondo("gameover",820,720), 0, 0, 820,720)
+        screen.blit(fondo.imagen, (fondo.i,fondo.j))
+        if validacion_ini == True:
+            screen.blit(inicio2.imagen, (inicio2.i, inicio2.j))
+        text = "Inicio"
+        mensaje = fuente3.render(text, 1, (89, 172, 255))
+        screen.blit(mensaje, (388, 548))
+        mensaje = fuente3.render(text, 1, (27, 67, 207))
+        screen.blit(mensaje, (390, 550))

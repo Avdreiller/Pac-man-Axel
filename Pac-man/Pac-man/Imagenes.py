@@ -1,59 +1,14 @@
 import pygame
 class Imagenes(object):
     """description of class"""
-    #def __init__ (self):
-    #    self.pacMan = None
-    #    self.bola = None
-    #    self.nada = None
-    #    self.clyde = None
-
-    #    self.interseccion = None
-    #    self.interseccion = None
-    #    self.muroSolo = None
-    #    self.muroSolo = None
-    #    self.finalIzquierdo = None
-    #    self.finalIzquierdo = None
-    #    self.finalDerecho = None
-    #    self.finalDerecho = None
-    #    self.finalSuperior = None
-    #    self.finalSuperior = None
-    #    self.finalInferior = None
-    #    self.finalInferior = None
-    #    self.muroIntermedioHorizontal = None
-    #    self.muroIntermedioHorizontal = None
-    #    self.muroIntermedioVertical = None
-    #    self.muroIntermedioVertical = None
-    #    self.esquinaSuperiorIzquierda = None
-    #    self.esquinaSuperiorIzquierda = None
-    #    self.esquinaInferiorDerecha = None
-    #    self.esquinaInferiorDerecha = None
-    #    self.esquinaInferiorIzquierda = None
-    #    self.esquinaInferiorIzquierda = None
-    #    self.esquinaSuperiorDerecha = None
-    #    self.esquinaSuperiorDerecha = None
-    #    self.interseccionSuperior = None
-    #    self.interseccionSuperior = None
-    #    self.interseccionDerecha = None
-    #    self.interseccionDerecha = None
-    #    self.interseccionIzquierda = None
-    #    self.interseccionIzquierda = None
-    #    self.interseccionInferior = None
-    #    self.interseccionInferior = None
-
-    #    self.nuevaPartida = None
-    #    self.nuevaPartida = None
-    #    self.cargarPartida = None
-    #    self.cargarPartida = None
+  
     
     def __init__ (self):
         self.pacMan = pygame.image.load("recursos/otros/PacMan.png").convert_alpha()
-        #self.pacMan = pygame.transform.scale(self.pacMan,(ancho,alto))
         self.bola = pygame.image.load("recursos/otros/bolas.png").convert_alpha()
-        #self.bola = pygame.transform.scale(self.bola,(ancho,alto))
         self.nada = pygame.image.load("recursos/otros/Nada.png").convert_alpha()
         self.powerPellets = pygame.image.load("recursos/otros/PowerPellets.png").convert_alpha()
         self.tres = pygame.image.load("recursos/otros/tres.png").convert_alpha()
-        #self.nada = pygame.transform.scale(self.nada,(ancho,alto))
         self.blinky = pygame.image.load("recursos/otros/FantasmaR.png").convert_alpha()
         self.pinky = pygame.image.load("recursos/otros/FantasmaRs.png").convert_alpha()
         self.inky = pygame.image.load("recursos/otros/FantasmaC.png").convert_alpha()
@@ -72,51 +27,33 @@ class Imagenes(object):
         self.sad = pygame.image.load("recursos/otros/FantasmaSad.png").convert_alpha()
         self.sadGris = pygame.image.load("recursos/otros/FantasmaSadGris.png").convert_alpha()
         self.ojosD = pygame.image.load("recursos/otros/ojosDerecha.png").convert_alpha()
-        #self.clyde = pygame.transform.scale(self.clyde,(ancho,alto))
 
         self.interseccion = pygame.image.load("recursos/muros/Intersección.png").convert_alpha()
-        #self.interseccion = pygame.transform.scale(self.interseccion,(ancho,alto))
         self.muroSolo = pygame.image.load("recursos/muros/MuroSolo.png").convert_alpha()
         self.rayo = pygame.image.load("recursos/muros/Rayo.png").convert_alpha()
-        #self.muroSolo = pygame.transform.scale(self.muroSolo,(ancho,alto))
         self.finalIzquierdo = pygame.image.load("recursos/muros/FinalIzquierdo.png").convert_alpha()
-        #self.finalIzquierdo = pygame.transform.scale(self.finalIzquierdo,(ancho,alto))
         self.finalDerecho = pygame.image.load("recursos/muros/FinalDerecho.png").convert_alpha()
-        #self.finalDerecho = pygame.transform.scale(self.finalDerecho,(ancho,alto))
         self.finalSuperior = pygame.image.load("recursos/muros/FinalSuperior.png").convert_alpha()
-        #self.finalSuperior = pygame.transform.scale(self.finalSuperior,(ancho,alto))
         self.finalInferior = pygame.image.load("recursos/muros/FinalInferior.png").convert_alpha()
-        #self.finalInferior = pygame.transform.scale(self.finalInferior,(ancho,alto))
         self.muroIntermedioHorizontal = pygame.image.load("recursos/muros/MuroIntermedioHorizontal.png").convert_alpha()
-        #self.muroIntermedioHorizontal = pygame.transform.scale(self.muroIntermedioHorizontal,(ancho,alto))
         self.muroIntermedioVertical = pygame.image.load("recursos/muros/MuroIntermedioVertical.png").convert_alpha()
-        #self.muroIntermedioVertical = pygame.transform.scale(self.muroIntermedioVertical,(ancho,alto))
         self.esquinaSuperiorIzquierda = pygame.image.load("recursos/muros/EsquinaSuperiorIzquierda.png").convert_alpha()
-        #self.esquinaSuperiorIzquierda = pygame.transform.scale(self.esquinaSuperiorIzquierda,(ancho,alto))
         self.esquinaInferiorDerecha = pygame.image.load("recursos/muros/EsquinaInferiorDerecha.png").convert_alpha()
-        #self.esquinaInferiorDerecha = pygame.transform.scale(self.esquinaInferiorDerecha,(ancho,alto))
         self.esquinaInferiorIzquierda = pygame.image.load("recursos/muros/EsquinaInferiorIzquierda.png").convert_alpha()
-        #self.esquinaInferiorIzquierda = pygame.transform.scale(self.esquinaInferiorIzquierda,(ancho,alto))
         self.esquinaSuperiorDerecha = pygame.image.load("recursos/muros/EsquinaSuperiorDerecha.png").convert_alpha()
-        #self.esquinaSuperiorDerecha = pygame.transform.scale(self.esquinaSuperiorDerecha,(ancho,alto))
         self.interseccionSuperior = pygame.image.load("recursos/muros/IntersecciónSuperior.png").convert_alpha()
-        #self.interseccionSuperior = pygame.transform.scale(self.interseccionSuperior,(ancho,alto))
         self.interseccionDerecha = pygame.image.load("recursos/muros/IntersecciónDerecha.png").convert_alpha()
-        #self.interseccionDerecha = pygame.transform.scale(self.interseccionDerecha,(ancho,alto))
         self.interseccionIzquierda = pygame.image.load("recursos/muros/IntersecciónIzquierda.png").convert_alpha()
-        #self.interseccionIzquierda = pygame.transform.scale(self.interseccionIzquierda,(ancho,alto))
         self.interseccionInferior = pygame.image.load("recursos/muros/IntersecciónInferior.png").convert_alpha()
-        #self.interseccionInferior = pygame.transform.scale(self.interseccionInferior,(ancho,alto))
 
         self.nuevaPartida = pygame.image.load("recursos/botones/NuevaPartida.png").convert_alpha()
-        #self.nuevaPartida = pygame.transform.scale(self.nuevaPartida,(ancho,alto))
         self.cargarPartida = pygame.image.load("recursos/botones/CargarPartida.png").convert_alpha()
-        #self.cargarPartida = pygame.transform.scale(self.cargarPartida,(ancho,alto))
         self.speed = pygame.image.load("recursos/botones/Speed.png").convert_alpha()
         self.nspeed = pygame.image.load("recursos/botones/NoSpeed.png").convert_alpha()
         self.speedA = pygame.image.load("recursos/botones/SpeedActivo.png").convert_alpha()
         self.configuracion_juego = pygame.image.load("recursos/botones/Configuracion.png").convert_alpha()
         self.resaltarB = pygame.image.load("recursos/botones/Resaltador.png").convert_alpha()
+        self.resaltar2 = pygame.image.load("recursos/botones/Resaltador2.png").convert_alpha()
 
         self.batman = pygame.image.load("recursos/niveles/batman.jpg").convert_alpha()
         self.deadpool = pygame.image.load("recursos/niveles/deadpool.jpg").convert_alpha()
@@ -140,6 +77,7 @@ class Imagenes(object):
         self.theJocker_Fondo = pygame.image.load("recursos/fondos/niveles/theJocker.jpg").convert_alpha()
         self.onepiece_Fondo = pygame.image.load("recursos/fondos/niveles/onepiece.jpg").convert_alpha()
         self.panel = pygame.image.load("recursos/otros/Panel.png").convert_alpha()
+        self.gameover = pygame.image.load("recursos/fondos/game_over.png").convert_alpha()
 
 
 
@@ -177,6 +115,9 @@ class Imagenes(object):
         elif nombre == "panel":
             self.panel = pygame.transform.scale(self.panel,(ancho,alto))
             return self.panel
+        elif nombre == "gameover":
+            self.gameover = pygame.transform.scale(self.gameover,(ancho,alto))
+            return self.gameover
         
         
         return None
@@ -309,6 +250,9 @@ class Imagenes(object):
         elif nombre == "resaltarB":
             self.resaltarB = pygame.transform.scale(self.resaltarB,(ancho,alto))
             return self.resaltarB
+        elif nombre == "resaltar2":
+            self.resaltar2 = pygame.transform.scale(self.resaltar2,(ancho,alto))
+            return self.resaltar2
         
         return None
 

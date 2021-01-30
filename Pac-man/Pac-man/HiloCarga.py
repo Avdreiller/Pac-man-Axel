@@ -62,10 +62,6 @@ class HiloCarga(threading.Thread):
             self.validacion[self.numero] = True
             TOTAL = TOTAL + 1
         
-        #MY_LOCK.acquire()
-        
-        #print("Termino:", self.numero)
-        
         MY_LOCK.release()
     def obtener_Mapa(self,nivel):
         m =[]

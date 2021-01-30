@@ -1,2 +1,4 @@
-SuperVelocidad: False
-Inmortalidad: addsa
+Inmortalidad: False
+Habilidad: False
+Super Velocidad: False
+Hambre al 100: False

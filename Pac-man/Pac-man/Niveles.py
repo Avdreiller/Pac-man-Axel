@@ -152,22 +152,10 @@ class Niveles(object):
             if var:
                 screen.fill(white)
                 screen.blit(fondo, logorect)
-                
-                
-                
-                #for j in range(0, 3):
-                #    j1 = 80
-                #    for i in range(0,3):
-                #        mensaje = fuente.render(str(i1), 1, (225, 121, 121))
-                #        screen.blit(mensaje, (j1, i2))
-                #        j1+=25
-                #        i1 += 1
-                #    i2+=25
                 for x in lista_niveles:
                     screen.blit(x.imagen, (x.i, x.j))
                 i1 = 1
                 for j in range(1, 300, 120 + 1):
-                    #j1 = 0
                     for i in range(1, 480, 180+1):
                         
                         mensaje = fuente2.render(str(i1), 1, (0, 0, 0))
@@ -175,18 +163,12 @@ class Niveles(object):
                         mensaje = fuente.render(str(i1), 1, (0, 255, 0))
                         screen.blit(mensaje, (i+n1+2, j+n2+2))
                         
-                        #j1+=25
                         i1 += 1
                 nivel = "10"
                 mensaje = fuente2.render(nivel, 1, (0, 0, 0))
                 screen.blit(mensaje, (342, 485))
                 mensaje = fuente.render(nivel, 1, (0, 255, 0))
                 screen.blit(mensaje, (344, 487))
-                #screen.blit(btn_Nueva_Partida.imagen, (btn_Nueva_Partida.x, btn_Nueva_Partida.y))
-                #screen.blit(lista_botones[0].imagen, (lista_botones[0].i, lista_botones[0].j))
-                #screen.blit(btn_Cargar_Partida.imagen, (btn_Cargar_Partida.i, btn_Cargar_Partida.j))
-                #screen.blit(lista_botones[1].imagen, (lista_botones[1].i, lista_botones[1].j))
-                #print(pacmanicono.get_rect())
                 pygame.display.flip()
         pygame.quit()
 

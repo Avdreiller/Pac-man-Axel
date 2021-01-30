@@ -39,10 +39,8 @@ class HiloFantasma(threading.Thread):
         fant = 0
         if self.fantasma == '2':
             fant = 1
-            #time.sleep(0.5)
         elif self.fantasma == '3':
             fant = 2
-            #time.sleep(1)
         elif self.fantasma == '1':
             fant = 0
         elif self.fantasma == '4':
@@ -82,7 +80,6 @@ class HiloFantasma(threading.Thread):
                     for j in range(len(self.mapa_imagenes)):
                         if self.mapa_imagenes[i][j].tipo == '@':
                             idJ = self.mapa_imagenes[i][j].id
-                #if idJ != idF and (self.fantasma == '1' or self.fantasma == '2'):
 
                 cam = camino
                 camino, fin, x1, seg_jugador, seg_General = self.obtener_Ruta(fin, x1, seg_jugador, seg_General, idF,idF1,idF2,idF4, idJ, id_Centro, fant, cam)
@@ -107,31 +104,7 @@ class HiloFantasma(threading.Thread):
                                 self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
                             self.validaciones[0][fant]=False
                             fin = True
-                        #else:
-                        #    if self.validaciones[1][0]==True:
-                        #        if self.fantasma=='1':
-                        #            self.fantasmas[fant][idF] = self.nodos[idF1].tipo
-                        #            self.fantasmas[fant][self.mapa_imagenes[10][11].id] = self.fantasma
-                        #            self.validaciones[1][fant]=False
-                        #        fin = True
-                        #    elif self.validaciones[1][1]==True:
-                        #        if self.fantasma=='2':
-                        #            self.fantasmas[fant][idF] = self.nodos[idF2].tipo
-                        #            self.fantasmas[fant][self.mapa_imagenes[11][12].id] = self.fantasma
-                        #            self.validaciones[1][fant]=False
-                        #        fin = True
-                        #    elif self.validaciones[1][2]==True:
-                        #        if self.fantasma=='3':
-                        #            self.fantasmas[fant][idF] = self.nodos[idF3].tipo
-                        #            self.fantasmas[fant][self.mapa_imagenes[11][10].id] = self.fantasma
-                        #            self.validaciones[1][fant]=False
-                        #        fin = True
-                        #    elif self.validaciones[1][3]==True:
-                        #        if self.fantasma=='4':
-                        #            self.fantasmas[fant][idF] = self.nodos[idF4].tipo
-                        #            self.fantasmas[fant][self.mapa_imagenes[11][11].id] = self.fantasma
-                        #            self.validaciones[1][fant]=False
-                        #        fin = True
+                        
                         else:
                         
                             id = self.mapa_imagenes[camino[x1].x][camino[x1].y].id
@@ -146,11 +119,6 @@ class HiloFantasma(threading.Thread):
                                         self.fantasmas[fant][id2] = '%'
                                     else:
                                         self.fantasmas[fant][id2] = '-'
-                        #if seg_General == True:
-                            #x1 += 1
-                            #if x1 >=1:
-                            #    x1 = 1
-                    
 
                         if fin == False:
                             x1 += 1

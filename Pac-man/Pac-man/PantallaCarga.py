@@ -25,8 +25,6 @@ class PantallaCarga(object):
         pygame.display.set_caption("Pac Man")
         clock = pygame.time.Clock()
         imagenes = Imagenes.Imagenes()
-        #fondo = Imagen.Imagen(imagenes.obtener_imagen_boton("NuevaPartida",200,50), 320, 200, 200, 50)
-        #fondo = pygame.image.load("C:/Users/Andres/Desktop/dementores.jpg").convert()
         tux_pos_x = 0
         tux_pos_y = 500
         pacmanC= Imagen.Imagen(imagenes.obtener_imagen_carga("pacmanC",420,70), tux_pos_x, tux_pos_y, 420, 70)
@@ -34,7 +32,6 @@ class PantallaCarga(object):
         pinky = Imagen.Imagen(imagenes.obtener_imagen_carga("pinkyC",70,70), tux_pos_x, tux_pos_y, 70, 70)
         inky = Imagen.Imagen(imagenes.obtener_imagen_carga("inkyC",70,70), tux_pos_x, tux_pos_y, 70, 70)
         clyde = Imagen.Imagen(imagenes.obtener_imagen_carga("clydeC",70,70), tux_pos_x, tux_pos_y, 70, 70)
-        #fondo = pygame.transform.scale(fondo,(1080,720))
         validacion = []
         ruta = [[]]
         peso = [[]]
@@ -45,7 +42,6 @@ class PantallaCarga(object):
         frame_width = 70
         frame_height = 70
 
-        #for x in range(10):
         if accion == 'J':
             validacion = [False]
             self.hilo(self,lista_mapas,validacion,nivel,accion, ruta, peso)
@@ -99,8 +95,6 @@ class PantallaCarga(object):
                 screen.blit(pinky.imagen, (tux_pos_x-160, tux_pos_y))
                 screen.blit(blinky.imagen, (tux_pos_x-240, tux_pos_y))
                 current_frame = self.update(self,screen,pacmanC.imagen,current_frame,frame_width,frame_height,frames,tux_pos_x-320,tux_pos_y)
-                #screen.blit(pacmanC1.imagen, (tux_pos_x-320, tux_pos_y))
-                #screen.blit(image, (100, 25))
                 pygame.display.flip()
                 clock.tick(20)
 

@@ -7,7 +7,6 @@ import Nodo
 import Jugador
 import Niveles
 class MenuInicio(object):
-    """description of class"""
     def Menu():    
         j = Juego.Juego
         
@@ -47,30 +46,22 @@ class MenuInicio(object):
                 if pygame.mouse.get_pressed(3)==(1,0,0):
                     x1, y1 = pygame.mouse.get_pos()
                     if(btn_Nueva_Partida.comparar_cord(x1,y1)):
-                        #j.pantalla_juego(j)
-                        #p = PantallaCarga.PantallaCarga
-                        #p.pantalla(p,'J',0,0)
                         n = Niveles.Niveles
                         n.Nivel(0)
                         var = False
                         run = False
                     if(btn_Cargar_Partida.comparar_cord(x1,y1)):
-                        #j.pantalla_juego(j)
-                        #pj = Jugador.Jugador
-                        #pj.pantalla(pj)
                         p = PantallaCarga.PantallaCarga
                         p.pantalla(p,'C',0,0)
                         var = False
                         run = False
+                    
             if var:
                 screen.fill(white)
                 screen.blit(fondo, (0,0))
                 screen.blit(pacmanicono, (pacmanicono_pos_x, pacmanicono_pos_y))
-                #screen.blit(btn_Nueva_Partida.imagen, (btn_Nueva_Partida.x, btn_Nueva_Partida.y))
                 screen.blit(lista_botones[0].imagen, (lista_botones[0].i, lista_botones[0].j))
                 screen.blit(btn_Cargar_Partida.imagen, (btn_Cargar_Partida.i, btn_Cargar_Partida.j))
                 screen.blit(configuracion_juego.imagen, (configuracion_juego.i, configuracion_juego.j))
-                #screen.blit(lista_botones[1].imagen, (lista_botones[1].i, lista_botones[1].j))
-                #print(pacmanicono.get_rect())
                 pygame.display.flip()
         pygame.quit()
